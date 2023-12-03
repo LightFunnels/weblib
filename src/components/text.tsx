@@ -17,11 +17,11 @@ const headingVariants = cva(
 )
 
 type Props = VariantProps<typeof headingVariants> & {
-	children: React.ReactNode
+	children?: React.ReactNode
 	className?: string
 }
 
-export const Text = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement> & {children?: React.ReactNode}>(
+export const Text = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
 	function Text({variant, className, ...props}: Props, ref){
 		return (
 			<p ref={ref} className={cn(headingVariants({ variant, className }))}>

@@ -49,7 +49,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         children={
           <React.Fragment>
-            {loading ? <LoadingSpinner relative/> : props.children}
+            {loading ? <LoadingSpinner/> : props.children}
           </React.Fragment>
         }
       />
@@ -59,7 +59,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 function LoadingSpinner(){
-	return "loading...";
+	return (
+		<React.Fragment>
+			loading... (TO Fix)
+		</React.Fragment>
+	);
 }
 
 export { Button, buttonVariants }

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 type Props = React.HTMLAttributes<HTMLInputElement> & {
 	checked: boolean
 	label: React.ReactNode
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export function Checkbox(props: Props){

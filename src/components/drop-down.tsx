@@ -42,8 +42,8 @@ export function Dropdown(props: Props){
                   !props.keep_on_click_in ?
                   props.menu.props.onClick :
                   function (event) {
-                    if(props.menu.props.onClick){
-                      props.menu.props.onClick(event);
+                    if(props.menu!.props.onClick){
+                      props.menu!.props.onClick(event);
                     }
                     onClick(event);
                   }
