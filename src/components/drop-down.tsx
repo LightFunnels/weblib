@@ -72,7 +72,7 @@ type DropdownItemProps = React.HTMLAttributes<HTMLDivElement>;
 export const DropdownItem = React.forwardRef<HTMLDivElement, DropdownItemProps>(
 	function DropdownItem(props, ref){
 		return (
-			<div ref={ref} className={cn("p-2 cursor-pointer flex items-center gap-2 hover:bg-ghost-blue leading-4.5", props.className)}>
+			<div {...props} ref={ref} className={cn("p-2 cursor-pointer flex items-center gap-2 hover:bg-ghost-blue leading-4.5", props.className)}>
 				{props.children}
 			</div>
 		)
