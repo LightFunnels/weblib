@@ -59,7 +59,7 @@ export function Dropdown(props: Props){
               </div>
             )
           ),
-					document?.getElementById('modals') as HTMLElement
+					document.getElementById('modals') as HTMLElement
           // window.modals 
         )
       }

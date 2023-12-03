@@ -87,7 +87,6 @@ export default function Front() {
   			<Checkbox onChange={console.log} checked={true} label="Checkbox" />
   		</div>
   		<div>
-  			
   		</div>
   	</div>
   )
