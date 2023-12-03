@@ -72,14 +72,14 @@ type DropdownItemProps = React.HTMLAttributes<HTMLDivElement>;
 export const DropdownItem = React.forwardRef<HTMLDivElement, DropdownItemProps>(
 	function DropdownItem(props, ref){
 		return (
-			<div ref={ref} className="p-2 cursor-pointer flex items-center gap-2">
+			<div ref={ref} className="p-2 cursor-pointer flex items-center gap-2 hover:bg-ghost-blue leading-4.5">
 				{props.children}
 			</div>
 		)
 	}
 );
 
-export type UseToggleOpts = {
+type UseToggleOpts = {
 	state?: boolean
 	key?: any
 	disabled?: boolean
