@@ -52,7 +52,7 @@ export function Dropdown(props: Props){
             ) : (
               <div
                 onClick={onClick}
-                className={cn('py-2 px-1.5 absolute rounded bg-white shadow-[0px_3px_10px_rgba(0,0,0,0.08)] list-none p-0 z-[2] text-left border border-neutral-200', props.className)}
+                className={cn('py-1 absolute rounded bg-white shadow-[0px_3px_10px_rgba(0,0,0,0.08)] list-none z-[2] text-left border border-neutral-200', props.className)}
                 ref={ref_menu}
               >
                 {props.children}
@@ -72,7 +72,7 @@ type DropdownItemProps = React.HTMLAttributes<HTMLDivElement>;
 export const DropdownItem = React.forwardRef<HTMLDivElement, DropdownItemProps>(
 	function DropdownItem(props, ref){
 		return (
-			<div ref={ref} className="p-2 cursor-pointer flex items-center gap-2 hover:bg-ghost-blue leading-4.5">
+			<div ref={ref} className={cn("p-2 cursor-pointer flex items-center gap-2 hover:bg-ghost-blue leading-4.5", props.className)}>
 				{props.children}
 			</div>
 		)

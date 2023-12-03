@@ -9,7 +9,7 @@ export function FormGroup(props: Props){
 		<div {...props} >
 			{
 				props.label &&
-				<Label className={"mb-4"}>
+				<Label className={"mb-2"}>
 					{props.label}
 				</Label>
 			}
