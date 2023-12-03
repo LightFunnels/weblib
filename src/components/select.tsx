@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
  
-import { DropdownItem, useToggle } from '@/components';
+import { DropdownItem, useToggle } from './';
 import { cn } from '@/lib/utils';
 
 /**

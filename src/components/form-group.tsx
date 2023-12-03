@@ -1,4 +1,4 @@
-import { Label } from "@/components";
+import { Label } from "./";
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
 	label?: React.ReactNode

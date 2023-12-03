@@ -1,5 +1,5 @@
 import * as React from "react"
-import {Label} from "@/components";
+import {Label} from "./";
  
 import { cn } from "@/lib/utils"
  
