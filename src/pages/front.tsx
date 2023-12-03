@@ -10,6 +10,7 @@ import {
 	Modal,
 	Text,
 	Avatar,
+	Checkbox,
 	Select,
 } from "@/components";
 import React, { Fragment } from 'react';
@@ -68,16 +69,19 @@ export default function Front() {
   			<Hr className="my-4" />
   			<Text className="mb-4">Avatar</Text>
   			<Avatar className="mb-4" src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
-  			<Select
-  				onChange={console.log}
-  				value="morocco"
-  				options={[
-	  				{
-	  					value: "morocco",
-	  					label: "Morocco",
-	  				}
-  				]}
-  			/>
+  			<FormGroup className="mb-4" label={"Select"}>
+	  			<Select
+	  				onChange={console.log}
+	  				value="morocco"
+	  				options={[
+		  				{
+		  					value: "morocco",
+		  					label: "Morocco",
+		  				}
+	  				]}
+	  			/>
+  			</FormGroup>
+  			<Checkbox onChange={console.log} checked={true} label="Checkbox" />
   		</div>
   		<div>
   			

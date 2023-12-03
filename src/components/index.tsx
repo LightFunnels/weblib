@@ -9,3 +9,4 @@ export * from "./form-group";
 export * from "./drop-down";
 export * from "./select";
 export * from "./avatar";
+export * from "./checkbox";
