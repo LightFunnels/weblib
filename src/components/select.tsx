@@ -134,6 +134,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 		</Fragment>
 	)
 });
+Select.displayName = "Select";
 
 export function sanitizeStringForReg(q: string){
   return q.replace(/\\/g, "");
@@ -152,6 +153,7 @@ export const MenuContainer = React.forwardRef<HTMLDivElement, { onClick?: (ev) =
 		)
 	}
 );
+MenuContainer.displayName = "MenuContainer";
 
 type SelectLabelProps = {
 	disabled?: boolean
@@ -184,13 +186,9 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 						<Avatar className="productImage" src={props.image} />
 					)
 				}*/}
-				<span
-					children={
-						props.selected || props.label || 'Select...'
-					}
-					// className={` text-sm leading-4 ${props.textLabelClassName}`}
-				// disabled={props.disabled}
-				/>
+				<span>
+					{props.selected || props.label || 'Select...'}
+				</span>
 				{
 					(props.cancellable && props.selected) ? (
 						<i
@@ -212,3 +210,4 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 		)
 	}
 );
+SelectLabel.displayName = "SelectLabel";

@@ -20,9 +20,13 @@ export default function Front() {
   return (
   	<div className="px-4 py-16 w-[800px] w-max-full mx-auto grid grid-cols-2 gap-4">
   		<div>
-  			<Heading children="Default Heading" />
+  			<Heading>
+  				Default Heading
+  			</Heading>
   			<Hr className="my-4" />
-  			<Button children="button" />
+  			<Button>
+  				button
+  			</Button>
   			<Hr className="my-4" />
   			<Text>
   				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.
@@ -47,7 +51,9 @@ export default function Front() {
   				)
   			}
   			<Hr className="my-4" />
-  			<Label children="Input" />
+  			<Label>
+  				Input
+  			</Label>
   			<Input className="mb-4" />
   			<FormGroup label={"Form Group Label"}>
   				<Input />
@@ -57,15 +63,12 @@ export default function Front() {
   				label={
   					<Text>Drop Down</Text>
   				}
-  				children={
-  					<Fragment>
-  						<DropdownItem>
-  							<span className="w-4 h-4 inline-block bg-primary"></span>
-  							Item 1
-  						</DropdownItem>
-  					</Fragment>
-  				}
-  			/>
+  			>
+					<DropdownItem>
+						<span className="w-4 h-4 inline-block bg-primary"></span>
+						Item 1
+					</DropdownItem>
+  			</Dropdown>
   			<Hr className="my-4" />
   			<Text className="mb-4">Avatar</Text>
   			<Avatar className="mb-4" src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />

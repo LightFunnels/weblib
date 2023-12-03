@@ -9,9 +9,13 @@ export function FormGroup(props: Props){
 		<div {...props} >
 			{
 				props.label &&
-				<Label className={"mb-4"} children={props.label} />
+				<Label className={"mb-4"}>
+					{props.label}
+				</Label>
 			}
 			{props.children}
 		</div>
 	)
 }
+
+FormGroup.displayName = "FormGroup";

@@ -21,3 +21,6 @@ export const Hr = React.forwardRef<
     />
   )
 )
+
+
+Hr.displayName = "Hr";
