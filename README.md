@@ -7,4 +7,4 @@ Inspired by https://ui.shadcn.com/, any many of the codes were taken directly fr
 
 - I want more High level components to reduce the code
 - No radix-ui 
-- more advanced components
+- Advanced components
