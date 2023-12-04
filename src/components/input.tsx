@@ -7,16 +7,21 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	currency?: boolean,
 	inputClassName?: string
 	className?: string
+	icon?: React.ReactElement 
+	leftIcon?: React.ReactElement 
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	({ className, inputClassName, type, error, currency, ...props }, ref) => {
+	({ className, inputClassName, type, error, currency, icon, leftIcon, ...props }, ref) => {
 		return (
-			<div className={`relative ${className ?? ''}`}>
+			<div 
+				className={`relative ${className ?? ''} flex items-center gap-1.5 relative h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2`}
+			>
+				{leftIcon}
 				<input
 					type={type}
 					className={cn(
-						"flex relative h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+						"outline-none placeholder:text-muted-foreground w-full disabled:cursor-not-allowed disabled:opacity-50",
 						inputClassName
 					)}
 					ref={ref}
@@ -25,6 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 				{currency && (
 					<div className="absolute text-center top-1/3 right-[10px] text-neutral-800">USD</div>
 				)}
+				{icon}
 				{error && (
 					<div className="text-red-300 mt-2.5 mb-2.5">{error}</div>
 				)}
