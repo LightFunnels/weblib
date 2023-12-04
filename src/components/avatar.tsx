@@ -5,32 +5,40 @@ type Props = {
 	src: string|null|undefined
 	className?: string
 	fallback?: string
-} & VariantProps<typeof buttonVariants>
+} & VariantProps<typeof avatarVariants>
 
-const buttonVariants = cva(
+const avatarVariants = cva(
   "",
   {
     variants: {
       size: {
         default: "w-14",
       },
+      corners:{
+      	md: "rounded-md",
+      	lg: "rounded-lg",
+      	sm: "rounded-sm",
+      	default: "rounded-full"
+      }
     },
     defaultVariants: {
       size: "default",
+      corners: "default"
     },
   }
 );
 
 export function Avatar(props: Props){
+	const corners = avatarVariants({corners: props.corners});
 	return (
-		<div className={cn("relative inline-block rounded-full bg-muted", buttonVariants({size: props.size}), props.className)}>
+		<div className={cn("relative inline-block bg-muted", avatarVariants({size: props.size}), corners, props.className)}>
 			<img
-				className="w-full rounded-full"
+				className={cn("w-full", corners)}
 				src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
 			{
 				props.src ?
 				<img
-					className="w-full top-0 left-0 h-full rounded-full absolute object-cover"
+					className={cn("w-full top-0 left-0 h-full absolute object-cover", corners)}
 					src={props.src} /> :
 					<div className={cn("absolute left-[50%] top-[50%] border border-1 translate-y-[-50%] translate-x-[-50%] text-lg")}>{props.fallback}</div>
 			}
