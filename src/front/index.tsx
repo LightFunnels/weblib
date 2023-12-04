@@ -17,6 +17,7 @@ import React, { Fragment } from 'react';
 
 export default function Front() {
 	const [m1, setM1] = React.useState(false);
+	const [checked, setChecked] = React.useState(false);
   return (
   	<div className="px-4 py-16 w-[800px] w-max-full mx-auto grid grid-cols-2 gap-4">
   		<div>
@@ -84,7 +85,7 @@ export default function Front() {
 	  				]}
 	  			/>
   			</FormGroup>
-  			<Checkbox onChange={console.log} checked={true} label="Checkbox" />
+  			<Checkbox onChange={event => setChecked(event.target.checked)} checked={checked} label="Checkbox" />
   		</div>
   		<div>
   		</div>
