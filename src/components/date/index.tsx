@@ -14,7 +14,10 @@ import {
 	ErrorMsg
 } from '../index';
 
-/* to work on ui */
+/**
+ * to work on ui
+ * mixed raw css and tailwind ?
+ *  */
 
 import { cn } from '@/lib/utils';
 import styles from "./date.module.scss";
@@ -372,8 +375,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 						<span className={"whitespace-nowrap"}><RangeDateLabel startDate={props.value.startDate} endDate={props.value.endDate} /></span>
 					}
 					icon={
-						props.cancellable &&
-						( props.value.startDate || props.value.endDate ) &&
+						(props.cancellable && ( props.value.startDate || props.value.endDate )) ?
 						<Close
 							className="absolute right-2 w-5 h-5 cursor-pointer"
 							onClick={ev => {
@@ -383,8 +385,8 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 									endDate: null
 								});
 							}}
-						/>
-					}
+						/> : undefined
+					} 
 				/>
 			</div>
 			{
