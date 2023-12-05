@@ -479,7 +479,7 @@ const DatePickerInput = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
 			<div
 				{...props}
 				ref={ref}
-				className={cn(initialInputClassName, "relative flex items-center whitespace-nowrap", props.className)}
+				className={cn(initialInputClassName, "relative cursor-pointer flex items-center whitespace-nowrap", props.className)}
 			>
 				{props.children}
 				{

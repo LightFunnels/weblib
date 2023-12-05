@@ -32,17 +32,21 @@ export default function Front() {
   				Default Heading
   			</Heading>
   			<Hr/>
-  			<Button>
-  				button
-  			</Button>
+  			<div>
+	  			<Button>
+	  				button
+	  			</Button>
+  			</div>
   			<Hr/>
   			<Text>
   				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.
   			</Text>
   			<Hr/>
-  			<Button onClick={() => setM1(true)}>
-  				Modal
-  			</Button>
+  			<div>
+	  			<Button onClick={() => setM1(true)}>
+	  				Modal
+	  			</Button>
+  			</div>
   			{
   				m1 && (
   					<Modal

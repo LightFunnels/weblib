@@ -2,10 +2,10 @@
 	background: white;
 	border-radius: 2px;
 	border: 1px solid hsl(var(--border));
-	border-radius: var(--radius);
+	border-radius: var(--local-radius);
 	flex: 1 1 0px;
 	:global {
-		--radius: 4px;
+		--local-radius: 4px;
 		.react-datepicker__day-names, .react-datepicker__week{
 			display: grid;
 			grid-template-columns: repeat(7, 36px);
@@ -17,7 +17,7 @@
 			justify-content: center;
 			align-items: center;
 			height: 36px;
-			border-radius: var(--radius);
+			border-radius: var(--local-radius);
 			font-size: 14px;
 		}
 		.react-datepicker__day-name {
@@ -47,7 +47,7 @@
 		.navigation{
 			width: 30px;
 			height: 30px;
-			border-radius: var(--radius);
+			border-radius: var(--local-radius);
 			cursor: pointer;
 			&:hover{
 				background: hsl(var(--accent));
@@ -60,7 +60,7 @@
 			display: none;
 		}
 		.react-datepicker{
-			padding: var(--radius);
+			padding: var(--local-radius);
 		}
 		.react-datepicker__month{
 			display: grid;
