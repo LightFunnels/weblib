@@ -24,6 +24,7 @@ export default function Front() {
 		startDate: "2023-12-01 00:00:00",
 		endDate: "2023-12-10 00:00:00",
 	});
+	const [date, setDate] = React.useState("2023-12-01 00:00:00");
   return (
   	<div className="px-4 py-16 w-[800px] w-max-full mx-auto grid grid-cols-2 gap-4">
   		<div>
@@ -95,13 +96,14 @@ export default function Front() {
   			<Hr className="my-4" />
   			<FormGroup label={"Date Picker"}>
 	  			<DatePicker
-	  				onChange={console.log}
-	  				value={"2023-12-05"}
+	  				clearable
+	  				onChange={value => setDate(value)}
+	  				value={date}
 	  			/>
   			</FormGroup>
   			<FormGroup className="mt-4" label={"Date Picker"}>
 	  			<RangeDatePicker
-	  				cancellable
+	  				clearable
 	  				onChange={setRange}
 	  				value={range}
 	  			/>

@@ -32,18 +32,34 @@ type Props = {
 	error?: React.ReactNode
 	displayFormat?: string
 	popperPlacement?: "top-start"|"bottom"
-	isClearable?: boolean
+	clearable?: boolean
 	maxDate?: Date
 	minDate?: Date
 }
-export function DatePicker({ name, error, value, ...props }: Props) {
+export function DatePicker({ name, error, value, clearable, ...props }: Props) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
 	return (
 		<div>
 			<ReactDatePicker
 				{...props}
 				popperClassName={styles.picker}
-				customInput={<DatePickerInput displayformat={props.displayFormat} />}
+				customInput={
+					<DatePickerInput
+						clear={
+							(clearable && value) ?
+								function (event){
+									event.stopPropagation();
+									props.onChange(null);
+								} : undefined
+						}
+					>
+						{
+							value ?
+								dateformat(SafeDate(value), props.displayFormat) :
+								value
+						}
+					</DatePickerInput>
+				}
 				selected={selected}
 				renderCustomHeader={
 					function (e) {
@@ -362,7 +378,7 @@ export type RangeDatePickerProps = {
 		endDate: string|null
 	}
 	onChange: (val: RangeDatePickerProps["value"]) => void
-	cancellable?: boolean
+	clearable?: boolean
 	inputClassName?: string
 }
 export function RangeDatePicker(props: RangeDatePickerProps) {
@@ -370,27 +386,20 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 	return (
 		<Fragment>
 			<div ref={ref}>
-				<span
-					className={cn(initialInputClassName, "whitespace-nowrap", props.inputClassName)}
-					children={
-						<div className="flex">
-							<RangeDateLabel startDate={props.value.startDate} endDate={props.value.endDate} />
-							{
-								(props.cancellable && ( props.value.startDate || props.value.endDate )) ?
-								<Close
-									className="absolute right-2 w-5 h-5 cursor-pointer"
-									onClick={ev => {
-										setIsOpen(false);
-										props.onChange({
-											startDate: null,
-											endDate: null
-										});
-									}}
-								/> : undefined
-							}
-						</div>
-					}
-				/>
+				<DatePickerInput
+					clear={
+						( props.value.startDate || props.value.endDate ) && props.clearable ? 
+							function (){
+								setIsOpen(false);
+								props.onChange({
+									startDate: null,
+									endDate: null
+								});
+							} : undefined
+					}	
+				>
+					<RangeDateLabel startDate={props.value.startDate} endDate={props.value.endDate} />
+				</DatePickerInput>
 			</div>
 			{
 				isOpen && (
@@ -455,24 +464,23 @@ export const RangeDateLabel = React.memo<{startDate: string|null, endDate: strin
 	(p, np) => ( (p.startDate === np.startDate) && (p.endDate === np.endDate) )
 );
 
-const DatePickerInput = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement> & { value: string|null, displayformat?: string }>(
-	function (props, ref) {
+const DatePickerInput = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & {clear?: (event: React.MouseEvent<HTMLOrSVGElement>) => void}>(
+	function ({clear, ...props}, ref) {
 		return (
-			<span
+			<div
 				{...props}
 				ref={ref}
-				className={cn(initialInputClassName, props.className)}
-				children={
-					<div className="flex items-center">
-						<CalendarIcon className="text-lg w-5 w-5" />
-						{
-							props.value ?
-								dateformat(SafeDate(props.value), props.displayformat) :
-								props.value
-						}
-					</div>
+				className={cn(initialInputClassName, "relative flex whitespace-nowrap", props.className)}
+			>
+				{props.children}
+				{
+					(clear) ?
+					<Close
+						className="absolute right-2 w-5 h-5 cursor-pointer"
+						onClick={clear}
+					/> : undefined
 				}
-			/>
+			</div>
 		)
 	}
 );
