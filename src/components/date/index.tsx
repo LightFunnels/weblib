@@ -1,18 +1,15 @@
 import dateformat from 'dateformat';
-import lodash from 'lodash';
 import React, { Fragment } from "react";
 import ReactDatePicker from "react-datepicker";
 import { createPortal } from "react-dom";
 import {
 	Button,
+	DropdownItem,
+	ErrorMsg,
 	Select,
 	initialInputClassName,
 	useToggle
 } from '../';
-import {
-	DropdownItem,
-	ErrorMsg
-} from '../index';
 
 /**
  * to work on ui
@@ -234,16 +231,21 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 
 	const active = React.useMemo(() => {
 		let foudnValue = presets.find(val => {
-			return lodash.isEqual(
-				{
-					startDate: dateformat(startDate, 'yyyy-mm-dd HH:MM:ss'),
-					endDate: dateformat(endDate, 'yyyy-mm-dd HH:MM:ss'),
-				},
-				generateFromValue(val.value)
-			)
+			let value = generateFromValue(val.value);
+			let compare = {
+				startDate: dateformat(startDate, 'yyyy-mm-dd HH:MM:ss'),
+				endDate: dateformat(endDate, 'yyyy-mm-dd HH:MM:ss'),
+			};
+			return (value.startDate === compare.startDate)
+				&& (value.endDate === compare.endDate);
 		});
 		return foudnValue?.value ?? "custom";
 	}, [startDate, endDate]);
+
+	const areEqual = (
+		tempvalue.startDate === props.value.startDate &&
+		tempvalue.endDate === props.value.endDate
+	);
 
 	return (
 		<div className={cn(styles.range, styles.picker)}>
@@ -353,7 +355,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 					Cancel
 				</Button>
 				<Button
-					disabled={props.disabled && lodash.isEqual(tempvalue, props.value)}
+					disabled={props.disabled && areEqual}
 					onClick={
 						function () {
 							let val = tempvalue;
