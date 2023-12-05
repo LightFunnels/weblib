@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from "class-variance-authority"
 
 type Props = {
+	children?: React.ReactNode
 	src: string|null|undefined
 	className?: string
 	fallback?: string
@@ -40,7 +41,9 @@ export function Avatar(props: Props){
 				<img
 					className={cn("w-full top-0 left-0 h-full absolute object-cover", corners)}
 					src={props.src} /> :
-					<div className={cn("absolute left-[50%] top-[50%] border border-1 translate-y-[-50%] translate-x-[-50%] text-lg")}>{props.fallback}</div>
+						<div className={cn("absolute left-[50%] top-[50%] border border-1 translate-y-[-50%] translate-x-[-50%] text-lg")}>
+							{props.children ?? props.fallback}
+						</div>
 			}
 		</div>
 	)
