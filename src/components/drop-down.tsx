@@ -85,6 +85,7 @@ type UseToggleOpts = {
 	disabled?: boolean
 	placement?: Placement
 	offset?: [number,number]
+	followTargetWidth?: boolean
 }
 
 export function useToggle<T extends HTMLDivElement = HTMLDivElement>(options: UseToggleOpts = {}) {
@@ -109,7 +110,9 @@ export function useToggle<T extends HTMLDivElement = HTMLDivElement>(options: Us
 				if (!ref.current || !refMenu.current) {
 					throw new Error('missing one of ref, refMenu');
 				}
-				refMenu.current!.style.minWidth = ref.current!.offsetWidth + "px";
+				if(options?.followTargetWidth !== false){
+					refMenu.current!.style.minWidth = ref.current!.offsetWidth + "px";
+				}
 				let opts: {placement?, modifiers?, onFirstUpdate?} = {
 					modifiers: [
 						{

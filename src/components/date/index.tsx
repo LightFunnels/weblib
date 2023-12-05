@@ -38,53 +38,62 @@ type Props = {
 }
 export function DatePicker({ name, error, value, clearable, ...props }: Props) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
+	const [ref, refMenu, active, setIsOpen] = useToggle({followTargetWidth: false});
 	return (
 		<div>
-			<ReactDatePicker
-				{...props}
-				popperClassName={styles.picker}
-				customInput={
-					<DatePickerInput
-						clear={
-							(clearable && value) ?
-								function (event){
-									event.stopPropagation();
-									props.onChange(null);
-								} : undefined
-						}
-					>
-						{
-							value ?
-								dateformat(SafeDate(value), props.displayFormat) :
-								value
-						}
-					</DatePickerInput>
-				}
-				selected={selected}
-				renderCustomHeader={
-					function (e) {
-						return (
-							<div className="react-datepicker__current-month" >
-								<Left className="navigation" onClick={e.decreaseMonth} />
-								<span className="label">
-									{dateformat(SafeDate(e.date), `mmmm yyyy`)}
-								</span>
-								<Right className="navigation" onClick={e.increaseMonth} />
-							</div>
-						)
-					}
-				}
-				onChange={
-					function (value) {
-						if (value) {
-							value.setHours(0, 0, 0, 0);
-							props.onChange(format(value));
-						} else {
+			<DatePickerInput
+				ref={ref}
+				clear={
+					(clearable && value) ?
+						function (event){
+							setIsOpen(false);
 							props.onChange(null);
-						}
-					}
+						} : undefined
 				}
-			/>
+			>
+				{
+					value ?
+						dateformat(SafeDate(value), props.displayFormat) :
+						value
+				}
+			</DatePickerInput>
+			{
+				active && (
+					createPortal(
+						<div ref={refMenu} className={styles.picker}>
+							<ReactDatePicker
+								{...props}
+								inline
+								selected={selected}
+								renderCustomHeader={
+									function (e) {
+										return (
+											<div className="react-datepicker__current-month" >
+												<Left className="navigation" onClick={e.decreaseMonth} />
+												<span className="label">
+													{dateformat(SafeDate(e.date), `mmmm yyyy`)}
+												</span>
+												<Right className="navigation" onClick={e.increaseMonth} />
+											</div>
+										)
+									}
+								}
+								onChange={
+									function (value) {
+										if (value) {
+											value.setHours(0, 0, 0, 0);
+											props.onChange(format(value));
+										} else {
+											props.onChange(null);
+										}
+									}
+								}
+							/>
+						</div>,
+						document.getElementById("modals")!
+					)
+				)
+			}
 			{
 				error &&
 				<ErrorMsg message={error} />

@@ -60,9 +60,19 @@ export default function Front() {
   			}
   			<Hr/>
   			<Label>
-  				Input
+  				Input & Input
   			</Label>
   			<Input />
+  			<FormGroup label={"Input with left icon/prefix"}>
+  				<Input
+  					leftIcon={
+  						<span>https://www.example.com/</span>
+  					}
+  				/>
+  			</FormGroup>
+  			<FormGroup label={"Disabled Input"}>
+  				<Input disabled/>
+  			</FormGroup>
   			<FormGroup label={"Form Group Label"}>
   				<Input />
   			</FormGroup>
