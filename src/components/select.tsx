@@ -80,7 +80,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 						ref={refMenu} 
 						onClick={e => {
 							if (props.isSearchable && refMenu && (typeof refMenu !== 'function')) {
-								e.nativeEvent.canceler = (e.nativeEvent.canceler || []).concat(refMenu.current);
+								e.nativeEvent.ignoreToggleClick = (e.nativeEvent.ignoreToggleClick || []).concat(refMenu.current);
 							}
 						}}
 					>
@@ -196,7 +196,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 							onClick={
 								function (event) {
 									event.stopPropagation();
-									// event.nativeEvent.canceler = (event.nativeEvent.canceler || []).conca( props.refMenu.current );
+									// event.nativeEvent.ignoreToggleClick = (event.nativeEvent.ignoreToggleClick || []).conca( props.refMenu.current );
 									props.onChange(null);
 									// props.setIsOpen(false);
 								}

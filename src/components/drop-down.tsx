@@ -24,7 +24,7 @@ export function Dropdown(props: Props){
 
   if(props.keep_on_click_in){
     onClick = e => {
-      (e.nativeEvent.canceler || (e.nativeEvent.canceler = [], e.nativeEvent.canceler).push(ref_menu.current));
+      (e.nativeEvent.ignoreToggleClick || (e.nativeEvent.ignoreToggleClick = [], e.nativeEvent.ignoreToggleClick).push(ref_menu.current));
     }
   }
 
@@ -72,7 +72,7 @@ type DropdownItemProps = React.HTMLAttributes<HTMLDivElement>;
 export const DropdownItem = React.forwardRef<HTMLDivElement, DropdownItemProps>(
 	function DropdownItem(props, ref){
 		return (
-			<div {...props} ref={ref} className={cn("p-2 cursor-pointer flex items-center gap-2 hover:bg-ghost-blue leading-4.5", props.className)}>
+			<div {...props} ref={ref} className={cn("p-2 cursor-pointer flex items-center gap-2 hover:bg-accent leading-4.5", props.className)}>
 				{props.children}
 			</div>
 		)
@@ -89,10 +89,10 @@ type UseToggleOpts = {
 
 export function useToggle<T extends HTMLDivElement = HTMLDivElement>(options: UseToggleOpts = {}) {
 
-	let [isOpen, setIsOpen] = React.useState<boolean>(options.state || false);
-	let ref = React.useRef<T>(null);
-	let refMenu = React.useRef<T>(null);
-	let popper = React.useRef<Instance | null>(null);
+	const [isOpen, setIsOpen] = React.useState<boolean>(options.state || false);
+	const ref = React.useRef<T>(null);
+	const refMenu = React.useRef<T>(null);
+	const popper = React.useRef<Instance | null>(null);
 
 	React.useLayoutEffect(
 		function () {
@@ -136,11 +136,7 @@ export function useToggle<T extends HTMLDivElement = HTMLDivElement>(options: Us
 				);
 				// click event handler
 				documentClick = function (event) {
-					if (
-						// ignore input, load more button clicks
-						// (event.canceler === refMenu.current)
-						event.canceler?.includes(refMenu.current)
-					) {
+					if (event.ignoreToggleClick?.includes(refMenu.current)) {
 						return;
 					}
 					setIsOpen(false);
@@ -187,6 +183,6 @@ export function useToggle<T extends HTMLDivElement = HTMLDivElement>(options: Us
 		refMenu as React.MutableRefObject<T>,
 		isOpen,
 		setIsOpen,
-		popper
+		popper,
 	] as const;
 }

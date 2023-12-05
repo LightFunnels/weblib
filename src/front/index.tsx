@@ -12,12 +12,18 @@ import {
 	Avatar,
 	Checkbox,
 	Select,
+	DatePicker,
+	RangeDatePicker,
 } from "@/components";
 import React, { Fragment } from 'react';
 
 export default function Front() {
 	const [m1, setM1] = React.useState(false);
 	const [checked, setChecked] = React.useState(false);
+	const [range, setRange] = React.useState({
+		startDate: "2023-12-01 00:00:00",
+		endDate: "2023-12-10 00:00:00",
+	});
   return (
   	<div className="px-4 py-16 w-[800px] w-max-full mx-auto grid grid-cols-2 gap-4">
   		<div>
@@ -86,6 +92,20 @@ export default function Front() {
 	  			/>
   			</FormGroup>
   			<Checkbox onChange={event => setChecked(event.target.checked)} checked={checked} label="Checkbox" />
+  			<Hr className="my-4" />
+  			<FormGroup label={"Date Picker"}>
+	  			<DatePicker
+	  				onChange={console.log}
+	  				value={"2023-12-05"}
+	  			/>
+  			</FormGroup>
+  			<FormGroup className="mt-4" label={"Date Picker"}>
+	  			<RangeDatePicker
+	  				cancellable
+	  				onChange={setRange}
+	  				value={range}
+	  			/>
+  			</FormGroup>
   		</div>
   		<div>
   		</div>

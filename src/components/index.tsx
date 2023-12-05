@@ -10,3 +10,4 @@ export * from "./drop-down";
 export * from "./select";
 export * from "./avatar";
 export * from "./checkbox";
+export * from "./date/index";
