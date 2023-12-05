@@ -11,17 +11,19 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	leftIcon?: React.ReactElement 
 }
 
+export const initialInputClassName = "outline-none placeholder:text-muted-foreground w-full disabled:cursor-not-allowed disabled:opacity-50 h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2";
+
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	({ className, inputClassName, type, error, currency, icon, leftIcon, ...props }, ref) => {
 		return (
 			<div 
-				className={`relative ${className ?? ''} flex items-center gap-1.5 relative h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2`}
+				className={cn(`relative flex items-center gap-1.5 relative `, className)}
 			>
 				{leftIcon}
 				<input
 					type={type}
 					className={cn(
-						"outline-none placeholder:text-muted-foreground w-full disabled:cursor-not-allowed disabled:opacity-50",
+						initialInputClassName,
 						inputClassName
 					)}
 					ref={ref}

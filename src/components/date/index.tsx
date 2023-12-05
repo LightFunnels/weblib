@@ -5,8 +5,8 @@ import ReactDatePicker from "react-datepicker";
 import { createPortal } from "react-dom";
 import {
 	Button,
-	Input,
 	Select,
+	initialInputClassName,
 	useToggle
 } from '../';
 import {
@@ -43,7 +43,7 @@ export function DatePicker({ name, error, value, ...props }: Props) {
 			<ReactDatePicker
 				{...props}
 				popperClassName={styles.picker}
-				customInput={<DatePickerInput displayformat={props.displayFormat} onChange={lodash.noop} value={""} />}
+				customInput={<DatePickerInput displayformat={props.displayFormat} />}
 				selected={selected}
 				renderCustomHeader={
 					function (e) {
@@ -363,30 +363,33 @@ export type RangeDatePickerProps = {
 	}
 	onChange: (val: RangeDatePickerProps["value"]) => void
 	cancellable?: boolean
+	inputClassName?: string
 }
 export function RangeDatePicker(props: RangeDatePickerProps) {
 	const [ref, refMenu, isOpen, setIsOpen, ignore] = useToggle({placement: "bottom-start"});
 	return (
 		<Fragment>
 			<div ref={ref}>
-				<Input
-					readOnly
-					leftIcon={
-						<span className={"whitespace-nowrap"}><RangeDateLabel startDate={props.value.startDate} endDate={props.value.endDate} /></span>
+				<span
+					className={cn(initialInputClassName, "whitespace-nowrap", props.inputClassName)}
+					children={
+						<div className="flex">
+							<RangeDateLabel startDate={props.value.startDate} endDate={props.value.endDate} />
+							{
+								(props.cancellable && ( props.value.startDate || props.value.endDate )) ?
+								<Close
+									className="absolute right-2 w-5 h-5 cursor-pointer"
+									onClick={ev => {
+										setIsOpen(false);
+										props.onChange({
+											startDate: null,
+											endDate: null
+										});
+									}}
+								/> : undefined
+							}
+						</div>
 					}
-					icon={
-						(props.cancellable && ( props.value.startDate || props.value.endDate )) ?
-						<Close
-							className="absolute right-2 w-5 h-5 cursor-pointer"
-							onClick={ev => {
-								setIsOpen(false);
-								props.onChange({
-									startDate: null,
-									endDate: null
-								});
-							}}
-						/> : undefined
-					} 
 				/>
 			</div>
 			{
@@ -452,21 +455,22 @@ export const RangeDateLabel = React.memo<{startDate: string|null, endDate: strin
 	(p, np) => ( (p.startDate === np.startDate) && (p.endDate === np.endDate) )
 );
 
-const DatePickerInput = React.forwardRef<HTMLInputElement, { onChange, value: string | null, displayformat?: string }>(
+const DatePickerInput = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement> & { value: string|null, displayformat?: string }>(
 	function (props, ref) {
 		return (
-			<Input
+			<span
 				{...props}
 				ref={ref}
-				value={
-					props.value ?
-						dateformat(SafeDate(props.value), props.displayformat) :
-						props.value
-				}
-				readOnly
-				type="text"
-				leftIcon={
-					<CalendarIcon className="text-lg w-5 w-5" />
+				className={cn(initialInputClassName, props.className)}
+				children={
+					<div className="flex items-center">
+						<CalendarIcon className="text-lg w-5 w-5" />
+						{
+							props.value ?
+								dateformat(SafeDate(props.value), props.displayformat) :
+								props.value
+						}
+					</div>
 				}
 			/>
 		)
@@ -506,10 +510,6 @@ function CalendarIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
 	    <path d="M718.95 85.334c0-20.029-16.239-36.267-36.267-36.267-20.032 0-36.267 16.237-36.267 36.267v49.067H377.574V85.334c0-20.029-16.237-36.267-36.267-36.267S305.04 65.304 305.04 85.334v49.067h-91.692c-67.158 0-121.6 54.442-121.6 121.6v597.332c0 67.157 54.442 121.6 121.6 121.6h597.334c67.157 0 121.6-54.443 121.6-121.6V256.001c0-67.158-54.443-121.6-121.6-121.6h-91.733V85.334zm140.8 305.067H164.283v-134.4c0-27.098 21.968-49.067 49.067-49.067h91.692v49.067c0 20.03 16.237 36.267 36.267 36.267s36.267-16.237 36.267-36.267v-49.067h268.842v49.067c0 20.03 16.235 36.267 36.267 36.267 20.028 0 36.267-16.237 36.267-36.267v-49.067h91.733c27.098 0 49.067 21.968 49.067 49.067v134.4zm-695.467 72.532H859.75v390.4c0 27.102-21.969 49.067-49.067 49.067H213.349c-27.099 0-49.067-21.965-49.067-49.067v-390.4z" />
 	  </svg>
 	)
-}
-
-interface MouseEvent {
-	ignoreToggleClick?: any[]
 }
 
 export const presets = [
