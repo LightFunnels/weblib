@@ -3,7 +3,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	error?: string
+	error?: React.ReactNode
 	currency?: boolean,
 	inputClassName?: string
 	className?: string
@@ -26,13 +26,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 					<div className="absolute text-center top-1/3 right-[10px] text-neutral-800">USD</div>
 				)}
 				{error && (
-					<div className="text-red-300 mt-2.5 mb-2.5">{error}</div>
+					<ErrorMsg message={error} />
 				)}
 			</div>
 		)
 	}
 )
 Input.displayName = "Input"
+
+export function ErrorMsg(props: {message: React.ReactNode}){
+	return (
+		<div className="text-red-300 mt-2.5 mb-2.5">{props.message}</div>
+	)
+}
 
 type NumberInputProps = Omit<InputProps, "onChange"|"value"> &
 	{
