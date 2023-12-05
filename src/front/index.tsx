@@ -27,19 +27,19 @@ export default function Front() {
 	const [date, setDate] = React.useState("2023-12-01 00:00:00");
   return (
   	<div className="px-4 py-16 w-[800px] w-max-full mx-auto grid grid-cols-2 gap-4">
-  		<div>
+  		<div className="grid gap-4">
   			<Heading>
   				Default Heading
   			</Heading>
-  			<Hr className="my-4" />
+  			<Hr/>
   			<Button>
   				button
   			</Button>
-  			<Hr className="my-4" />
+  			<Hr/>
   			<Text>
   				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.
   			</Text>
-  			<Hr className="my-4" />
+  			<Hr/>
   			<Button onClick={() => setM1(true)}>
   				Modal
   			</Button>
@@ -58,15 +58,15 @@ export default function Front() {
   					/>
   				)
   			}
-  			<Hr className="my-4" />
+  			<Hr/>
   			<Label>
   				Input
   			</Label>
-  			<Input className="mb-4" />
+  			<Input />
   			<FormGroup label={"Form Group Label"}>
   				<Input />
   			</FormGroup>
-  			<Hr className="my-4" />
+  			<Hr/>
   			<Dropdown
   				label={
   					<Text>Drop Down</Text>
@@ -77,10 +77,10 @@ export default function Front() {
 						Item 1
 					</DropdownItem>
   			</Dropdown>
-  			<Hr className="my-4" />
-  			<Text className="mb-4">Avatar</Text>
-  			<Avatar className="mb-4" src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
-  			<FormGroup className="mb-4" label={"Select"}>
+  			<Hr/>
+  			<Text>Avatar</Text>
+  			<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
+  			<FormGroup label={"Select"}>
 	  			<Select
 	  				onChange={console.log}
 	  				value="morocco"
@@ -93,7 +93,7 @@ export default function Front() {
 	  			/>
   			</FormGroup>
   			<Checkbox onChange={event => setChecked(event.target.checked)} checked={checked} label="Checkbox" />
-  			<Hr className="my-4" />
+  			<Hr/>
   			<FormGroup label={"Date Picker"}>
 	  			<DatePicker
 	  				clearable
@@ -101,7 +101,13 @@ export default function Front() {
 	  				value={date}
 	  			/>
   			</FormGroup>
-  			<FormGroup className="mt-4" label={"Date Picker"}>
+  			<FormGroup label={"Date Picker - non clearable"}>
+	  			<DatePicker
+	  				onChange={value => setDate(value)}
+	  				value={date}
+	  			/>
+  			</FormGroup>
+  			<FormGroup label={"Date Picker"}>
 	  			<RangeDatePicker
 	  				clearable
 	  				onChange={setRange}
