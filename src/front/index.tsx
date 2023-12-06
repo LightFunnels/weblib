@@ -64,11 +64,14 @@ export default function Front() {
   			}
   			<Hr/>
   			<Label>
-  				Input & Input
+  				Input
   			</Label>
   			<Input />
   			<FormGroup label={"Input with left icon/prefix"}>
   				<Input
+  					error={
+  						"Something went wrong"
+  					}
   					leftIcon={
   						<span>https://www.example.com/</span>
   					}

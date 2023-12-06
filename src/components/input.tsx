@@ -11,29 +11,31 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	leftIcon?: React.ReactNode 
 }
 
-export const initialInputClassName = "w-full h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2";
+export const initialInputClassName = "flex w-full w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2";
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	({ className, inputClassName, type, error, currency, icon, leftIcon, ...props }, ref) => {
 		return (
 			<label
 				data-state={props.disabled ? "disabled" : undefined}
-				className={cn(initialInputClassName, `relative flex items-center items-center gap-1.5 relative data-[state=disabled]:cursor-not-allowed data-[state=disabled]:opacity-50`, className)}
+				className={cn(`items-center items-center gap-1.5 relative data-[state=disabled]:cursor-not-allowed data-[state=disabled]:opacity-50`, className)}
 			>
-				{leftIcon}
-				<input
-					type={type}
-					className={cn(
-						"grow-1 w-full h-full outline-none placeholder:text-muted-foreground bg-transparent cursor-[inherit]",
-						inputClassName
+				<div className={cn(initialInputClassName, "")}>
+					{leftIcon}
+					<input
+						type={type}
+						className={cn(
+							"grow-1 w-full h-full outline-none placeholder:text-muted-foreground bg-transparent cursor-[inherit]",
+							inputClassName
+						)}
+						ref={ref}
+						{...props}
+					/>
+					{currency && (
+						<div className="absolute text-center top-1/3 right-[10px] text-neutral-800">USD</div>
 					)}
-					ref={ref}
-					{...props}
-				/>
-				{currency && (
-					<div className="absolute text-center top-1/3 right-[10px] text-neutral-800">USD</div>
-				)}
-				{icon}
+					{icon}
+				</div>
 				{error && (
 					<ErrorMsg message={error} />
 				)}
@@ -45,7 +47,7 @@ Input.displayName = "Input"
 
 export function ErrorMsg(props: {message: React.ReactNode}){
 	return (
-		<div className="text-red-300 mt-2.5 mb-2.5">{props.message}</div>
+		<div className="text-red-500 mt-1 text-sm">{props.message}</div>
 	)
 }
 
