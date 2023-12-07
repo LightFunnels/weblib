@@ -26,7 +26,7 @@ export function Modal(props: Props){
 							<div
 								className={
 									"p-4 grow overflow-y-auto "
-									+ (props.header ? "pt-0" : "") + 
+									+ (props.header ? "pt-0" : "")
 									+ (props.footer ? "pb-0" : "") 
 								}
 							>
