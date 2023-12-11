@@ -15,9 +15,9 @@ export function Modal(props: Props){
 		<Fragment>
 			{
 				createPortal(
-					<div className="fixed inset-0 flex items-center justify-center">
+					<div className="fixed inset-0 flex items-center justify-center px-4">
 						<div onClick={() => props.close()} className="inset-0 z-0 bg-gray-900 opacity-50 absolute flex"></div>
-						<div className={cn("bg-white z-1 relative max-h-frame-height rounded-md flex flex-col mx-2.5", props.bodyClassName)}>
+						<div className={cn("bg-white z-1 relative max-h-frame-height rounded-md flex flex-col mx-2.5 max-w-full", props.bodyClassName)}>
 							{
 								props.header && (
 									<div className="p-4">{props.header}</div>
