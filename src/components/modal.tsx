@@ -34,7 +34,7 @@ export function Modal(props: Props){
 							</div>
 							{
 								props.footer && (
-									<div className={"p-4 flex gap-4 justify-end flex"}>{props.footer}</div>
+									<div className={"p-4 flex gap-4 justify-end"}>{props.footer}</div>
 								)
 							}
 						</div>

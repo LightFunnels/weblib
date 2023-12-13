@@ -33,7 +33,7 @@ export default function Front() {
   			</Heading>
   			<Hr/>
   			<div>
-	  			<Button>
+	  			<Button loading>
 	  				button
 	  			</Button>
   			</div>
