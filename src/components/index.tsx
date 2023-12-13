@@ -11,3 +11,4 @@ export * from "./select";
 export * from "./avatar";
 export * from "./checkbox";
 export * from "./date/index";
+export * from "./code";
