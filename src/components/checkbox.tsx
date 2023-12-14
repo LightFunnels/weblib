@@ -1,6 +1,5 @@
 import * as React from "react"
 import {Label} from "./";
- 
 import { cn } from "@/lib/utils"
  
 type Props = React.HTMLAttributes<HTMLInputElement> & {
@@ -20,12 +19,20 @@ export function Checkbox(props: Props){
 				)}
 			>
 				{props.checked && (
-					<i className="icon-check text-white text-xs"/>
+					<CheckIcon className="w-3 h-3" />
 				)}
 			</div>
 			<span>
 				{props.label}
 			</span>
 		</Label>
+	)
+}
+
+function CheckIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg viewBox="0 0 35 27" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M22.276 10.1116L12.7583 20.2231L7.98223 15.1496L3.2062 10.0761L1.60308 11.7792L0 13.4822L6.3621 20.2411L12.7242 27L23.8621 15.1677L35 3.33531L33.4313 1.66763C32.5685 0.750428 31.8472 0 31.8282 0C31.8093 0 27.5108 4.55018 22.276 10.1116Z" fill="white"/>
+		</svg>
 	)
 }
