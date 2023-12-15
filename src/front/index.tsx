@@ -14,6 +14,7 @@ import {
 	Select,
 	DatePicker,
 	RangeDatePicker,
+	NativeLink,
 } from "@/components";
 import React, { Fragment } from 'react';
 
@@ -131,6 +132,8 @@ export default function Front() {
 	  				value={range}
 	  			/>
   			</FormGroup>
+  			<Hr />
+  			<NativeLink children="Link" href="https://www.example.com" />
   		</div>
   		<div>
   		</div>
