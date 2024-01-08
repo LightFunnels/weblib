@@ -39,7 +39,7 @@ export function Avatar(props: Props){
 			{
 				props.src ?
 				<img
-					className={cn("w-full top-0 left-0 h-full absolute object-cover", corners)}
+					className={cn("w-full top-0 left-0 h-full absolute object-cover p-1", corners)}
 					src={props.src} /> :
 						<div className={cn("absolute left-[50%] top-[50%] border border-1 translate-y-[-50%] translate-x-[-50%] text-lg")}>
 							{props.children ?? props.fallback}
