@@ -4,13 +4,13 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 	label?: React.ReactNode
 }
 
-export function FormGroup(props: Props){
+export function FormGroup({label, ...props}: Props){
 	return (
 		<div {...props} >
 			{
-				props.label &&
+				label &&
 				<Label className={"mb-2"}>
-					{props.label}
+					{label}
 				</Label>
 			}
 			{props.children}
