@@ -2,13 +2,14 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	error?: React.ReactNode
 	currency?: boolean,
 	inputClassName?: string
 	className?: string
 	icon?: React.ReactNode 
 	leftIcon?: React.ReactNode 
+	inputContainerClassName?: string
 }
 
 export const initialInputClassName = "flex w-full w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2";
@@ -20,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 				data-state={props.disabled ? "disabled" : undefined}
 				className={cn(`items-center block gap-1.5 relative data-[state=disabled]:cursor-not-allowed data-[state=disabled]:opacity-50`, className)}
 			>
-				<div className={cn(initialInputClassName)}>
+				<div className={cn(initialInputClassName, props.inputContainerClassName ?? '')}>
 					{leftIcon}
 					<input
 						type={type}
@@ -76,10 +77,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 				setLV(props.value?.toString());
 			}
 		}, [props.value, lv]);
-		// console.log(props.value, lv)
 		return (
 			<div className={`relative ${className ?? ''}`}>
-				{/*<button onClick={() => props.onChange(22.22)}>y</button>*/}
 				<input
 					className={cn(
 						"flex relative h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",

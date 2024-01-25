@@ -7,7 +7,7 @@ type Props = {
 
 export function Code({copiable, ...props}: React.HTMLAttributes<HTMLElement> & Props) {
   return (
-    <code {...props} className={cn("relative gap-2 flex items-center rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold", props.className)}>
+    <code {...props} className={cn("relative gap-2 flex items-center rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium", props.className)}>
       {props.value}
       {
       	copiable && (

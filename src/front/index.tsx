@@ -133,7 +133,7 @@ export default function Front() {
 	  			/>
   			</FormGroup>
   			<Hr />
-  			<NativeLink children="Link" href="https://www.example.com" />
+  			<NativeLink href="https://www.example.com" >Link</NativeLink>
   		</div>
   		<div>
   		</div>
