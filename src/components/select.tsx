@@ -26,6 +26,7 @@ export type SelectComponentProps = {
 	labelClassName?: string
 	actionLink?: React.ReactNode,
 	isSearchable?: boolean
+	menuClassName?: string
 }
  
 export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ className, options, error, medium, ...props }, _ref) {
@@ -77,6 +78,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 			{
 				active && (
 					<MenuContainer 
+						className={props.menuClassName ?? ''}
 						ref={refMenu} 
 						onClick={e => {
 							if (props.isSearchable && refMenu && (typeof refMenu !== 'function')) {
