@@ -110,6 +110,11 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 						}
 					}}
 				/>
+				{
+					currency && (
+						<div className="absolute right-[2.2rem] top-1/3 text-neutral-800">USD</div>
+					)
+				}
 				{error && (
 					<div className="text-red-300 mt-2.5 mb-2.5">{error}</div>
 				)}
