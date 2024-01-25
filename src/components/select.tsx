@@ -178,7 +178,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 			<div
 				onClick={!props.disabled ? props.onClick : undefined}
 				ref={labelRef}
-				className={cn(`rounded-md flex justify-between items-center border border-input h-[40px] bg-background px-3 cursor-pointer text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`)}
+				className={cn(`rounded-md flex justify-between items-center border border-input h-[40px] bg-background px-3 cursor-pointer text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`, props.labelClassName ?? '')}
 			>
 				{/*<div className={`labelClickable ${props.cancellable && props.selected ? 'hasCancel' : ''}`} ref={labelRef} />*/}
 				{/*{
@@ -186,7 +186,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 						<Avatar className="productImage" src={props.image} />
 					)
 				}*/}
-				<span>
+				<span className={props.textLabelClassName ?? ''}>
 					{props.selected || props.label || 'Select...'}
 				</span>
 				{
