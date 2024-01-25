@@ -48,7 +48,7 @@ export function ErrorMsg(props: {message: React.ReactNode}){
 	)
 }
 
-type NumberInputProps = Omit<InputProps, "onChange"|"value"> &
+export type NumberInputProps = Omit<InputProps, "onChange"|"value"> &
 	{
 		decimals?: number
 		currency?: boolean
