@@ -22,7 +22,7 @@ import styles from "./date.module.scss";
 const frmt = 'yyyy-mm-dd HH:MM:ss';
 
 // we must validate the given property, it must match the given format
-type Props = {
+export type DatePickerProps = {
 	onChange: (a: string | null) => void
 	name?
 	value: string | null
@@ -33,7 +33,7 @@ type Props = {
 	maxDate?: Date
 	minDate?: Date
 }
-export function DatePicker({ name, error, value, clearable, ...props }: Props) {
+export function DatePicker({ name, error, value, clearable, ...props }: DatePickerProps) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
 	const [ref, refMenu, active, setIsOpen] = useToggle({followTargetWidth: false});
 	return (
