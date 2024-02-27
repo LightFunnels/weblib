@@ -148,7 +148,7 @@ export const MenuContainer = React.forwardRef<HTMLDivElement, { onClick?: (ev) =
 			<div
 				ref={menuRef}
 				{...props}
-				className={cn('absolute py-1 bg-white border border-neutral-100 rounded-md ', props.className)} >
+				className={cn('absolute py-1 bg-white border shadow-[0px_2px_20px_rgba(32,32,35,.13)] border-neutral-200 rounded-md ', props.className)} >
 				{props.children}
 			</div>,
 			document.getElementById("modals")!
