@@ -74,7 +74,8 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 		<Fragment>
 			<SelectLabel
 				onClick={() => setIsOpen(true)}
-				selected={selected?.label} {...props} ref={ref} active={active} medium={medium} />
+				selected={selected?.label} {...props} ref={ref} active={active} medium={medium} 
+			/>
 			{
 				active && (
 					<MenuContainer 
@@ -131,6 +132,13 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 							}
 							{props.actionLink}
 					</MenuContainer>
+				)
+			}
+			{
+				error && (
+					<div className="text-red-400 mt-1">
+						{error}
+					</div>
 				)
 			}
 		</Fragment>
