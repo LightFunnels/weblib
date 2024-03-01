@@ -408,6 +408,7 @@ export type RangeDatePickerProps = {
 	// styling props
 	dateItemClass?: string
 	dateLabelIcon?: React.ReactNode
+	dateInputClass?: string 
 
 	actionBtnClass?: string
 	cancelBtnClass?: string
@@ -420,6 +421,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 		<Fragment>
 			<div ref={ref}>
 				<DatePickerInput
+					className={props.dateInputClass ?? ''}
 					clear={
 						( props.value.startDate || props.value.endDate ) && props.clearable ? 
 							function (){
