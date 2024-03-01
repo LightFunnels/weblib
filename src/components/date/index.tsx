@@ -105,7 +105,7 @@ DatePicker.defaultProps = {
 	displayFormat: 'yyyy-mm-dd',
 }
 
-export type RangeDatePickerComponentProps = {
+type RangeDatePickerComponentProps = {
 	value:{
 		startDate: string|null
 		endDate: string|null
@@ -117,11 +117,10 @@ export type RangeDatePickerComponentProps = {
 
 	// styling props
 	className?: string
-	dateLabelClass?: string
 	footerClass?: string
-	cancelClass?: string
-	actionClass?: string
-
+	dateLabelClass?: string
+	actionBtnClass?: string
+	cancelBtnClass?: string
 }
 export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 
@@ -362,15 +361,15 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 			</div>
 			<div className={`flex items-center justify-end gap-2 p-2 bg-accent ${props.footerClass ?? ''}`}>
 				<Button 
-					className={props.cancelClass ?? ''} 
 					onClick={props.onCancel} 
 					variant='outline'
+					className={props.cancelBtnClass ?? ''}
 				>
 					Cancel
 				</Button>
 				<Button
-					className={props.actionClass ?? ''} 
 					disabled={props.disabled && areEqual}
+					className={props.actionBtnClass ?? ''}
 					onClick={
 						function () {
 							let val = tempvalue;
@@ -405,7 +404,15 @@ export type RangeDatePickerProps = {
 	}
 	onChange: (val: RangeDatePickerProps["value"]) => void
 	clearable?: boolean
-	inputClassName?: string
+	
+	// styling props
+	dateItemIcon?: string
+	dateLabelIcon?: React.ReactNode
+
+	actionBtnClass?: string
+	cancelBtnClass?: string
+	footerClass?: string
+	datePickerContainerClass?: string
 }
 export function RangeDatePicker(props: RangeDatePickerProps) {
 	const [ref, refMenu, isOpen, setIsOpen, ignore] = useToggle({placement: "bottom-start"});
@@ -424,7 +431,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 							} : undefined
 					}	
 				>
-					<RangeDateLabel startDate={props.value.startDate} endDate={props.value.endDate} />
+					<RangeDateLabel icon={props.dateLabelIcon ?? ''} startDate={props.value.startDate} endDate={props.value.endDate} />
 				</DatePickerInput>
 			</div>
 			{
@@ -439,6 +446,10 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 							}
 						>
 							<RangeDatePickerCalendar
+								className={props.datePickerContainerClass ?? ''}
+								footerClass={props.footerClass ?? ''}
+								actionBtnClass={props.actionBtnClass ?? ''}
+								cancelBtnClass={props.cancelBtnClass ?? ''}
 								value={props.value}
 								onChange={val => {
 									props.onChange(val);
@@ -457,7 +468,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 	)
 }
 
-export const RangeDateLabel = React.memo<{startDate: string|null, endDate: string|null}>(
+export const RangeDateLabel = React.memo<{icon?: React.ReactNode, className?: string, startDate: string|null, endDate: string|null}>(
 	function RangeDateLabel(props) {
 		let {startDate, endDate} = props;
 		if(!startDate && !endDate){
@@ -465,11 +476,12 @@ export const RangeDateLabel = React.memo<{startDate: string|null, endDate: strin
 		}
 		if(!startDate || !endDate){
 			return (
-				<Fragment>
+				<div className={props.className ?? ''}>
+					{props.icon}
 					{!startDate && "- "}
 					{dateformat(SafeDate((startDate || endDate)!), 'dd mmm yyyy')}
 					{!endDate && " -"}
-				</Fragment>
+				</div>
 			)
 		}
 		let format = formatRangeDate(startDate, endDate);
