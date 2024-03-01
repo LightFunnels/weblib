@@ -361,7 +361,11 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 				}
 			</div>
 			<div className={`flex items-center justify-end gap-2 p-2 bg-accent ${props.footerClass ?? ''}`}>
-				<Button className={props.cancelClass ?? ''} onClick={props.onCancel} >
+				<Button 
+					className={props.cancelClass ?? ''} 
+					onClick={props.onCancel} 
+					variant='outline'
+				>
 					Cancel
 				</Button>
 				<Button
