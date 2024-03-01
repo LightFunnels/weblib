@@ -32,12 +32,13 @@ export type DatePickerProps = {
 	clearable?: boolean
 	maxDate?: Date
 	minDate?: Date
+	className?: string
 }
 export function DatePicker({ name, error, value, clearable, ...props }: DatePickerProps) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
 	const [ref, refMenu, active, setIsOpen] = useToggle({followTargetWidth: false});
 	return (
-		<div>
+		<div className={props.className ?? ''}>
 			<DatePickerInput
 				ref={ref}
 				clear={
@@ -113,6 +114,14 @@ type RangeDatePickerComponentProps = {
 	onCancel: () => void
 	disabled?: boolean
 	onChange: (val: RangeDatePickerComponentProps["value"]) => void
+
+	// styling props
+	className?: string
+	dateLabelClass?: string
+	footerClass?: string
+	cancelClass?: string
+	actionClass?: string
+
 }
 export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 
@@ -248,10 +257,10 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 	);
 
 	return (
-		<div className={cn(styles.range, styles.picker)}>
-			<div className={"flex"}>
-				<div>
-					<div className={cn("flex ")} onMouseOver={(startDate && !endDate) ? onMouseOver : undefined} >
+		<div className={`${cn(styles.range, styles.picker)} ${props.className ?? ''} [@media(max-width:764px)]:w-[300px] shadow-[0px_2px_20px_rgba(32,32,35,.13)]`}>
+			<div className={"flex [@media(max-width:764px)]:flex-col"}>
+				<div className='[@media(max-width:764px)]:order-2'>
+					<div className={cn("flex [@media(max-width:764px)]:flex-col [@media(max-width:764px)]:max-h-[300px] [@media(max-width:764px)]:overflow-auto [@media(max-width:764px)]:pt-2 [@media(max-width:764px)]:border-t [@media(max-width:764px)]:border-neutral-200")} onMouseOver={(startDate && !endDate) ? onMouseOver : undefined} >
 						<ReactDatePicker
 							openToDate={leftDate}
 							inline
@@ -329,10 +338,11 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 							}
 						/>
 					) : (
-						<div className={"border-l border-input"}>
+						<div className={"[@media(min-width:764px)]:border-l border-input [@media(max-width:764px)]:max-h-[220px] [@media(max-width:764px)]:overflow-auto [@media(max-width:764px)]:order-1"}>
 							{
 								presets.map((item) => (
 									<DropdownItem 
+										className={props.dateLabelClass ?? ''}
 										key={item.label} 
 										onClick={() => {
 											let val = generateFromValue(item.value);
@@ -350,11 +360,12 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 					)
 				}
 			</div>
-			<div className="flex items-center justify-end gap-2 p-2 bg-accent">
-				<Button onClick={props.onCancel} >
+			<div className={`flex items-center justify-end gap-2 p-2 bg-accent ${props.footerClass ?? ''}`}>
+				<Button className={props.cancelClass ?? ''} onClick={props.onCancel} >
 					Cancel
 				</Button>
 				<Button
+					className={props.actionClass ?? ''} 
 					disabled={props.disabled && areEqual}
 					onClick={
 						function () {
