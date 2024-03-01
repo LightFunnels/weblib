@@ -433,7 +433,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 							} : undefined
 					}	
 				>
-					<RangeDateLabel icon={props.dateLabelIcon ?? ''} startDate={props.value.startDate} endDate={props.value.endDate} />
+					<RangeDateLabel icon={props.dateLabelIcon} startDate={props.value.startDate} endDate={props.value.endDate} />
 				</DatePickerInput>
 			</div>
 			{
@@ -473,14 +473,14 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 
 export const RangeDateLabel = React.memo<{icon?: React.ReactNode, className?: string, startDate: string|null, endDate: string|null}>(
 	function RangeDateLabel(props) {
-		let {startDate, endDate} = props;
+		let {startDate, icon, endDate} = props;
 		if(!startDate && !endDate){
 			return null;
 		}
 		if(!startDate || !endDate){
 			return (
 				<div className={props.className ?? ''}>
-					{props.icon}
+					{icon}
 					{!startDate && "- "}
 					{dateformat(SafeDate((startDate || endDate)!), 'dd mmm yyyy')}
 					{!endDate && " -"}
@@ -493,6 +493,7 @@ export const RangeDateLabel = React.memo<{icon?: React.ReactNode, className?: st
 				{
 					format && (
 						<Fragment>
+							{icon}
 							{dateformat( SafeDate(startDate), format )}
 							{" "}-{" "}
 						</Fragment>
