@@ -118,7 +118,7 @@ type RangeDatePickerComponentProps = {
 	// styling props
 	className?: string
 	footerClass?: string
-	dateLabelClass?: string
+	dateItemClass?: string
 	actionBtnClass?: string
 	cancelBtnClass?: string
 }
@@ -341,7 +341,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 							{
 								presets.map((item) => (
 									<DropdownItem 
-										className={props.dateLabelClass ?? ''}
+										className={props.dateItemClass ?? ''}
 										key={item.label} 
 										onClick={() => {
 											let val = generateFromValue(item.value);
@@ -406,7 +406,7 @@ export type RangeDatePickerProps = {
 	clearable?: boolean
 	
 	// styling props
-	dateItemIcon?: string
+	dateItemClass?: string
 	dateLabelIcon?: React.ReactNode
 
 	actionBtnClass?: string
@@ -450,6 +450,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 								footerClass={props.footerClass ?? ''}
 								actionBtnClass={props.actionBtnClass ?? ''}
 								cancelBtnClass={props.cancelBtnClass ?? ''}
+								dateItemClass={props.dateItemClass}
 								value={props.value}
 								onChange={val => {
 									props.onChange(val);
