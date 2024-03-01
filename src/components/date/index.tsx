@@ -105,7 +105,7 @@ DatePicker.defaultProps = {
 	displayFormat: 'yyyy-mm-dd',
 }
 
-type RangeDatePickerComponentProps = {
+export type RangeDatePickerComponentProps = {
 	value:{
 		startDate: string|null
 		endDate: string|null
