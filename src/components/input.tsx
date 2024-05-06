@@ -14,13 +14,13 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const initialInputClassName = "flex w-full w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2";
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	({ className, inputClassName, type, error, icon, leftIcon, ...props }, ref) => {
+	({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, ...props }, ref) => {
 		return (
 			<label
 				data-state={props.disabled ? "disabled" : undefined}
 				className={cn(`items-center block gap-1.5 relative data-[state=disabled]:cursor-not-allowed data-[state=disabled]:opacity-50`, className)}
 			>
-				<div className={cn(initialInputClassName, props.inputContainerClassName ?? '')}>
+				<div className={cn(initialInputClassName, inputContainerClassName ?? '')}>
 					{leftIcon}
 					<input
 						type={type}
