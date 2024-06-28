@@ -42,9 +42,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export function ErrorMsg(props: {message: React.ReactNode}){
+export function ErrorMsg(props: {message: React.ReactNode, className?: string}){
 	return (
-		<div className="text-red-500 mt-1 text-sm">{props.message}</div>
+		<div className={"text-red-500 mt-1 text-sm " + (props.className??"")}>{props.message}</div>
 	)
 }
 
