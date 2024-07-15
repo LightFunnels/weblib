@@ -25,6 +25,7 @@
 		}
 		.react-datepicker__day {
 			cursor: pointer;
+			color: rgb(15 23 41);
 			&:hover, &.in-range:not(.react-datepicker__day--outside-month){
 				background: hsl(var(--accent));
 			}
