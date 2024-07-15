@@ -1,5 +1,8 @@
 import {
+	Avatar,
 	Button,
+	Checkbox,
+	DatePicker,
 	Dropdown,
 	DropdownItem,
 	FormGroup,
@@ -8,17 +11,15 @@ import {
 	Input,
 	Label,
 	Modal,
-	Text,
-	Avatar,
-	Checkbox,
-	Select,
-	DatePicker,
-	RangeDatePicker,
 	NativeLink,
+	RangeDatePicker,
+	Select,
+	Text,
 } from "@/components";
-import React, { Fragment } from 'react';
+import React from 'react';
+import { createRoot } from "react-dom/client";
 
-export default function Front() {
+function Front() {
 	const [m1, setM1] = React.useState(false);
 	const [checked, setChecked] = React.useState(false);
 	const [range, setRange] = React.useState({
@@ -140,3 +141,5 @@ export default function Front() {
   	</div>
   )
 }
+
+createRoot(document.getElementById('app')).render(<Front />)
