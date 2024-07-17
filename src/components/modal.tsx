@@ -7,6 +7,7 @@ type Props = {
 	body: React.ReactNode
 	footer?: React.ReactNode
 	bodyClassName?: string
+	headerClassName?: string
 	close: () => void
 }
 
@@ -20,7 +21,7 @@ export function Modal(props: Props){
 						<div className={cn("bg-white z-1 relative max-h-frame-height rounded-md flex flex-col mx-2.5 max-w-full", props.bodyClassName)}>
 							{
 								props.header && (
-									<div className="p-4">{props.header}</div>
+									<div className={`p-4 ${props.headerClassName ?? ""}`}>{props.header}</div>
 								)
 							}
 							<div
