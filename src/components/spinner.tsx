@@ -1,17 +1,28 @@
-import React from 'react';
+import { cn } from "@/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 
-export function LoadingSpinner ({ size = 'md', color = 'text-blue-600' }) {
-  const sizeClasses = {
-    sm: 'w-5 h-5',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-  };
+const buttonVariants = cva(
+  "animate-spin dark:text-gray-600 fill-gray-300",
+  {
+    variants: {
+      size: {
+        sm: 'w-5 h-5',
+        md: 'w-8 h-8',
+        lg: 'w-12 h-12',
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    }
+  }
+)
 
+export function LoadingSpinner ({ size = 'md', className }: VariantProps<typeof buttonVariants> & {className?: string}) {
   return (
-    <div role="status">
+    <div role="status" className="flex justify-center">
       <svg
         aria-hidden="true"
-        className={`${sizeClasses[size]} ${color} animate-spin dark:text-gray-600 fill-gray-300`}
+        className={`${cn(buttonVariants({ size, className }))} text-primary`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
