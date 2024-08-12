@@ -16,7 +16,8 @@ import {
 	Select,
 	Text,
 	ErrorBoundary,
-	LoadingSpinner
+	LoadingSpinner,
+	Async,
 } from "@/components";
 import React from 'react';
 import { createRoot } from "react-dom/client";
@@ -115,6 +116,19 @@ function Front() {
 			  				]}
 			  			/>
 		  			</FormGroup>
+		  			<FormGroup label={"Searchable Select"}>
+			  			<Select
+			  				isSearchable
+			  				onChange={console.log}
+			  				value="morocco"
+			  				options={[
+				  				{
+				  					value: "morocco",
+				  					label: "Morocco",
+				  				}
+			  				]}
+			  			/>
+		  			</FormGroup>
 		  			<Checkbox onChange={event => setChecked(event.target.checked)} checked={checked} label="Checkbox" />
 		  			<Hr/>
 		  			<FormGroup label={"Date Picker"}>
@@ -147,6 +161,12 @@ function Front() {
 		  			<LoadingSpinner className="mb-2" size="sm" />
 		  			<LoadingSpinner className="mb-2" />
 		  			<LoadingSpinner className="mb-2" size="lg" />
+		  			<FormGroup label="Async Select">
+		  				<Async
+		  					value={null}
+		  					onChange={console.log}
+		  				/>
+		  			</FormGroup>
 		  		</div>
 	  		</div>
 	  		<Hr className="my-4" />
@@ -165,7 +185,7 @@ function Front() {
 
 function ForceError(){
 	React.useEffect(() => {
-		throw new Error("Something went wrong")
+		// throw new Error("Something went wrong")
 	}, [])
 	return <></>;
 }

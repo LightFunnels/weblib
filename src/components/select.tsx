@@ -28,13 +28,16 @@ export type SelectComponentProps = {
 	isSearchable?: boolean
 	menuClassName?: string
 }
- 
-export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ className, options, error, medium, ...props }, _ref) {
-	let [ref, refMenu, active,setIsOpen] = useToggle();
-	let selected = options.find(option => option.value === props.value);
 
-	let ref1 = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
-	let inputRef = React.useRef<HTMLInputElement>(null);
+export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ className, options, error, medium, ...props }, _ref) {
+
+	const [ref, refMenu, active, setIsOpen] = useToggle();
+	const selected = options.find(option => option.value === props.value);
+	const [query, setQuery] = React.useState('');
+	const Reg = React.useMemo(() => {
+		return new RegExp(sanitizeStringForReg(query), 'ig');
+	}, [query]);
+	const ref1 = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
 	React.useEffect(
 		function () {
@@ -47,28 +50,6 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 		},
 		[active]
 	);
-
-	React.useEffect(() => {
-		if(props.isSearchable && active){
-			inputRef.current!.focus();
-		}
-	}, [props.isSearchable, active]);
-
-	function mapValueToKey(v): string {
-		if (v === undefined) {
-			return 'undefined';
-		} else if (v === null) {
-			return 'null';
-		} else {
-			return v.toString();
-		}
-	}
-	const [query, setQuery] = React.useState('');
-	const Reg = new RegExp(sanitizeStringForReg(query), 'ig'); 
-
-	function filterSearch(input) {
-		return !query || input.match(Reg);
-	}
 
 	return (
 		<Fragment>
@@ -87,50 +68,39 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 							}
 						}}
 					>
-						{/* naoufal: keep this wrapper .selectItemsContainer it uses flex-grow prop */}
-						{/*{
+						{
 							props.isSearchable && (
-								<div className="inputContainer" >
-								<i className="icon-search icon" />
-								<input
-									type="text"
-									value={query}
-									className="input"
-									onChange={e => setQuery(e.target.value)}
-									placeholder="Search"
-									ref={inputRef}
-								/>
-							</div>
+								<Search value={query} onChange={value => setQuery(value)} />
 							)
-						}*/}
-							{
-								options.filter(el=> filterSearch(el.label)).map(
-									option => {
-										return (
-											<DropdownItem
-												key={option.value + '-' + option.label}
-												ref={e => {
-													ref1.current[mapValueToKey(option.value)] = e
-												}}
-												onClick={
-													props.onChange && (
-														() => {
-															props.onChange(option.value);
-															if(props.isSearchable){
-																	setIsOpen(false);
-																	setQuery("");
-															}
+						}
+						{
+							options.filter(el=> !query || el.value.toString().match(Reg)).map(
+								option => {
+									return (
+										<DropdownItem
+											key={option.value + '-' + option.label}
+											ref={e => {
+												ref1.current[mapValueToKey(option.value)] = e
+											}}
+											onClick={
+												props.onChange && (
+													() => {
+														props.onChange(option.value);
+														if(props.isSearchable){
+																setIsOpen(false);
+																setQuery("");
 														}
-													)
-												}
-											>
-												{option.label}
-											</DropdownItem>
-										)
-									}
-								)
-							}
-							{props.actionLink}
+													}
+												)
+											}
+										>
+											{option.label}
+										</DropdownItem>
+									)
+								}
+							)
+						}
+						{props.actionLink}
 					</MenuContainer>
 				)
 			}
@@ -146,8 +116,42 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 });
 Select.displayName = "Select";
 
+type SearchProps = {
+	value: string
+	onChange: (value: string) => void
+}
+const Search = React.forwardRef<HTMLInputElement, SearchProps>(
+	function Search(props: SearchProps, inputRef){
+		const rf = React.useRef<HTMLInputElement>(null);
+		React.useEffect(() => {
+			rf.current!.focus();
+		}, []);
+		return (
+			<div className="w-full" >
+				<input
+					type="text"
+					value={props.value}
+					className="block p-2 leading-4.5 w-full outline-none"
+					onChange={e => props.onChange(e.target.value)}
+					placeholder="Search"
+					ref={rf}
+				/>
+			</div>
+		)
+	}
+)
+
 export function sanitizeStringForReg(q: string){
   return q.replace(/\\/g, "");
+}
+function mapValueToKey(v): string {
+	if (v === undefined) {
+		return 'undefined';
+	} else if (v === null) {
+		return 'null';
+	} else {
+		return v.toString();
+	}
 }
 
 export const MenuContainer = React.forwardRef<HTMLDivElement, { onClick?: (ev) => void, className?: string, children: React.ReactNode }>(
@@ -220,4 +224,78 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 		)
 	}
 );
+
+type AsyncSelectProps = {
+	menuClassName?: string
+	medium?: boolean
+	onChange: (e) => void
+	className?: string
+	error?: React.ReactNode
+	value: SelectComponentProps["options"][number]["value"] | null
+}
+
+export function Async({className, error, medium, ...props}: AsyncSelectProps){
+	const [ref, refMenu, active, setIsOpen] = useToggle();
+	const options = [];
+	const selected = options.find(option => option.value === props.value);
+	const [query, setQuery] = React.useState('');
+	return (
+		<Fragment>
+			<SelectLabel
+				onChange={props.onChange}
+				onClick={() => setIsOpen(true)}
+				selected={selected?.label}
+				{...props}
+				ref={ref}
+				active={active}
+				medium={medium} 
+			/>
+			{
+				active && (
+					<MenuContainer 
+						className={props.menuClassName ?? ''}
+						ref={refMenu} 
+						onClick={e => {
+							if (refMenu && (typeof refMenu !== 'function')) {
+								e.nativeEvent.ignoreToggleClick = (e.nativeEvent.ignoreToggleClick || []).concat(refMenu.current);
+							}
+						}}
+					>
+						<Search value={query} onChange={value => setQuery(value)} />
+						{/*{
+							options.filter(el=> !query || el.value.toString().match(Reg)).map(
+								option => {
+									return (
+										<DropdownItem
+											key={option.value + '-' + option.label}
+											ref={e => {
+												ref1.current[mapValueToKey(option.value)] = e
+											}}
+											onClick={
+												props.onChange && (
+													() => {
+														props.onChange(option.value);
+														if(props.isSearchable){
+																setIsOpen(false);
+																setQuery("");
+														}
+													}
+												)
+											}
+										>
+											{option.label}
+										</DropdownItem>
+									)
+								}
+							)
+						}*/}
+						{/*{props.actionLink}*/}
+					</MenuContainer>
+				)
+			}
+		</Fragment>
+	)
+}
+
 SelectLabel.displayName = "SelectLabel";
+
