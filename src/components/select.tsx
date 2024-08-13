@@ -1,7 +1,7 @@
 import lodash from "lodash";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
-import { Subscription } from "relay-runtime";
+import { Subscription, Observable } from "relay-runtime";
  
 import { cn } from '@/lib/utils';
 import { DropdownItem, LinkText, LoadingSpinner, useToggle } from './';
@@ -236,7 +236,7 @@ type AsyncSelectProps = {
 	error?: React.ReactNode
 	count?: number
 	value: SelectComponentProps["options"][number]["value"] | null
-	load<T extends DefaultPaginationVariables>(a: T, registerUnsub: (re: Subscription|null) => void): Promise<Pagination>
+	load<T extends DefaultPaginationVariables>(a: T): Observable<{pagination: Pagination}>
 }
 
 type DefaultPaginationVariables = {query: string, first: number};
@@ -251,7 +251,7 @@ const def : Pagination = {
 	}
 };
 
-export function Async({className, error, medium, ...props}: AsyncSelectProps){
+export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProps){
 
 	const [ref, refMenu, active, setIsOpen] = useToggle();
 	const [query, setQuery] = React.useState('');
@@ -261,37 +261,43 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 	const variables : DefaultPaginationVariables = React.useMemo(() => {
 		return {query, first: props.count ?? 2};
 	}, [query]);
-	const argsRef = React.useRef({variables, data, initialised: false, timeout: null as any, sub: null as Subscription|null, active: active});
-	const selected = data.edges.find(edge => edge.node.value === props.value)?.node;
+	const argsRef = React.useRef({variables, data, initialised: false, timeout: null as any, active: active});
+	const subs = React.useRef<Subscription[]>([]);
+	const edges = data.edges as Edge[];
+	const [selected, setSelected] = React.useState<Edge["node"]|null>(null);
 
 	function load(variables: DefaultPaginationVariables){
 		setLoading(true);
 		argsRef.current.variables = variables;
-		props.load({...variables, after: data.pageInfo.endCursor}, (sub) => {argsRef.current.sub = sub;})
-			.then(res => {
-				if(!argsRef.current.active){
-					return;
-				}
-				argsRef.current.initialised = true;
-				setData(cd => {
-					return {
-						...cd,
-						...res,
-						edges: cd.edges.concat(res.edges)
+		props.load({...variables, after: data.pageInfo.endCursor})
+			.subscribe({
+				start(){
+					setLoading(true);
+				},
+				complete(){
+					setLoading(false);
+				},
+				next(res){
+					if(!argsRef.current.active){
+						return;
 					}
-				});
-			})
-			.finally(() => {
-				setLoading(false);
+					argsRef.current.initialised = true;
+					setData(cd => {
+						return {
+							...cd,
+							...res.pagination,
+							edges: cd.edges.concat(res.pagination.edges)
+						}
+					});
+				},
+				error(error){
+					setLoading(false);
+				}
 			});
 	}
 
 	React.useEffect(() => {
 		if(active){
-
-			if(argsRef.current.timeout){
-				clearTimeout(argsRef.current.timeout);
-			}
 
 			const isDir = !lodash.isEqual(argsRef.current.variables, variables);
 
@@ -299,6 +305,10 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 				setData(def);
 				setKey(Math.random());
 				return;
+			}
+
+			if(argsRef.current.timeout){
+				clearTimeout(argsRef.current.timeout);
 			}
 
 			argsRef.current.timeout = setTimeout(() => {
@@ -315,9 +325,9 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 		argsRef.current.active = active;
 		if(active){
 			return () => {
-				if(argsRef.current.sub){
-					argsRef.current.sub.unsubscribe();
-				}
+				subs.current.forEach(sub => {
+					sub.unsubscribe();
+				});
 				if(argsRef.current.timeout){
 					clearTimeout(argsRef.current.timeout);
 				}
@@ -328,6 +338,31 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 			}
 		}
 	}, [active]);
+
+	React.useEffect(() => {
+		if(props.value){
+			let sub: Subscription;
+			props.load({first:1, query: "", ids: [props.value]})
+				.subscribe({
+					start(_sub){
+						sub = _sub;
+					},
+					next(res){
+						const edge = res.pagination.edges.find(edge => "value" in edge.node && edge.node.value === props.value);
+						if(edge){
+							setSelected(edge.node as Edge["node"]);
+						}
+					}
+				});
+			return () => {
+				if(sub){
+					sub.unsubscribe();
+				}
+			}
+		} else if(selected) {
+			setSelected(null);
+		}
+	}, [props.value]);
 
 	return (
 		<Fragment>
@@ -352,7 +387,7 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 					>
 						<Search className="sticky top-0 border-b border-neutral-200" value={query} onChange={value => setQuery(value)} />
 						{
-							data.edges.map(
+							edges.map(
 								edge => {
 									const option = edge.node;
 									return (
@@ -371,21 +406,21 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 							)
 						}
 						{
-							argsRef.current.initialised &&
-							data.pageInfo.hasNextPage &&
-							<div className="text-center p-2">
-								{
-									loading &&
-									<LoadingSpinner size="sm" />
-								}
-								<LinkText
-									children="Load More"
-									onClick={() => {
-										if(loading) return;
-										load(variables);
-									}}
-								/>
-							</div>
+							loading ?
+							<LoadingSpinner size="sm" /> :
+							(
+								argsRef.current.initialised &&
+								data.pageInfo.hasNextPage &&
+								<div className="text-center p-2">
+									<LinkText
+										children="Load More"
+										onClick={() => {
+											if(loading) return;
+											load(variables);
+										}}
+									/>
+								</div>
+							)
 						}
 					</MenuContainer>
 				)
@@ -394,14 +429,24 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 	)
 }
 
+type Edge = {
+	node: {
+		__typename: string
+		label: string
+		value: string|number
+	}
+	cursor: string
+}
+
+type NonTypedEdge = {
+	node: {
+		__typename: string
+	}
+	cursor: string
+}
+
 type Pagination = {
-	edges: readonly {
-		node: {
-			label: string
-			value: string|number
-		}
-		cursor: string
-	}[]
+	edges: ReadonlyArray<Edge|NonTypedEdge>
 	pageInfo:{
 	  hasNextPage: boolean
 	  hasPreviousPage: boolean

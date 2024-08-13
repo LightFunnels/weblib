@@ -17,7 +17,7 @@ import {
 	Text,
 	ErrorBoundary,
 	LoadingSpinner,
-	Async,
+	AsyncAsync,
 } from "@/components";
 import React from 'react';
 import { createRoot } from "react-dom/client";
@@ -162,9 +162,20 @@ function Front() {
 		  			<LoadingSpinner className="mb-2" />
 		  			<LoadingSpinner className="mb-2" size="lg" />
 		  			<FormGroup label="Async Select">
-		  				<Async
+		  				<AsyncAsync
 		  					value={null}
 		  					onChange={console.log}
+		  					load={async () => {
+		  						return {
+		  							edges: [],
+		  							pageInfo:{
+		  								endCursor: null,
+		  								startCursor: null,
+		  								hasNextPage: false,
+		  								hasPrevPage: false,
+		  							}
+		  						}
+		  					}}
 		  				/>
 		  			</FormGroup>
 		  		</div>
