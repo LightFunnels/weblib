@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vite"
+    "serve": "vite",
+    "build": "vite build"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
