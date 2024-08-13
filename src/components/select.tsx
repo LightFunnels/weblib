@@ -1,8 +1,10 @@
+import lodash from "lodash";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
+import { Subscription } from "relay-runtime";
  
-import { DropdownItem, useToggle } from './';
 import { cn } from '@/lib/utils';
+import { DropdownItem, LinkText, LoadingSpinner, useToggle } from './';
 
 /**
  * to work on this later
@@ -74,7 +76,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 							)
 						}
 						{
-							options.filter(el=> !query || el.value.toString().match(Reg)).map(
+							options.filter(el=> !query || el.value?.toString()?.match(Reg)).map(
 								option => {
 									return (
 										<DropdownItem
@@ -118,6 +120,7 @@ Select.displayName = "Select";
 
 type SearchProps = {
 	value: string
+	className?: string
 	onChange: (value: string) => void
 }
 const Search = React.forwardRef<HTMLInputElement, SearchProps>(
@@ -127,7 +130,7 @@ const Search = React.forwardRef<HTMLInputElement, SearchProps>(
 			rf.current!.focus();
 		}, []);
 		return (
-			<div className="w-full" >
+			<div className={"w-full " + (props.className ?? "")} >
 				<input
 					type="text"
 					value={props.value}
@@ -231,18 +234,104 @@ type AsyncSelectProps = {
 	onChange: (e) => void
 	className?: string
 	error?: React.ReactNode
+	count?: number
 	value: SelectComponentProps["options"][number]["value"] | null
+	load<T extends DefaultPaginationVariables>(a: T, registerUnsub: (re: Subscription|null) => void): Promise<Pagination>
 }
 
+type DefaultPaginationVariables = {query: string, first: number};
+
+const def : Pagination = {
+	edges: [],
+	pageInfo:{
+		hasNextPage: false,
+		hasPreviousPage: false,
+		startCursor: null,
+		endCursor	: null,
+	}
+};
+
 export function Async({className, error, medium, ...props}: AsyncSelectProps){
+
 	const [ref, refMenu, active, setIsOpen] = useToggle();
-	const options = [];
-	const selected = options.find(option => option.value === props.value);
 	const [query, setQuery] = React.useState('');
+	const [loading, setLoading] = React.useState(false);
+	const [key, setKey] = React.useState<number|null>(null);
+	const [data, setData] = React.useState<Pagination>(def);
+	const variables : DefaultPaginationVariables = React.useMemo(() => {
+		return {query, first: props.count ?? 2};
+	}, [query]);
+	const argsRef = React.useRef({variables, data, initialised: false, timeout: null as any, sub: null as Subscription|null, active: active});
+	const selected = data.edges.find(edge => edge.node.value === props.value)?.node;
+
+	function load(variables: DefaultPaginationVariables){
+		setLoading(true);
+		argsRef.current.variables = variables;
+		props.load({...variables, after: data.pageInfo.endCursor}, (sub) => {argsRef.current.sub = sub;})
+			.then(res => {
+				if(!argsRef.current.active){
+					return;
+				}
+				argsRef.current.initialised = true;
+				setData(cd => {
+					return {
+						...cd,
+						...res,
+						edges: cd.edges.concat(res.edges)
+					}
+				});
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}
+
+	React.useEffect(() => {
+		if(active){
+
+			if(argsRef.current.timeout){
+				clearTimeout(argsRef.current.timeout);
+			}
+
+			const isDir = !lodash.isEqual(argsRef.current.variables, variables);
+
+			if(isDir && (data.pageInfo.endCursor !== null)){
+				setData(def);
+				setKey(Math.random());
+				return;
+			}
+
+			argsRef.current.timeout = setTimeout(() => {
+				load(variables);
+			}, 300);
+
+			return () => {
+				// unsub
+			}
+		}
+	}, [active, variables, key]);
+
+	React.useEffect(() => {
+		argsRef.current.active = active;
+		if(active){
+			return () => {
+				if(argsRef.current.sub){
+					argsRef.current.sub.unsubscribe();
+				}
+				if(argsRef.current.timeout){
+					clearTimeout(argsRef.current.timeout);
+				}
+				setQuery("");
+				setLoading(false);
+				argsRef.current.initialised = false;
+				setData(def);
+			}
+		}
+	}, [active]);
+
 	return (
 		<Fragment>
 			<SelectLabel
-				onChange={props.onChange}
 				onClick={() => setIsOpen(true)}
 				selected={selected?.label}
 				{...props}
@@ -253,7 +342,7 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 			{
 				active && (
 					<MenuContainer 
-						className={props.menuClassName ?? ''}
+						className={(props.menuClassName ?? '') + " max-h-[250px] pt-0"}
 						ref={refMenu} 
 						onClick={e => {
 							if (refMenu && (typeof refMenu !== 'function')) {
@@ -261,26 +350,18 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 							}
 						}}
 					>
-						<Search value={query} onChange={value => setQuery(value)} />
-						{/*{
-							options.filter(el=> !query || el.value.toString().match(Reg)).map(
-								option => {
+						<Search className="sticky top-0 border-b border-neutral-200" value={query} onChange={value => setQuery(value)} />
+						{
+							data.edges.map(
+								edge => {
+									const option = edge.node;
 									return (
 										<DropdownItem
 											key={option.value + '-' + option.label}
-											ref={e => {
-												ref1.current[mapValueToKey(option.value)] = e
-											}}
 											onClick={
-												props.onChange && (
-													() => {
-														props.onChange(option.value);
-														if(props.isSearchable){
-																setIsOpen(false);
-																setQuery("");
-														}
-													}
-												)
+												() => {
+													props.onChange(option.value);
+												}
 											}
 										>
 											{option.label}
@@ -288,13 +369,45 @@ export function Async({className, error, medium, ...props}: AsyncSelectProps){
 									)
 								}
 							)
-						}*/}
-						{/*{props.actionLink}*/}
+						}
+						{
+							argsRef.current.initialised &&
+							data.pageInfo.hasNextPage &&
+							<div className="text-center p-2">
+								{
+									loading &&
+									<LoadingSpinner size="sm" />
+								}
+								<LinkText
+									children="Load More"
+									onClick={() => {
+										if(loading) return;
+										load(variables);
+									}}
+								/>
+							</div>
+						}
 					</MenuContainer>
 				)
 			}
 		</Fragment>
 	)
+}
+
+type Pagination = {
+	edges: readonly {
+		node: {
+			label: string
+			value: string|number
+		}
+		cursor: string
+	}[]
+	pageInfo:{
+	  hasNextPage: boolean
+	  hasPreviousPage: boolean
+	  startCursor: string|null
+	  endCursor: string|null
+	}
 }
 
 SelectLabel.displayName = "SelectLabel";
