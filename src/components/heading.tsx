@@ -2,11 +2,13 @@ import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from "class-variance-authority"
 
 const headingVariants = cva(
-  "text-gray-900",
+  "text-gray-900 font-medium",
   {
     variants: {
       variant: {
-        default: "text-xl font-medium",
+        default: "text-xl",
+        sm: "text-sm",
+        md: "text-md",
       },
     },
     defaultVariants: {
