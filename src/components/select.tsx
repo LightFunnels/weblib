@@ -1,8 +1,10 @@
+import lodash from "lodash";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
+import { Subscription, Observable } from "relay-runtime";
  
-import { DropdownItem, useToggle } from './';
 import { cn } from '@/lib/utils';
+import { DropdownItem, LinkText, LoadingSpinner, useToggle } from './';
 
 /**
  * to work on this later
@@ -28,13 +30,16 @@ export type SelectComponentProps = {
 	isSearchable?: boolean
 	menuClassName?: string
 }
- 
-export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ className, options, error, medium, ...props }, _ref) {
-	let [ref, refMenu, active,setIsOpen] = useToggle();
-	let selected = options.find(option => option.value === props.value);
 
-	let ref1 = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
-	let inputRef = React.useRef<HTMLInputElement>(null);
+export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ className, options, error, medium, ...props }, _ref) {
+
+	const [ref, refMenu, active, setIsOpen] = useToggle();
+	const selected = options.find(option => option.value === props.value);
+	const [query, setQuery] = React.useState('');
+	const Reg = React.useMemo(() => {
+		return new RegExp(sanitizeStringForReg(query), 'ig');
+	}, [query]);
+	const ref1 = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
 
 	React.useEffect(
 		function () {
@@ -47,28 +52,6 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 		},
 		[active]
 	);
-
-	React.useEffect(() => {
-		if(props.isSearchable && active){
-			inputRef.current!.focus();
-		}
-	}, [props.isSearchable, active]);
-
-	function mapValueToKey(v): string {
-		if (v === undefined) {
-			return 'undefined';
-		} else if (v === null) {
-			return 'null';
-		} else {
-			return v.toString();
-		}
-	}
-	const [query, setQuery] = React.useState('');
-	const Reg = new RegExp(sanitizeStringForReg(query), 'ig'); 
-
-	function filterSearch(input) {
-		return !query || input.match(Reg);
-	}
 
 	return (
 		<Fragment>
@@ -87,50 +70,39 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 							}
 						}}
 					>
-						{/* naoufal: keep this wrapper .selectItemsContainer it uses flex-grow prop */}
-						{/*{
+						{
 							props.isSearchable && (
-								<div className="inputContainer" >
-								<i className="icon-search icon" />
-								<input
-									type="text"
-									value={query}
-									className="input"
-									onChange={e => setQuery(e.target.value)}
-									placeholder="Search"
-									ref={inputRef}
-								/>
-							</div>
+								<Search value={query} onChange={value => setQuery(value)} />
 							)
-						}*/}
-							{
-								options.filter(el=> filterSearch(el.label)).map(
-									option => {
-										return (
-											<DropdownItem
-												key={option.value + '-' + option.label}
-												ref={e => {
-													ref1.current[mapValueToKey(option.value)] = e
-												}}
-												onClick={
-													props.onChange && (
-														() => {
-															props.onChange(option.value);
-															if(props.isSearchable){
-																	setIsOpen(false);
-																	setQuery("");
-															}
+						}
+						{
+							options.filter(el=> !query || el.value?.toString()?.match(Reg)).map(
+								option => {
+									return (
+										<DropdownItem
+											key={option.value + '-' + option.label}
+											ref={e => {
+												ref1.current[mapValueToKey(option.value)] = e
+											}}
+											onClick={
+												props.onChange && (
+													() => {
+														props.onChange(option.value);
+														if(props.isSearchable){
+																setIsOpen(false);
+																setQuery("");
 														}
-													)
-												}
-											>
-												{option.label}
-											</DropdownItem>
-										)
-									}
-								)
-							}
-							{props.actionLink}
+													}
+												)
+											}
+										>
+											{option.label}
+										</DropdownItem>
+									)
+								}
+							)
+						}
+						{props.actionLink}
 					</MenuContainer>
 				)
 			}
@@ -146,8 +118,43 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 });
 Select.displayName = "Select";
 
+type SearchProps = {
+	value: string
+	className?: string
+	onChange: (value: string) => void
+}
+const Search = React.forwardRef<HTMLInputElement, SearchProps>(
+	function Search(props: SearchProps, inputRef){
+		const rf = React.useRef<HTMLInputElement>(null);
+		React.useEffect(() => {
+			rf.current!.focus();
+		}, []);
+		return (
+			<div className={"w-full " + (props.className ?? "")} >
+				<input
+					type="text"
+					value={props.value}
+					className="block p-2 leading-4.5 w-full outline-none"
+					onChange={e => props.onChange(e.target.value)}
+					placeholder="Search"
+					ref={rf}
+				/>
+			</div>
+		)
+	}
+)
+
 export function sanitizeStringForReg(q: string){
   return q.replace(/\\/g, "");
+}
+function mapValueToKey(v): string {
+	if (v === undefined) {
+		return 'undefined';
+	} else if (v === null) {
+		return 'null';
+	} else {
+		return v.toString();
+	}
 }
 
 export const MenuContainer = React.forwardRef<HTMLDivElement, { onClick?: (ev) => void, className?: string, children: React.ReactNode }>(
@@ -220,4 +227,233 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 		)
 	}
 );
+
+type AsyncSelectProps = {
+	menuClassName?: string
+	medium?: boolean
+	onChange: (e) => void
+	className?: string
+	error?: React.ReactNode
+	count?: number
+	value: SelectComponentProps["options"][number]["value"] | null
+	load<T extends DefaultPaginationVariables>(a: T): Observable<{pagination: Pagination}>
+}
+
+type DefaultPaginationVariables = {query: string, first: number};
+
+const def : Pagination = {
+	edges: [],
+	pageInfo:{
+		hasNextPage: false,
+		hasPreviousPage: false,
+		startCursor: null,
+		endCursor	: null,
+	}
+};
+
+export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProps){
+
+	const [ref, refMenu, active, setIsOpen] = useToggle();
+	const [query, setQuery] = React.useState('');
+	const [loading, setLoading] = React.useState(false);
+	const [key, setKey] = React.useState<number|null>(null);
+	const [data, setData] = React.useState<Pagination>(def);
+	const variables : DefaultPaginationVariables = React.useMemo(() => {
+		return {query, first: props.count ?? 2};
+	}, [query]);
+	const argsRef = React.useRef({variables, data, initialised: false, timeout: null as any, active: active});
+	const subs = React.useRef<Subscription[]>([]);
+	const edges = data.edges as Edge[];
+	const [selected, setSelected] = React.useState<Edge["node"]|null>(null);
+
+	function load(variables: DefaultPaginationVariables){
+		setLoading(true);
+		argsRef.current.variables = variables;
+		props.load({...variables, after: data.pageInfo.endCursor})
+			.subscribe({
+				start(){
+					setLoading(true);
+				},
+				complete(){
+					setLoading(false);
+				},
+				next(res){
+					if(!argsRef.current.active){
+						return;
+					}
+					argsRef.current.initialised = true;
+					setData(cd => {
+						return {
+							...cd,
+							...res.pagination,
+							edges: cd.edges.concat(res.pagination.edges)
+						}
+					});
+				},
+				error(error){
+					setLoading(false);
+				}
+			});
+	}
+
+	React.useEffect(() => {
+		if(active){
+
+			const isDir = !lodash.isEqual(argsRef.current.variables, variables);
+
+			if(isDir && (data.pageInfo.endCursor !== null)){
+				setData(def);
+				setKey(Math.random());
+				return;
+			}
+
+			if(argsRef.current.timeout){
+				clearTimeout(argsRef.current.timeout);
+			}
+
+			argsRef.current.timeout = setTimeout(() => {
+				load(variables);
+			}, 300);
+
+			return () => {
+				// unsub
+			}
+		}
+	}, [active, variables, key]);
+
+	React.useEffect(() => {
+		argsRef.current.active = active;
+		if(active){
+			return () => {
+				subs.current.forEach(sub => {
+					sub.unsubscribe();
+				});
+				if(argsRef.current.timeout){
+					clearTimeout(argsRef.current.timeout);
+				}
+				setQuery("");
+				setLoading(false);
+				argsRef.current.initialised = false;
+				setData(def);
+			}
+		}
+	}, [active]);
+
+	React.useEffect(() => {
+		if(props.value){
+			let sub: Subscription;
+			props.load({first:1, query: "", ids: [props.value]})
+				.subscribe({
+					start(_sub){
+						sub = _sub;
+					},
+					next(res){
+						const edge = res.pagination.edges.find(edge => "value" in edge.node && edge.node.value === props.value);
+						if(edge){
+							setSelected(edge.node as Edge["node"]);
+						}
+					}
+				});
+			return () => {
+				if(sub){
+					sub.unsubscribe();
+				}
+			}
+		} else if(selected) {
+			setSelected(null);
+		}
+	}, [props.value]);
+
+	return (
+		<Fragment>
+			<SelectLabel
+				onClick={() => setIsOpen(true)}
+				selected={selected?.label}
+				{...props}
+				ref={ref}
+				active={active}
+				medium={medium} 
+			/>
+			{
+				active && (
+					<MenuContainer 
+						className={(props.menuClassName ?? '') + " max-h-[250px] pt-0"}
+						ref={refMenu} 
+						onClick={e => {
+							if (refMenu && (typeof refMenu !== 'function')) {
+								e.nativeEvent.ignoreToggleClick = (e.nativeEvent.ignoreToggleClick || []).concat(refMenu.current);
+							}
+						}}
+					>
+						<Search className="sticky top-0 border-b border-neutral-200" value={query} onChange={value => setQuery(value)} />
+						{
+							edges.map(
+								edge => {
+									const option = edge.node;
+									return (
+										<DropdownItem
+											key={option.value + '-' + option.label}
+											onClick={
+												() => {
+													props.onChange(option.value);
+												}
+											}
+										>
+											{option.label}
+										</DropdownItem>
+									)
+								}
+							)
+						}
+						{
+							loading ?
+							<LoadingSpinner size="sm" /> :
+							(
+								argsRef.current.initialised &&
+								data.pageInfo.hasNextPage &&
+								<div className="text-center p-2">
+									<LinkText
+										children="Load More"
+										onClick={() => {
+											if(loading) return;
+											load(variables);
+										}}
+									/>
+								</div>
+							)
+						}
+					</MenuContainer>
+				)
+			}
+		</Fragment>
+	)
+}
+
+type Edge = {
+	node: {
+		__typename: string
+		label: string
+		value: string|number
+	}
+	cursor: string
+}
+
+type NonTypedEdge = {
+	node: {
+		__typename: string
+	}
+	cursor: string
+}
+
+type Pagination = {
+	edges: ReadonlyArray<Edge|NonTypedEdge>
+	pageInfo:{
+	  hasNextPage: boolean
+	  hasPreviousPage: boolean
+	  startCursor: string|null
+	  endCursor: string|null
+	}
+}
+
 SelectLabel.displayName = "SelectLabel";
+
