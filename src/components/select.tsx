@@ -229,16 +229,16 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 	}
 );
 
-type AsyncSelectValueType = string|number;
+type AsyncSelectValueType = Array<string|number>|ReadonlyArray<string|number>;
 
 type AsyncSelectProps = {
 	menuClassName?: string
 	medium?: boolean
-	onChange: (e: AsyncSelectValueType[]) => void
+	onChange: (e: AsyncSelectValueType) => void
 	className?: string
 	error?: React.ReactNode
 	count?: number
-	value: AsyncSelectValueType[]
+	value: AsyncSelectValueType
 	load<T extends DefaultPaginationVariables>(a: T): Observable<{pagination: Pagination}>
 	limit?: number
 	cancellable?: boolean
