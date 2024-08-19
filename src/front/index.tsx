@@ -166,14 +166,9 @@ function Front() {
 		  					value={null}
 		  					onChange={console.log}
 		  					load={async () => {
+		  						// won´t work, requires observer
 		  						return {
-		  							edges: [],
-		  							pageInfo:{
-		  								endCursor: null,
-		  								startCursor: null,
-		  								hasNextPage: false,
-		  								hasPrevPage: false,
-		  							}
+		  							
 		  						}
 		  					}}
 		  				/>

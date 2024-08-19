@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { Subscription, Observable } from "relay-runtime";
  
 import { cn } from '@/lib/utils';
-import { DropdownItem, LinkText, LoadingSpinner, useToggle } from './';
+import { DropdownItem, LinkText, LoadingSpinner, useToggle, Text, Close } from './';
 
 /**
  * to work on this later
@@ -57,7 +57,11 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 		<Fragment>
 			<SelectLabel
 				onClick={() => setIsOpen(true)}
-				selected={selected?.label} {...props} ref={ref} active={active} medium={medium} 
+				selected={selected?.label} {...props} ref={ref}
+				cancellable={props.cancellable}
+				onCancel={() => {
+					props.onChange(null);
+				}}
 			/>
 			{
 				active && (
@@ -175,7 +179,7 @@ MenuContainer.displayName = "MenuContainer";
 type SelectLabelProps = {
 	disabled?: boolean
 	onClick?: (e) => void
-	onChange: (e) => void
+	onCancel: () => void
 	outOfCard?: boolean
 	cancellable?: boolean
 	selected?: React.ReactNode
@@ -183,10 +187,7 @@ type SelectLabelProps = {
 	image?: string
 	label?: React.ReactNode
 	labelClassName?: string
-	active?: boolean
-	medium?: boolean
 	refMenu?: React.MutableRefObject<HTMLDivElement>
-	// setIsOpen: (a: boolean) => void
 	textLabelClassName?: string
 }
 export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
@@ -204,7 +205,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 					)
 				}*/}
 				<span className={props.textLabelClassName ?? ''}>
-					{props.selected || props.label || 'Select...'}
+					{props.selected || props.label || 'Select Item'}
 				</span>
 				{
 					(props.cancellable && props.selected) ? (
@@ -214,7 +215,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 								function (event) {
 									event.stopPropagation();
 									// event.nativeEvent.ignoreToggleClick = (event.nativeEvent.ignoreToggleClick || []).conca( props.refMenu.current );
-									props.onChange(null);
+									props.onCancel();
 									// props.setIsOpen(false);
 								}
 							}
@@ -228,15 +229,19 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 	}
 );
 
+type AsyncSelectValueType = string|number;
+
 type AsyncSelectProps = {
 	menuClassName?: string
 	medium?: boolean
-	onChange: (e) => void
+	onChange: (e: AsyncSelectValueType[]) => void
 	className?: string
 	error?: React.ReactNode
 	count?: number
-	value: SelectComponentProps["options"][number]["value"] | null
+	value: AsyncSelectValueType[]
 	load<T extends DefaultPaginationVariables>(a: T): Observable<{pagination: Pagination}>
+	limit?: number
+	cancellable?: boolean
 }
 
 type DefaultPaginationVariables = {query: string, first: number};
@@ -253,7 +258,7 @@ const def : Pagination = {
 
 export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProps){
 
-	const [ref, refMenu, active, setIsOpen] = useToggle();
+	const [ref, refMenu, active, setIsOpen, popper] = useToggle();
 	const [query, setQuery] = React.useState('');
 	const [loading, setLoading] = React.useState(false);
 	const [key, setKey] = React.useState<number|null>(null);
@@ -261,27 +266,41 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 	const variables : DefaultPaginationVariables = React.useMemo(() => {
 		return {query, first: props.count ?? 2};
 	}, [query]);
-	const argsRef = React.useRef({variables, data, initialised: false, timeout: null as any, active: active});
-	const subs = React.useRef<Subscription[]>([]);
+	const refs = React.useRef({variables, data, initialised: false, timeout: null as any, active: active, subs: [] as Subscription[]});
 	const edges = data.edges as Edge[];
-	const [selected, setSelected] = React.useState<Edge["node"]|null>(null);
+	const [selected, setSelected] = React.useState<Edge["node"][]>([]);
+	const limit = props.limit ?? 1;
+	const isSingle = limit === 1;
+
+	function onChange(value: AsyncSelectProps["value"]){
+		// apply limit
+		props.onChange(value.slice(-limit));
+		if(active){
+			popper.current!.update();
+		}
+	}
+
+	// console.log(refs.current.subs)
 
 	function load(variables: DefaultPaginationVariables){
 		setLoading(true);
-		argsRef.current.variables = variables;
+		refs.current.variables = variables;
+		let sub : Subscription;
 		props.load({...variables, after: data.pageInfo.endCursor})
 			.subscribe({
-				start(){
+				start(_sub){
+					sub = _sub;
+					refs.current.subs.push(_sub);
 					setLoading(true);
 				},
 				complete(){
 					setLoading(false);
 				},
 				next(res){
-					if(!argsRef.current.active){
+					if(!refs.current.active){
 						return;
 					}
-					argsRef.current.initialised = true;
+					refs.current.initialised = true;
 					setData(cd => {
 						return {
 							...cd,
@@ -289,6 +308,9 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 							edges: cd.edges.concat(res.pagination.edges)
 						}
 					});
+				},
+				unsubscribe(sub){
+					refs.current.subs = lodash.without(refs.current.subs, sub);
 				},
 				error(error){
 					setLoading(false);
@@ -299,7 +321,7 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 	React.useEffect(() => {
 		if(active){
 
-			const isDir = !lodash.isEqual(argsRef.current.variables, variables);
+			const isDir = !lodash.isEqual(refs.current.variables, variables);
 
 			if(isDir && (data.pageInfo.endCursor !== null)){
 				setData(def);
@@ -307,11 +329,11 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 				return;
 			}
 
-			if(argsRef.current.timeout){
-				clearTimeout(argsRef.current.timeout);
+			if(refs.current.timeout){
+				clearTimeout(refs.current.timeout);
 			}
 
-			argsRef.current.timeout = setTimeout(() => {
+			refs.current.timeout = setTimeout(() => {
 				load(variables);
 			}, 300);
 
@@ -322,36 +344,37 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 	}, [active, variables, key]);
 
 	React.useEffect(() => {
-		argsRef.current.active = active;
+		refs.current.active = active;
 		if(active){
 			return () => {
-				subs.current.forEach(sub => {
+				refs.current.subs.forEach(sub => {
 					sub.unsubscribe();
 				});
-				if(argsRef.current.timeout){
-					clearTimeout(argsRef.current.timeout);
+				if(refs.current.timeout){
+					clearTimeout(refs.current.timeout);
 				}
 				setQuery("");
 				setLoading(false);
-				argsRef.current.initialised = false;
+				refs.current.initialised = false;
 				setData(def);
 			}
 		}
 	}, [active]);
 
 	React.useEffect(() => {
-		if(props.value){
+		if(props.value.length){
 			let sub: Subscription;
-			props.load({first:1, query: "", ids: [props.value]})
+			props.load({first: props.value.length, query: "", ids: props.value})
 				.subscribe({
 					start(_sub){
 						sub = _sub;
 					},
 					next(res){
-						const edge = res.pagination.edges.find(edge => "value" in edge.node && edge.node.value === props.value);
-						if(edge){
-							setSelected(edge.node as Edge["node"]);
-						}
+						setSelected(
+							res.pagination.edges
+								.map(item => item.node)
+								.filter((node) : node is any => ("value" in node) && (props.value.includes(node.value)))
+						);
 					}
 				});
 			return () => {
@@ -359,21 +382,52 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 					sub.unsubscribe();
 				}
 			}
-		} else if(selected) {
-			setSelected(null);
+		} else if(selected.length) {
+			setSelected([]);
 		}
 	}, [props.value]);
 
 	return (
-		<Fragment>
+		<div>
 			<SelectLabel
 				onClick={() => setIsOpen(true)}
-				selected={selected?.label}
-				{...props}
-				ref={ref}
-				active={active}
-				medium={medium} 
+				label={
+					isSingle ?
+						selected.find(node => node.value === props.value[0])?.label :
+						undefined
+				}
+				cancellable={props.cancellable}
+				onCancel={() => {
+					onChange([]);
+				}}
+				ref={isSingle ? ref : undefined}
 			/>
+			{
+				!isSingle && (
+					<div ref={ref} className="flex gap-2 mt-2 flex-wrap">
+						{
+							props.value.length === 0 ? (
+								<Text children="No items are selected" />
+							):
+							props.value.map(id => {
+								const item = selected.find(node => node.value === id);
+								return (
+									<span key={id} className="bg-primary flex items-center rounded-md px-2 py-1">
+										<Text className="text-nowrap text-primary-foreground">
+											{item ? item.label : "Not Found"}
+										</Text>
+										<Close
+											className="w-5 ml-1 cursor-pointer fill-primary-foreground"
+											onClick={() => {
+												onChange(props.value.filter(_id => _id !== id));
+											}} />
+									</span>
+								)
+							})
+						}
+					</div>
+				)
+			}
 			{
 				active && (
 					<MenuContainer 
@@ -395,7 +449,11 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 											key={option.value + '-' + option.label}
 											onClick={
 												() => {
-													props.onChange(option.value);
+													if(props.value.includes(option.value)){
+														onChange(props.value.filter(item => item !== option.value));
+													} else {
+														onChange(props.value.concat(option.value));
+													}
 												}
 											}
 										>
@@ -407,9 +465,9 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 						}
 						{
 							loading ?
-							<LoadingSpinner size="sm" /> :
+							<LoadingSpinner size="sm" className="mt-1" /> :
 							(
-								argsRef.current.initialised &&
+								refs.current.initialised &&
 								data.pageInfo.hasNextPage &&
 								<div className="text-center p-2">
 									<LinkText
@@ -425,7 +483,7 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 					</MenuContainer>
 				)
 			}
-		</Fragment>
+		</div>
 	)
 }
 
