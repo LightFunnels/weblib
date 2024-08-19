@@ -540,7 +540,7 @@ function Right (props: React.HTMLAttributes<HTMLOrSVGElement>) {
 	)
 }
 
-function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
+export function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
 	return (
 	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
 	    <title />
