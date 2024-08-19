@@ -221,7 +221,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 							}
 						/>
 					) : (
-						<i className={`icon icon-arrow-down text-lg`} />
+						<Down />
 					)
 				}
 			</div>
@@ -255,6 +255,8 @@ const def : Pagination = {
 		endCursor	: null,
 	}
 };
+const notFoundMsg = "Not Found";
+
 
 export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProps){
 
@@ -393,7 +395,7 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 				onClick={() => setIsOpen(true)}
 				label={
 					isSingle ?
-						selected.find(node => node.value === props.value[0])?.label :
+						(selected.find(node => node.value === props.value[0])?.label ?? <span className="text-destructive">{notFoundMsg}</span>) :
 						undefined
 				}
 				cancellable={props.cancellable}
@@ -412,12 +414,18 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 							props.value.map(id => {
 								const item = selected.find(node => node.value === id);
 								return (
-									<span key={id} className="bg-primary flex items-center rounded-md px-2 py-1">
-										<Text className="text-nowrap text-primary-foreground">
-											{item ? item.label : "Not Found"}
-										</Text>
+									<span key={id} className={"flex items-center rounded-md px-2 py-1 " + (item ? "bg-primary" : "bg-destructive")}>
+										{
+											item ?
+												<Text className="text-nowrap text-primary-foreground">
+													{item.label}
+												</Text> : 
+												<Text className="text-nowrap text-destructive-foreground">
+													{notFoundMsg}
+												</Text>
+										}
 										<Close
-											className="w-5 ml-1 cursor-pointer fill-primary-foreground"
+											className={"w-5 ml-1 cursor-pointer " + (item ? "fill-primary-foreground" : "fill-destructive-foreground")}
 											onClick={() => {
 												onChange(props.value.filter(_id => _id !== id));
 											}} />
@@ -515,3 +523,21 @@ type Pagination = {
 
 SelectLabel.displayName = "SelectLabel";
 
+export function Down(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className={"lucide lucide-chevron-down " + (props.className ?? "")}
+      viewBox="0 0 24 24"
+    >
+      <path d="M6 9l6 6 6-6"></path>
+    </svg>
+	)
+}
