@@ -15,3 +15,4 @@ export * from "./code";
 export * from "./link";
 export * from "./error"
 export * from "./spinner"
+export * from "./alert"

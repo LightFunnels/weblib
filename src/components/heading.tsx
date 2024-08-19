@@ -7,6 +7,7 @@ const headingVariants = cva(
     variants: {
       variant: {
         default: "text-xl font-medium",
+        lg: "text-lg font-medium",
       },
     },
     defaultVariants: {

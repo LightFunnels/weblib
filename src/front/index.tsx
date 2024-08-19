@@ -18,6 +18,7 @@ import {
 	ErrorBoundary,
 	LoadingSpinner,
 	AsyncAsync,
+	Alert,
 } from "@/components";
 import React from 'react';
 import { createRoot } from "react-dom/client";
@@ -33,7 +34,7 @@ function Front() {
   return (
   	<>
 	  	<div className="px-4 py-16 w-[800px] w-max-full mx-auto">
-	  		<div className="grid grid-cols-2 gap-4">
+	  		<div className="grid grid-cols-2 gap-4 items-start">
 		  		<div className="grid gap-4">
 		  			<Heading>
 		  				Default Heading
@@ -154,13 +155,15 @@ function Front() {
 		  			<Hr />
 		  			<NativeLink href="https://www.example.com" >Link</NativeLink>
 		  		</div>
-		  		<div>
+		  		<div className="grid gap-4">
 		  			<Heading className="mb-2">
 		  				Loading
 		  			</Heading>
-		  			<LoadingSpinner className="mb-2" size="sm" />
-		  			<LoadingSpinner className="mb-2" />
-		  			<LoadingSpinner className="mb-2" size="lg" />
+		  			<div>
+			  			<LoadingSpinner className="mb-2" size="sm" />
+			  			<LoadingSpinner className="mb-2" />
+			  			<LoadingSpinner className="mb-2" size="lg" />
+		  			</div>
 		  			<FormGroup label="Async Select">
 		  				<AsyncAsync
 		  					value={null}
@@ -178,6 +181,21 @@ function Front() {
 		  					}}
 		  				/>
 		  			</FormGroup>
+		  			<Heading children="Alert" />
+		  			<Alert
+		  				title="Maniace palladia overthin schoenus"
+		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
+		  			/>
+		  			<Alert
+		  				icon={
+		  					<div className="w-10 h-10 border rounded-full border-destructive">
+		  						
+		  					</div>
+		  				}
+		  				variant="destructive"
+		  				title="Maniace palladia overthin schoenus"
+		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
+		  			/>
 		  		</div>
 	  		</div>
 	  		<Hr className="my-4" />
