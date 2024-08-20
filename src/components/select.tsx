@@ -194,9 +194,15 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 	function SelectLabel(props, labelRef) {
 		return (
 			<div
-				onClick={!props.disabled ? props.onClick : undefined}
+				onClick={props.disabled ? undefined : props.onClick}
 				ref={labelRef}
-				className={cn(`rounded-md flex justify-between items-center border border-input h-[40px] bg-background px-3 cursor-pointer text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`, props.labelClassName ?? '')}
+				className={
+					cn(
+						`rounded-md flex justify-between items-center border border-input h-[40px] bg-background px-3 cursor-pointer text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,
+						props.disabled && "opacity-50 cursor-not-allowed",
+						props.labelClassName
+					)
+				}
 			>
 				{/*<div className={`labelClickable ${props.cancellable && props.selected ? 'hasCancel' : ''}`} ref={labelRef} />*/}
 				{/*{
@@ -212,6 +218,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 						<i
 							className={`icon icon-X-Close text-lg`}
 							onClick={
+								props.disabled ? undefined :
 								function (event) {
 									event.stopPropagation();
 									// event.nativeEvent.ignoreToggleClick = (event.nativeEvent.ignoreToggleClick || []).conca( props.refMenu.current );
@@ -221,7 +228,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 							}
 						/>
 					) : (
-						<Down />
+						<Down className="w-5 h-5" />
 					)
 				}
 			</div>
@@ -232,6 +239,7 @@ export const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
 type AsyncSelectValueType = Array<string|number>|ReadonlyArray<string|number>;
 
 type AsyncSelectProps = {
+	disabled?: boolean
 	menuClassName?: string
 	medium?: boolean
 	onChange: (e: AsyncSelectValueType) => void
@@ -276,6 +284,9 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 
 	function onChange(value: AsyncSelectProps["value"]){
 		// apply limit
+		if(props.disabled){
+			return;
+		}
 		props.onChange(value.slice(-limit));
 		if(active){
 			popper.current!.update();
@@ -392,6 +403,7 @@ export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProp
 	return (
 		<div>
 			<SelectLabel
+				disabled={props.disabled}
 				onClick={() => setIsOpen(true)}
 				label={
 					isSingle ?
