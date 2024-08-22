@@ -17,7 +17,7 @@ import {
 	Text,
 	ErrorBoundary,
 	LoadingSpinner,
-	AsyncAsync,
+	AsyncSelect,
 	Alert,
 } from "@/components";
 import React from 'react';
@@ -165,8 +165,8 @@ function Front() {
 			  			<LoadingSpinner className="mb-2" size="lg" />
 		  			</div>
 		  			<FormGroup label="Async Select">
-		  				<AsyncAsync
-		  					value={null}
+		  				<AsyncSelect
+		  					value={[]}
 		  					onChange={console.log}
 		  					load={async () => {
 		  						// won´t work, requires observer

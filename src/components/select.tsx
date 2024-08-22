@@ -266,7 +266,7 @@ const def : Pagination = {
 const notFoundMsg = "Not Found";
 
 
-export function AsyncAsync({className, error, medium, ...props}: AsyncSelectProps){
+export function AsyncSelect({className, error, medium, ...props}: AsyncSelectProps){
 
 	const [ref, refMenu, active, setIsOpen, popper] = useToggle();
 	const [query, setQuery] = React.useState('');
