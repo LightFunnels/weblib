@@ -74,6 +74,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 				setLV(props.value?.toString());
 			}
 		}, [props.value, lv]);
+		const decimals = props.decimals ?? 2;
 		return (
 			<div className={`relative ${className ?? ''}`}>
 				<input
@@ -92,7 +93,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 						}
 					}}
 					onChange={ev => {
-						if(ev.target.value.split(".")[1]?.length > props.decimals!){
+						if(ev.target.value.split(".")[1]?.length > decimals!){
 							ev.preventDefault();
 							return;
 						}
@@ -120,8 +121,5 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 	}
 )
 NumberInput.displayName = "NumberInput"
-NumberInput.defaultProps = {
-	decimals: 2
-}
 
 export { Input }

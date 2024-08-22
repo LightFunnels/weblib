@@ -38,6 +38,8 @@ export type DatePickerProps = {
 export function DatePicker({ name, error, value, clearable, ...props }: DatePickerProps) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
 	const [ref, refMenu, active, setIsOpen] = useToggle({followTargetWidth: false});
+	const displayFormat = props.displayFormat ?? "yyyy-mm-dd";
+
 	return (
 		<div className={props.className ?? ''}>
 			<DatePickerInput
@@ -52,7 +54,7 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 			>
 				{
 					value ?
-						dateformat(SafeDate(value), props.displayFormat) :
+						dateformat(SafeDate(value), displayFormat) :
 						value
 				}
 			</DatePickerInput>
@@ -100,11 +102,7 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 		</div>
 	);
 }
-DatePicker.defaultProps = {
-	// valueFormat:'yyyy-mm-dd HH:MM:ss',
-	// valueFormat:'yyyy-mm-dd',
-	displayFormat: 'yyyy-mm-dd',
-}
+
 
 type RangeDatePickerComponentProps = {
 	value:{
@@ -256,6 +254,8 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 		tempvalue.endDate === props.value.endDate
 	);
 
+	const propsDisabled = props.disabled ?? true;
+
 	return (
 		<div className={`${cn(styles.range, styles.picker)} ${props.className ?? ''} [@media(max-width:764px)]:w-[300px] shadow-[0px_2px_20px_rgba(32,32,35,.13)]`}>
 			<div className={"flex [@media(max-width:764px)]:flex-col"}>
@@ -369,7 +369,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 					Cancel
 				</Button>
 				<Button
-					disabled={props.disabled && areEqual}
+					disabled={propsDisabled && areEqual}
 					className={props.actionBtnClass ?? ''}
 					onClick={
 						function () {
@@ -391,11 +391,6 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 			</div>
 		</div>
 	)
-}
-RangeDatePickerCalendar.defaultProps = {
-	// valueFormat:'yyyy-mm-dd HH:MM:ss',
-	// valueFormat:'yyyy-mm-dd',
-	disabled: true,
 }
 
 export type RangeDatePickerProps = {
@@ -545,7 +540,7 @@ function Right (props: React.HTMLAttributes<HTMLOrSVGElement>) {
 	)
 }
 
-function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
+export function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
 	return (
 	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
 	    <title />
