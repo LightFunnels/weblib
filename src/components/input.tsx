@@ -18,7 +18,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 		return (
 			<label
 				data-state={props.disabled ? "disabled" : undefined}
-				className={cn(`items-center block gap-1.5 relative data-[state=disabled]:cursor-not-allowed data-[state=disabled]:opacity-50`, className)}
+				className={cn(`items-center block gap-1.5 relative data-[state=disabled]:cursor-not-allowed data-[state=disabled]:opacity-80`, className)}
 			>
 				<div className={cn(initialInputClassName, inputContainerClassName ?? '')}>
 					{leftIcon}
