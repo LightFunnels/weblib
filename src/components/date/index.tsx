@@ -5,9 +5,8 @@ import { createPortal } from "react-dom";
 import {
 	Button,
 	DropdownItem,
-	ErrorMsg,
+	InputError,
 	Select,
-	initialInputClassName,
 	useToggle
 } from '../';
 
@@ -16,9 +15,11 @@ import {
  * mixed raw css and tailwind ?
  *  */
 
+import clsx from 'clsx';
+import "react-datepicker/dist/react-datepicker.css";
+import styles from "./date.scss";
 
-import { cn } from '@/lib/utils';
-import styles from "./date.module.scss";
+import { modals } from "../drop-down";
 
 const frmt = 'yyyy-mm-dd HH:MM:ss';
 
@@ -37,7 +38,7 @@ export type DatePickerProps = {
 }
 export function DatePicker({ name, error, value, clearable, ...props }: DatePickerProps) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
-	const [ref, refMenu, active, setIsOpen] = useToggle({followTargetWidth: false});
+	const [ref, refMenu, active, setIsOpen] = useToggle<HTMLButtonElement, HTMLDivElement>({followTargetWidth: false});
 	const displayFormat = props.displayFormat ?? "yyyy-mm-dd";
 
 	return (
@@ -61,7 +62,7 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 			{
 				active && (
 					createPortal(
-						<div ref={refMenu} className={styles.picker}>
+						<div ref={refMenu} className={"lfui-datepicker"}>
 							<ReactDatePicker
 								{...props}
 								inline
@@ -91,13 +92,13 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 								}
 							/>
 						</div>,
-						document.getElementById("modals")!
+						modals
 					)
 				)
 			}
 			{
 				error &&
-				<ErrorMsg message={error} />
+				<InputError message={error} />
 			}
 		</div>
 	);
@@ -257,10 +258,10 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 	const propsDisabled = props.disabled ?? true;
 
 	return (
-		<div className={`${cn(styles.range, styles.picker)} ${props.className ?? ''} [@media(max-width:764px)]:w-[300px] shadow-[0px_2px_20px_rgba(32,32,35,.13)]`}>
+		<div className={clsx(styles.range, "lfui-datepicker", props.className, "[@media(max-width:764px)]:w-[300px] shadow-[0px_2px_20px_rgba(32,32,35,.13)]")}>
 			<div className={"flex [@media(max-width:764px)]:flex-col"}>
 				<div className='[@media(max-width:764px)]:order-2'>
-					<div className={cn("flex [@media(max-width:764px)]:flex-col [@media(max-width:764px)]:max-h-[300px] [@media(max-width:764px)]:overflow-auto [@media(max-width:764px)]:pt-2 [@media(max-width:764px)]:border-t [@media(max-width:764px)]:border-neutral-200")} onMouseOver={(startDate && !endDate) ? onMouseOver : undefined} >
+					<div className={clsx("flex [@media(max-width:764px)]:flex-col [@media(max-width:764px)]:max-h-[300px] [@media(max-width:764px)]:overflow-auto [@media(max-width:764px)]:pt-2 [@media(max-width:764px)]:border-t [@media(max-width:764px)]:border-neutral-200")} onMouseOver={(startDate && !endDate) ? onMouseOver : undefined} >
 						<ReactDatePicker
 							openToDate={leftDate}
 							inline
@@ -363,7 +364,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 			<div className={`flex items-center justify-end gap-2 p-2 bg-accent ${props.footerClass ?? ''}`}>
 				<Button 
 					onClick={props.onCancel} 
-					variant='outline'
+					variant='secondary'
 					className={props.cancelBtnClass ?? ''}
 				>
 					Cancel
@@ -412,7 +413,7 @@ export type RangeDatePickerProps = {
 	datePickerContainerClass?: string
 }
 export function RangeDatePicker(props: RangeDatePickerProps) {
-	const [ref, refMenu, isOpen, setIsOpen, ignore] = useToggle({placement: "bottom-start"});
+	const [ref, refMenu, isOpen, setIsOpen, ignore] = useToggle<HTMLDivElement, HTMLDivElement>({placement: "bottom-start"});
 	return (
 		<Fragment>
 			<div ref={ref}>
@@ -459,7 +460,7 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 								}}
 							/>
 						</div>,
-						document.getElementById("modals")!
+						modals
 					)
 				)
 			}
@@ -502,23 +503,28 @@ export const RangeDateLabel = React.memo<{icon?: React.ReactNode, className?: st
 	(p, np) => ( (p.startDate === np.startDate) && (p.endDate === np.endDate) )
 );
 
-const DatePickerInput = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & {clear?: (event: React.MouseEvent<HTMLOrSVGElement>) => void}>(
+const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement> & {clear?: (event: React.MouseEvent<HTMLOrSVGElement>) => void}>(
 	function ({clear, ...props}, ref) {
 		return (
-			<div
+			<Button
 				{...props}
 				ref={ref}
-				className={cn(initialInputClassName, "relative cursor-pointer flex items-center whitespace-nowrap", props.className)}
-			>
-				{props.children}
-				{
-					(clear) ?
-					<Close
-						className="absolute right-2 w-5 h-5 cursor-pointer"
-						onClick={clear}
-					/> : undefined
+				variant="secondary"
+				children={
+					<div className="lfui-dropdownLabelChildren">
+						<div>
+							{props.children}
+						</div>
+						{
+							clear && 
+							<Close
+								className="lfui-dropdownIcon"
+								onClick={clear}
+							/>
+						}
+					</div>
 				}
-			</div>
+			/>
 		)
 	}
 );

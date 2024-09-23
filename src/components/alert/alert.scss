@@ -1,0 +1,30 @@
+.lfui-alert{
+	border: 1px solid;
+	display: flex;
+	border-radius: var(--radius);
+	padding: 0.5rem;
+	gap: var(--gap);
+}
+
+.lfui-alert_destructive{
+	color: var(--destructive-color);
+}
+
+.lfui-alert_informative{
+	color: var(--informative-color);
+}
+
+.lfui-alert_primary{
+	color: var(--primary-color);
+}
+
+.lfui-alertBody{
+	display:flex;
+	flex-direction: column;
+	gap: calc(var(--gap)/2);
+	flex-grow: 1;
+}
+
+.lfui-alertMessage{
+	font-size: 0.9rem;
+}

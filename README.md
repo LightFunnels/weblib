@@ -1,14 +1,11 @@
 
-## Lightfunnels Components
-
-### Introducing our enhanced UI library powered by shadcn
-
-- Introducing our enhanced UI library powered by shadcn, utilizing the sleek design inspiration from https://ui.shadcn.com/ and adding a touch of customization and logic integration.
+## lightfunnels/ui
 
 ### Why Choose Our Library?
 
-- High-Level Components: Elevate your coding experience with a collection of high-level components, streamlining the development process and reducing the amount of code needed.
-- No More Radix-UI: Say goodbye to complexities. Our library eliminates the need for Radix-UI
-- Advanced Components: Enjoy a set of advanced components, empowering you to create more sophisticated and dynamic user interfaces.
-
-Explore the possibilities and transform your UI development with our feature-rich library.
+- no js configuration needed - only css variables
+- all classnames are declared globally and customizable
+- all classnames are prefixed with lfui- to avoid naming collision with other packages or your css
+- quickest way to use a ui library
+- classnames naming convention .lfui-\[AlertBody\]_\[default\]
+- online theme playground (comming soon)

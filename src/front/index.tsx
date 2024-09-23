@@ -15,13 +15,17 @@ import {
 	RangeDatePicker,
 	Select,
 	Text,
-	ErrorBoundary,
-	LoadingSpinner,
-	AsyncSelect,
+	Code,
+	// ErrorBoundary,
+	Spinner,
+	// AsyncSelect,
 	Alert,
-} from "@/components";
+} from "../components";
+
 import React from 'react';
 import { createRoot } from "react-dom/client";
+
+import "./styles.scss";
 
 function Front() {
 	const [m1, setM1] = React.useState(false);
@@ -37,11 +41,26 @@ function Front() {
 	  		<div className="grid grid-cols-2 gap-4 items-start">
 		  		<div className="grid gap-4">
 		  			<Heading>
-		  				Default Heading
+		  				heading 1
+		  			</Heading>
+		  			<Heading version="h2">
+		  				heading 2
+		  			</Heading>
+		  			<Heading version="h3">
+		  				heading 3
 		  			</Heading>
 		  			<Hr/>
-		  			<div>
+		  			<div className="flex align-center gap-2">
+			  			<Button>
+			  				button
+			  			</Button>
 			  			<Button loading>
+			  				button
+			  			</Button>
+			  			<Button variant="secondary" loading>
+			  				button
+			  			</Button>
+			  			<Button variant="destructive">
 			  				button
 			  			</Button>
 		  			</div>
@@ -66,7 +85,7 @@ function Front() {
 		  								Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.
 		  							</Text>
 		  						}
-		  						footer={"Footer" }
+		  						footer={"Footer"}
 		  					/>
 		  				)
 		  			}
@@ -92,21 +111,38 @@ function Front() {
 		  				<Input />
 		  			</FormGroup>
 		  			<Hr/>
-		  			<Dropdown
-		  				label={
-		  					<Text>Drop Down</Text>
-		  				}
-		  			>
-							<DropdownItem>
-								<span className="w-4 h-4 inline-block bg-primary"></span>
-								Item 1
-							</DropdownItem>
-		  			</Dropdown>
+	  				<div className="flex gap-2 items-center">
+			  			<Dropdown
+			  				label={
+			  					<Label>Text Dropdown</Label>
+			  				}
+			  			>
+								<DropdownItem>
+									<span className="w-4 h-4 inline-block bg-gray-300" />
+									Item 1
+								</DropdownItem>
+			  			</Dropdown>
+			  			<Dropdown
+			  				label={
+			  					<Button>Button</Button>
+			  				}
+			  			>
+								<DropdownItem>
+									<span className="w-4 h-4 inline-block bg-gray-300" />
+									Item 1
+								</DropdownItem>
+			  			</Dropdown>
+	  				</div>
 		  			<Hr/>
-		  			<Text>Avatar</Text>
-		  			<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
-		  			<FormGroup label={"Select"}>
+		  			<Label>Avatar</Label>
+		  			<div className="flex gap-2">
+		  				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
+		  				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" rounded="full" />
+		  				<Avatar children="NB" rounded="full" />
+		  			</div>
+		  			<FormGroup label={"Select List"}>
 			  			<Select
+			  				labelClassName="self-start"
 			  				onChange={console.log}
 			  				value="morocco"
 			  				options={[
@@ -154,17 +190,17 @@ function Front() {
 		  			</FormGroup>
 		  			<Hr />
 		  			<NativeLink href="https://www.example.com" >Link</NativeLink>
+		  			<Code copiable value="something" />
 		  		</div>
 		  		<div className="grid gap-4">
-		  			<Heading className="mb-2">
+		  			<Heading version="h3" className="mb-2">
 		  				Loading
 		  			</Heading>
 		  			<div>
-			  			<LoadingSpinner className="mb-2" size="sm" />
-			  			<LoadingSpinner className="mb-2" />
-			  			<LoadingSpinner className="mb-2" size="lg" />
+			  			<Spinner className="mb-2" />
+			  			<Spinner className="w-10 h-10" />
 		  			</div>
-		  			<FormGroup label="Async Select">
+		  			{/*<FormGroup label="Async Select">
 		  				<AsyncSelect
 		  					value={[]}
 		  					onChange={console.log}
@@ -175,25 +211,28 @@ function Front() {
 		  						}
 		  					}}
 		  				/>
-		  			</FormGroup>
-		  			<Heading children="Alert" />
+		  			</FormGroup>*/}
+		  			<Heading version="h3" children="Alert" />
 		  			<Alert
+		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
 		  				title="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  			<Alert
-		  				icon={
-		  					<div className="w-10 h-10 border rounded-full border-destructive">
-		  						
-		  					</div>
-		  				}
+		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  				title="Maniace palladia overthin schoenus"
+		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
+		  				variant="informative"
+		  			/>
+		  			<Alert
+		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
 		  				variant="destructive"
 		  				title="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  		</div>
 	  		</div>
-	  		<Hr className="my-4" />
+	  		{/*<Hr className="my-4" />
 		  	<div>
 		  		<Heading className="mb-4">
 		  			Error
@@ -201,7 +240,7 @@ function Front() {
 		  		<ErrorBoundary>
 		  			<ForceError />
 		  		</ErrorBoundary>
-		  	</div>
+		  	</div>*/}
 	  	</div>
 	  </>
   )

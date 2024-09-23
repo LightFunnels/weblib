@@ -1,0 +1,32 @@
+.lfui-avatar{
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+.lfui-avatarPlaceholder{
+	width: 100%;
+	display: inline-block;
+	vertical-align: middle;
+}
+.lfui-avatar_md{
+	width: 50px;
+}
+.lfui-avatarFallback{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--muted-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.lfui-avatarImage{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}

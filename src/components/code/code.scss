@@ -1,0 +1,9 @@
+.lfui-code{
+	display: flex; 
+	position: relative; 
+	gap: 0.5rem;
+	align-items: center;
+	border-radius: var(--radius); 
+	font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; 
+	font-size: 0.8rem;
+}
