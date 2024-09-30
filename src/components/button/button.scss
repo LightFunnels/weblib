@@ -1,36 +1,48 @@
 
 .lfui-button{
-	padding: 7px 16px;
 	display: inline-flex; 
 	justify-content: center; 
 	align-items: center; 
 	border-radius: var(--radius);
-	font-size: 0.937rem;
+	--font-size: 15px;
+	font-size: var(--font-size);
+	padding: 0.4667em 16px;
 	font-weight: 500;
-	line-height: 1.25rem;
+	line-height: 1.3333em;
 	vertical-align: middle;
 	cursor: pointer;
-	box-shadow: 0px 1px 4px 0px var(--shadow-color);
+	&:disabled{
+		opacity: 50%;
+	}
 }
 
 .lfui-button_primary{
 	background-color: var(--primary-color);
 	color: var(--white);
 	fill: var(--white);
-	border: 1px solid var(--primary-color);
+	border: 1px solid color-mix(in srgb, var(--primary-color), #000 20%);
+	box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px color-mix(in srgb, var(--white) 30%, transparent) inset;
+	&:focus{
+		box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 4px color-mix(in srgb, var(--primary-color) 40%, transparent);
+	}
 }
 
 .lfui-button_destructive{
 	background-color: var(--destructive-color);
 	color: var(--white);
 	fill: var(--white);
-	border: 1px solid var(--destructive-color);
+	border: 1px solid color-mix(in srgb, var(--destructive-color), #000 20%);
+	box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px color-mix(in srgb, var(--white) 30%, transparent) inset;
+	&:focus{
+		box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 4px color-mix(in srgb, var(--destructive-color) 40%, transparent);
+	}
 }
 
 .lfui-button_secondary{
 	border: 1px solid var(--border-color);
 	background-color: var(--white);
-	box-shadow: 0px 1px 4px 0px var(--shadow-color);
+	border: 1px solid var(--border-color);
+	box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px var(--seperator-color) inset;
 }
 
 .lfui-spinner{
@@ -42,6 +54,10 @@
 
 .lfui-spinner_primary{
 	fill: var(--primary-color);
+}
+
+.lfui-button_small{
+	--font-size: 13px;
 }
 
 @keyframes spin {

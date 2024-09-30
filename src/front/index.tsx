@@ -22,6 +22,8 @@ import {
 	Alert,
 } from "../components";
 
+import Buttons from "./examples/buttons"
+
 import React from 'react';
 import { createRoot } from "react-dom/client";
 
@@ -37,7 +39,8 @@ function Front() {
 	const [date, setDate] = React.useState("2023-12-01 00:00:00");
   return (
   	<>
-	  	<div className="px-4 py-16 w-[800px] w-max-full mx-auto">
+	  	<div className="px-4 py-16 w-[1200px] w-max-full mx-auto flex flex-col gap-10">
+		  	<Buttons />
 	  		<div className="grid grid-cols-2 gap-4 items-start">
 		  		<div className="grid gap-4">
 		  			<Heading>
@@ -49,21 +52,6 @@ function Front() {
 		  			<Heading version="h3">
 		  				heading 3
 		  			</Heading>
-		  			<Hr/>
-		  			<div className="flex align-center gap-2">
-			  			<Button>
-			  				button
-			  			</Button>
-			  			<Button loading>
-			  				button
-			  			</Button>
-			  			<Button variant="secondary" loading>
-			  				button
-			  			</Button>
-			  			<Button variant="destructive">
-			  				button
-			  			</Button>
-		  			</div>
 		  			<Hr/>
 		  			<Text>
 		  				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.

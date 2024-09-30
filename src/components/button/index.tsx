@@ -11,6 +11,10 @@ const buttonVariants = cva(
         default: "lfui-button_primary",
         destructive: "lfui-button_destructive",
         secondary: "lfui-button_secondary",
+      },
+      size: {
+        default: "",
+        small: "lfui-button_small",
       }
     },
     defaultVariants: {
@@ -24,10 +28,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, loading, ...props }, ref) => {
+  ({ className, variant, loading, size, ...props }, ref) => {
     return (
       <button
-        className={clsx(buttonVariants({ variant, className }))}
+        className={clsx(buttonVariants({ variant, size }), className)}
         ref={ref}
         {...props}
       >
