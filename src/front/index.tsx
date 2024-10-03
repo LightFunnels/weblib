@@ -11,7 +11,6 @@ import {
 	Input,
 	Label,
 	Modal,
-	NativeLink,
 	RangeDatePicker,
 	Select,
 	Text,
@@ -20,6 +19,7 @@ import {
 	Spinner,
 	// AsyncSelect,
 	Alert,
+    Link,
 } from "../components";
 
 import Buttons from "./examples/buttons"
@@ -43,6 +43,9 @@ function Front() {
 		  	<Buttons />
 	  		<div className="grid grid-cols-2 gap-4 items-start">
 		  		<div className="grid gap-4">
+            <Label helpIcon="label with popover" children={
+              <span>test</span>
+            }/>
 		  			<Heading>
 		  				heading 1
 		  			</Heading>
@@ -177,7 +180,9 @@ function Front() {
 			  			/>
 		  			</FormGroup>
 		  			<Hr />
-		  			<NativeLink href="https://www.example.com" >Link</NativeLink>
+		  			<Link href="https://www.example.com" >Link</Link>
+		  			<Link button variant="destructive" href="https://www.example.com" >Link</Link>
+		  			<Link button variant="primary" href="https://www.example.com" >Link</Link>
 		  			<Code copiable value="something" />
 		  		</div>
 		  		<div className="grid gap-4">

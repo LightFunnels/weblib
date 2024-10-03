@@ -1,4 +1,17 @@
-.lfui-text{
-	font-size: 1rem;
-	margin: 0;
+.lfui-text {
+  line-height: 150%;
+  color: var(--caption-gray);
+  margin: 0;
+}
+
+.lfui-text_large {
+  font-size: 1rem;
+}
+
+.lfui-text_medium {
+  font-size: 0.875rem;
+}
+
+.lfui-text_small {
+  font-size: 0.75rem;
 }

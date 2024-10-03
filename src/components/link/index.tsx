@@ -1,18 +1,74 @@
-import clsx from 'clsx';
+import React from 'react';
+import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 import { LinkHTMLAttributes } from "react";
 
 import "./link.scss";
+import "../button/button.scss"
+import { SpinnerSVG } from '..';
 
-type Props = LinkHTMLAttributes<HTMLAnchorElement> & {
-	target?: string
+const linkVariants = cva(
+  "",
+  {
+    variants: {
+      variant: {
+        default: "lfui-link",
+        destructive: "lfui-button lfui-button_destructive",
+        secondary: "lfui-button lfui-button_secondary",
+        primary: "lfui-button lfui-button_primary",
+      },
+      size: {
+        default: "",
+        small: "lfui-button_small",
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+    }
+  }
+);
+
+interface LinkProps extends LinkHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof linkVariants> {
+  button?: boolean;
+  loading?: boolean;
+  leftIcon?: string;
+  rightIcon?: string;
+  IconClassName?: string;
+  to?: string;
 }
 
-const baseClassName = "lfui-link";
+export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+  ({ className, variant, button, loading, size, leftIcon, rightIcon, IconClassName, children, to, href, ...props }, ref) => {
+    const linkClass = clsx(
+      linkVariants({ variant: button ? (variant || 'primary') : 'default', size }),
+      button && "lfui-button flex items-center gap-2",
+      className
+    );
 
-export function NativeLink(props: Props){
-	return <a {...props} className={clsx(baseClassName, props.className)} />
-}
+    return (
+      <a
+        className={linkClass}
+        ref={ref}
+        href={to || href}
+        {...props}
+      >
+        {button ? (
+          loading ? (
+            <SpinnerSVG className="lfui-button__spinner" />
+          ) : (
+            <>
+              {leftIcon && <i className={clsx(IconClassName, leftIcon)} />}
+              <span className="flex-1 flex items-center justify-center">{children}</span>
+              {rightIcon && <i className={clsx(IconClassName, rightIcon)} />}
+            </>
+          )
+        ) : (
+          children
+        )}
+      </a>
+    );
+  }
+);
 
-export function LinkText(props: LinkHTMLAttributes<HTMLElement>){
-	return <span {...props} className={clsx(baseClassName, props.className)} />
-}
+Link.displayName = "Link";
+
+export { linkVariants };

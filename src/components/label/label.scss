@@ -1,4 +1,35 @@
-.lfui-label{
-	font-size: 16px;
-	font-weight: 500;
+
+/* .iconContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	i {
+		font-size: 18px;
+	}
+} */
+
+.lfui-label {
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lfui-label-container {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.lfui-help-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  &__svg {
+    color: var(--lf-gray-spark);
+    width: 18px;
+    height: 18px;
+  }
 }

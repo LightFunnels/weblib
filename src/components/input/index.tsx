@@ -2,51 +2,60 @@ import clsx from "clsx";
 import * as React from "react";
 
 import "./input.scss";
+import { Text } from "..";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	error?: React.ReactNode
-	inputClassName?: string
-	className?: string
-	icon?: React.ReactNode 
-	leftIcon?: React.ReactNode
-	inputContainerClassName?: string
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+    error?: React.ReactNode
+    inputClassName?: string
+    className?: string
+    icon?: React.ReactNode 
+    leftIcon?: React.ReactNode
+    inputContainerClassName?: string
+    textarea?: boolean
+    hint?:string 
 }
 
 export const initialInputClassName = "lfui-inputWrapper";
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-	({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, ...props }, ref) => {
-		return (
-			<label
-				data-state={props.disabled ? "disabled" : undefined}
-				className={clsx(`lfui-inputLabel`, className)}
-			>
-				<div className={clsx(initialInputClassName, inputContainerClassName ?? '')}>
-					{leftIcon}
-					<input
-						type={type}
-						className={clsx(
-							"lfui-input",
-							inputClassName
-						)}
-						ref={ref}
-						{...props}
-					/>
-					{icon}
-				</div>
-				{error && (
-					<InputError message={error} />
-				)}
-			</label>
-		)
-	}
+export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
+    ({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, textarea,hint, ...props }, ref) => {
+        const InputComponent = textarea ? 'textarea' : 'input';
+        
+        return (
+            <label
+                data-state={props.disabled ? "disabled" : undefined}
+                className={clsx(`lfui-inputLabel`, className)}
+            >
+                <div className={clsx(initialInputClassName, inputContainerClassName, {'error': error})}>
+                    {leftIcon}
+                    <InputComponent
+                        type={textarea ? undefined : type}
+                        className={clsx(
+                            "lfui-input",
+                            inputClassName,
+                            { 'lfui-textarea': textarea }
+                        )}
+                        ref={ref as any}
+                        {...props}
+                    />
+                    {icon}
+                </div>
+                {error && (
+                    <InputError message={error} />
+                )}
+                {hint && (
+                    <Text size="medium" children={hint}/>
+                )}
+            </label>
+        )
+    }
 )
 Input.displayName = "Input"
 
 export function InputError(props: {message: React.ReactNode, className?: string}){
-	return (
-		<div className={`lfui-inputError ${props.className ?? ""}`}>{props.message}</div>
-	)
+    return (
+        <div className={`lfui-inputError ${props.className ?? ""}`}>{props.message}</div>
+    )
 }
 
 export type NumberInputProps = Omit<InputProps, "onChange"|"value"> &
