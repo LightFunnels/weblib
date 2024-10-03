@@ -207,20 +207,27 @@ function Front() {
 		  			</FormGroup>*/}
 		  			<Heading version="h3" children="Alert" />
 		  			<Alert
+              variant="warning"
 		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  				title="Maniace palladia overthin schoenus"
+		  				label="Maniace palladia overthin schoenus"
+		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
+		  			/>
+		  			<Alert
+              variant='success'
+		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  			  label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  			<Alert
 		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  				title="Maniace palladia overthin schoenus"
+		  				variant="info"
+		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
-		  				variant="informative"
 		  			/>
-		  			<Alert
+            <Alert
 		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  				variant="destructive"
-		  				title="Maniace palladia overthin schoenus"
+		  				variant="error"
+		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  		</div>

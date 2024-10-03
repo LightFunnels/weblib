@@ -1,30 +1,100 @@
-.lfui-alert{
-	border: 1px solid;
-	display: flex;
-	border-radius: var(--radius);
-	padding: 0.5rem;
-	gap: var(--gap);
-}
+.lfui-alert {
+  border-radius: 0.75rem;
+  border-left: 4px solid transparent;
+  position: relative;
+  
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
 
-.lfui-alert_destructive{
-	color: var(--destructive-color);
-}
+  &__icon-container {
+    flex-shrink: 0;
+  }
 
-.lfui-alert_informative{
-	color: var(--success-color);
-}
+  &__icon {
+    color: inherit;
+    font-size: 22px;
+  }
 
-.lfui-alert_primary{
-	color: var(--primary-color);
-}
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 12px;
+  }
 
-.lfui-alertBody{
-	display:flex;
-	flex-direction: column;
-	gap: calc(var(--gap)/2);
-	flex-grow: 1;
-}
+  &__close {
+    right: 18px;
+    top: 12px;
+    position: absolute;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--lf-gray-flash);
+  }
 
-.lfui-alertMessage{
-	font-size: 0.9rem;
+  &__title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  &__message {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--font-color);
+    &--only {
+      font-weight: 500;
+    }
+  }
+
+  &__bottom-actions {
+    margin-top: 12px;
+  }
+
+  &__text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__actions {
+    align-self: flex-start;
+    white-space: nowrap;
+  }
+
+  &--info {
+    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+    border-color: var(--primary-color);
+    .lfui-alert__icon {
+      color: var(--primary-color);
+    }
+  }
+
+  &--success {
+    background-color: color-mix(in srgb, var(--success-color) 10%, transparent);
+    border-color: var(--success-color);
+    .lfui-alert__icon {
+      color: var(--success-color);
+    }
+  }
+
+  &--warning {
+    background-color: color-mix(in srgb, var(--warning-color) 10%, transparent);
+    border-color: var(--warning-color);
+    .lfui-alert__icon {
+      color: var(--warning-color);
+    }
+  }
+
+  &--error {
+    background-color: color-mix(in srgb, var(--destructive-color) 10%, transparent);
+    border-color: var(--destructive-color);
+    .lfui-alert__icon {
+      color: var(--destructive-color);
+    }
+  }
 }
