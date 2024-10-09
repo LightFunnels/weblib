@@ -1,32 +1,63 @@
-.lfui-input{
-	width: 100%;
-	height: 100%;
-	border: none;
-	outline: none;
-	padding: 0;
-	background-color: transparent;
+.lfui-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0;
+  background-color: transparent;
+  &.lfui-textarea {
+    min-height: 6.25rem;
+    resize: vertical;
+    overflow: auto;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
-.lfui-inputLabel{
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	row-gap: 2px;
+.lfui-inputLabel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
 }
 
-.lfui-inputWrapper{
-	background-color: var(--white);
-	display: flex;
-	padding: 0.5rem 0.75rem;
-	border-radius: 0.375rem; 
-	border-width: 1px; 
-	width: 100%;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
-	border: 1px solid var(--border-color);
+.lfui-inputWrapper {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.563rem 0.625rem;
+  border-radius: 0.375rem; 
+  border-width: 1px; 
+  width: 100%;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border: 1px solid var(--lf-gray-glow);
+  box-shadow: 0px 1px 3px 0px color-mix(in srgb, var(--font-color) 8%, transparent);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0px 0px 0px 1px var(--primary-color);
+  }
+
+  &.error {
+    border-color: var(--destructive-color);
+
+    &:focus-within {
+      border-color: var(--destructive-color);
+      box-shadow: 0px 0px 0px 1px var(--destructive-color);
+    }
+  }
+
+  &:has(.lfui-input:disabled) {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
 
-.lfui-inputError{
-	color: var(--destructive-color);
-	font-size: 0.8rem;
+.lfui-inputError {
+  color: var(--destructive-color);
+  font-size: 0.8rem;
 }

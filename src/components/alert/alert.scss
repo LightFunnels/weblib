@@ -1,30 +1,126 @@
-.lfui-alert{
-	border: 1px solid;
-	display: flex;
-	border-radius: var(--radius);
-	padding: 0.5rem;
-	gap: var(--gap);
+.lfui-alert {
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.25rem;
+  }
 }
 
-.lfui-alert_destructive{
-	color: var(--destructive-color);
+.lfui-alert_wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 0.75rem;
 }
 
-.lfui-alert_informative{
-	color: var(--success-color);
+.lfui-alert_icon-container {
+  flex-shrink: 0;
 }
 
-.lfui-alert_primary{
-	color: var(--primary-color);
+.lfui-alert_icon {
+  color: inherit;
+  font-size: 1.357rem;
 }
 
-.lfui-alertBody{
-	display:flex;
-	flex-direction: column;
-	gap: calc(var(--gap)/2);
-	flex-grow: 1;
+.lfui-alert_content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.75rem;
 }
 
-.lfui-alertMessage{
-	font-size: 0.9rem;
+.lfui-alert_close {
+  right: 1.125rem;
+  top: 0.75rem;
+  position: absolute;
+  font-size: 1.125rem;
+  cursor: pointer;
+  color: var(--lf-gray-flash);
+}
+
+.lfui-alert_title {
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.lfui-alert_message {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--font-color);
+}
+
+.lfui-alert_message_only {
+  font-weight: 500;
+}
+
+.lfui-alert_bottom-actions {
+  margin-top: 0.75rem;
+}
+
+.lfui-alert_text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lfui-alert_actions {
+  align-self: flex-start;
+  white-space: nowrap;
+}
+
+.lfui-alert_info {
+  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+
+.lfui-alert_info::before {
+  background-color: var(--primary-color);
+}
+
+.lfui-alert_info .lfui-alert_icon {
+  color: var(--primary-color);
+}
+
+.lfui-alert_success {
+  background-color: color-mix(in srgb, var(--success-color) 10%, transparent);
+}
+
+.lfui-alert_success::before {
+  background-color: var(--success-color);
+}
+
+.lfui-alert_success .lfui-alert_icon {
+  color: var(--success-color);
+}
+
+.lfui-alert_warning {
+  background-color: color-mix(in srgb, var(--warning-color) 10%, transparent);
+}
+
+.lfui-alert_warning::before {
+  background-color: var(--warning-color);
+}
+
+.lfui-alert_warning .lfui-alert_icon {
+  color: var(--warning-color);
+}
+
+.lfui-alert_destructive {
+  background-color: color-mix(in srgb, var(--destructive-color) 10%, transparent);
+}
+
+.lfui-alert_destructive::before {
+  background-color: var(--destructive-color);
+}
+
+.lfui-alert_destructive .lfui-alert_icon {
+  color: var(--destructive-color);
 }

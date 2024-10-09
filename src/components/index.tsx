@@ -2,7 +2,7 @@ import "./variables.scss";
 
 export * from "./button";
 export * from "./heading";
-export * from "./hr";
+export * from "./divider";
 export * from "./modal";
 export * from "./text";
 export * from "./input";
