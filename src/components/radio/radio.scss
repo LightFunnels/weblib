@@ -4,7 +4,7 @@
   cursor: pointer;
   position: relative;
   column-gap: var(--inline-gap);
-  gap: 0.5rem;
+  gap: var(--radius);
   
   &.lfui-radio_disabled {
     cursor: not-allowed;

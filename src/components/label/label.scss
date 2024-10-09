@@ -9,11 +9,10 @@
 } */
 
 .lfui-label {
-  font-size: 16px;
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--gap);
 }
 
 .lfui-label-container {
@@ -29,7 +28,7 @@
   
   &__svg {
     color: var(--lf-gray-spark);
-    width: 18px;
-    height: 18px;
+    width: 1.125rem;
+    height: 1.125rem;
   }
 }
