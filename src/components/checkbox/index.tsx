@@ -8,14 +8,15 @@ type Props = React.HTMLAttributes<HTMLInputElement> & {
 	checked: boolean
 	label: React.ReactNode
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean 
 }
 
 export function Checkbox(props: Props){
 	return (
-		<Label className={clsx("lfui-checkbox", props.className)}>
-			<input checked={props.checked} onChange={props.onChange} type="checkbox" className="lfui-checkboxInput" />
+		<Label className={clsx("lfui-checkbox", props.className ,{ "lfui-checkbox_disabled": props.disabled })}>
+			<input checked={props.checked} disabled={props.disabled} onChange={props.onChange} type="checkbox" className="lfui-checkboxInput" />
 			<div
-				className={clsx("lfui-checkboxIcon", {"lfui-checkbox_checked": props.checked})}
+				className={clsx("lfui-checkboxIcon", {"lfui-checkbox_checked": props.checked,"lfui-checkbox_disabled": props.disabled})}
 			>
 				{props.checked && (
 					<CheckIcon className="lfui-checkboxCheckIcon" />

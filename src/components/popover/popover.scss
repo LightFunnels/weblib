@@ -1,7 +1,7 @@
 .lfui-popover {
   padding: 10px;
   background: var(--white);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--lf-gray-glow);
   box-shadow: 0px 2px 15px 0px rgba(var(--font-color), 0.13);
   border-radius: 4px;
   color: var(--font-color);
@@ -58,7 +58,7 @@
 .lfui-popover__arrow-visual {
   width: 16px;
   height: 16px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--lf-gray-glow);
   border-right-color: transparent !important;
   border-bottom-color: transparent !important;
   border-top-left-radius: 3px;

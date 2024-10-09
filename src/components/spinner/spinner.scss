@@ -1,0 +1,31 @@
+.lfui-spinner{
+	animation: spin 1s linear infinite;
+	margin-right: 4px;
+}
+.lfui-spinner_small {
+  width: 18px;
+  height: 18px;
+}
+
+.lfui-spinner_medium {
+  width: 24px;
+  height: 24px;
+}
+
+.lfui-spinner_large {
+  width: 32px;
+  height: 32px;
+}
+
+.lfui-spinner_primary{
+  fill: var(--primary-color);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

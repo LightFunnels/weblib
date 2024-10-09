@@ -7,7 +7,6 @@ import {
 	DropdownItem,
 	FormGroup,
 	Heading,
-	Hr,
 	Input,
 	Label,
 	Modal,
@@ -20,6 +19,7 @@ import {
 	// AsyncSelect,
 	Alert,
     Link,
+    Divider,
 } from "../components";
 
 import Buttons from "./examples/buttons"
@@ -55,11 +55,9 @@ function Front() {
 		  			<Heading version="h3">
 		  				heading 3
 		  			</Heading>
-		  			<Hr/>
 		  			<Text>
 		  				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.
 		  			</Text>
-		  			<Hr/>
 		  			<div>
 			  			<Button onClick={() => setM1(true)}>
 			  				Modal
@@ -80,7 +78,6 @@ function Front() {
 		  					/>
 		  				)
 		  			}
-		  			<Hr/>
 		  			<Label>
 		  				Input
 		  			</Label>
@@ -101,7 +98,6 @@ function Front() {
 		  			<FormGroup label={"Form Group Label"}>
 		  				<Input />
 		  			</FormGroup>
-		  			<Hr/>
 	  				<div className="flex gap-2 items-center">
 			  			<Dropdown
 			  				label={
@@ -124,7 +120,6 @@ function Front() {
 								</DropdownItem>
 			  			</Dropdown>
 	  				</div>
-		  			<Hr/>
 		  			<Label>Avatar</Label>
 		  			<div className="flex gap-2">
 		  				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
@@ -158,7 +153,6 @@ function Front() {
 			  			/>
 		  			</FormGroup>
 		  			<Checkbox onChange={event => setChecked(event.target.checked)} checked={checked} label="Checkbox" />
-		  			<Hr/>
 		  			<FormGroup label={"Date Picker"}>
 			  			<DatePicker
 			  				clearable
@@ -179,7 +173,21 @@ function Front() {
 			  				value={range}
 			  			/>
 		  			</FormGroup>
-		  			<Hr />
+            <div className="flex items-center gap-3">
+              <RangeDatePicker
+			  				clearable
+			  				onChange={setRange}
+			  				value={range}
+			  			/>
+              <Divider orientation="vertical"/>
+              <RangeDatePicker
+			  				clearable
+			  				onChange={setRange}
+			  				value={range}
+			  			/>
+            </div>
+		  			<Divider text="testing"/>
+            <Divider/>
 		  			<Link href="https://www.example.com" >Link</Link>
 		  			<Link button variant="destructive" href="https://www.example.com" >Link</Link>
 		  			<Link button variant="primary" href="https://www.example.com" >Link</Link>
@@ -190,7 +198,7 @@ function Front() {
 		  				Loading
 		  			</Heading>
 		  			<div>
-			  			<Spinner className="mb-2" />
+			  			<Spinner />
 			  			<Spinner className="w-10 h-10" />
 		  			</div>
 		  			{/*<FormGroup label="Async Select">

@@ -4,7 +4,7 @@ import { LinkHTMLAttributes } from "react";
 
 import "./link.scss";
 import "../button/button.scss"
-import { SpinnerSVG } from '..';
+import { SpinnerSVG } from '../spinner';
 
 const linkVariants = cva(
   "",

@@ -1,10 +1,14 @@
 .lfui-checkbox {
 	display: flex;
-	items-items: center;
+	align-items: center;
 	cursor: cursor-pointer;
 	position: relative;
 	display: flex;
 	column-gap: var(--inline-gap);
+  gap: 0.5rem;
+  &.lfui-checkbox_disabled {
+    cursor: not-allowed;
+  }
 }
 
 .lfui-checkboxInput {
@@ -22,11 +26,21 @@
 	cursor: pointer;
 	box-shadow: 0px 1px 4px -2px var(--shadow-color);
 	position: relative;
+  &:hover{
+    box-shadow: 0px 0px 0px 4px var(--lf-gray-ray);
+  }
+  &.lfui-checkbox_disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 
 .lfui-checkbox_checked {
 	border-color: var(--primary-color);
 	background-color: var(--primary-color);
+  &:hover:not(.lfui-checkbox_disabled) {
+    box-shadow: 0px 0px 0px 4px color-mix(in srgb, var(--primary-color) 40%, transparent);
+  }
 }
 
 .lfui-checkboxCheckIcon {

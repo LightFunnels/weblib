@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { Instance, Placement, createPopper } from '@popperjs/core';
 import React, { Fragment } from 'react';
 import { createPortal } from 'react-dom';
-import {Button} from "../button"
 
 import "./drop-down.scss";
 
@@ -69,7 +68,9 @@ export function Dropdown(props: Props){
   )
 }
 
-type DropdownItemProps = React.HTMLAttributes<HTMLDivElement>;
+export interface DropdownItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  active?: boolean;
+}
 
 export const DropdownMenu = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	function DropdownMenu(props, ref){
@@ -84,9 +85,9 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.HTMLAttribute
 );
 
 export const DropdownItem = React.forwardRef<HTMLDivElement, DropdownItemProps>(
-	function DropdownItem(props, ref){
+	function DropdownItem({ active, ...props }, ref) {
 		return (
-			<div {...props} ref={ref} className={clsx("lfui-dropdownItem", props.className)}>
+			<div {...props} ref={ref} className={clsx("lfui-dropdownItem",{ "lfui-dropdownItem_active": active }, props.className)}>
 				{props.children}
 			</div>
 		)

@@ -3,14 +3,17 @@
 	justify-content: center; 
 	align-items: center; 
 	border-radius: var(--radius);
-	--font-size: 15px;
+	--font-size: 0.938rem;
 	font-size: var(--font-size);
-	padding: 0.4667em 16px;
+	padding: 0.4667em 1em;
 	font-weight: 500;
 	line-height: 1.3333em;
 	vertical-align: middle;
 	cursor: pointer;
+  text-align: center;
+  gap: 0.5rem;
 	&:disabled{
+    cursor: not-allowed;
 		opacity: 50%;
 	}
 }
@@ -42,24 +45,14 @@
 	background-color: var(--white);
 	border: 1px solid var(--border-color);
 	box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px var(--seperator-color) inset;
-  
-}
-
-.lfui-spinner{
-	animation: spin 1s linear infinite;
-	width: 16px;
-	height: 16px;
-	margin-right: 4px;
-}
-
-.lfui-spinner_primary{
-	fill: var(--primary-color);
 }
 
 .lfui-button_small{
-	--font-size: 13px;
+	--font-size: 0.813rem;
 }
-
+.lfui-button__spinner{
+  fill: var(--white)
+}
 @keyframes spin {
   from {
     transform: rotate(0deg);

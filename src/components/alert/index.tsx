@@ -1,6 +1,7 @@
 import React from 'react';
 import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 
+import "./alert.scss";
 const DEFAULT_LABEL = "Something Went Wrong";
 
 const alertVariants = cva(
@@ -8,10 +9,10 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        error: "lfui-alert--error",
-        warning: "lfui-alert--warning",
-        info: "lfui-alert--info",
-        success: "lfui-alert--success",
+        error: "lfui-alert_destructive",
+        warning: "lfui-alert_warning",
+        info: "lfui-alert_info",
+        success: "lfui-alert_success",
       },
     },
     defaultVariants: {
@@ -30,7 +31,7 @@ export function Alert({ message, icon, ...props }: AlertProps) {
     <AlertContent
       {...props}
       label={props.label || DEFAULT_LABEL}
-      icon={icon || <i className="lfui-icon-alerts-info" />}
+      icon={icon || <i className="icon-alerts-info" />}
       message={message}
       variant={props.variant}
     />
@@ -68,41 +69,41 @@ export function AlertContent({
 
   return (
     <div className={alertClassName} {...props}>
-      <div className="lfui-alert__wrapper">
+      <div className="lfui-alert_wrapper">
         {icon && (
-          <div className="lfui-alert__icon-container">
-            <div className="lfui-alert__icon">
+          <div className="lfui-alert_icon-container">
+            <div className="lfui-alert_icon">
               {icon}
             </div>
           </div>
         )}
-        <div className="lfui-alert__content">
-          <div className="lfui-alert__text-container">
+        <div className="lfui-alert_content">
+          <div className="lfui-alert_text-container">
             {label && (
-              <div className={clsx("lfui-alert__title", labelClassName)}>
+              <div className={clsx("lfui-alert_title", labelClassName)}>
                 {label}
               </div>
             )}
             {message && (
-              <div className={clsx("lfui-alert__message", messageClassName, {
-                "lfui-alert__message--only": !label
+              <div className={clsx("lfui-alert_message", messageClassName, {
+                "lfui-alert_message_only": !label
               })}>
                 {message}
               </div>
             )}
             {bottomActions && (
-              <div className="lfui-alert__bottom-actions">
+              <div className="lfui-alert_bottom-actions">
                 {bottomActions}
               </div>
             )}
           </div>
           {actions ? (
-            <div className="lfui-alert__actions">
+            <div className="lfui-alert_actions">
               {actions}
             </div>
           ) : (
             (setClose && !noClose) && (
-              <button className="lfui-alert__close" onClick={() => setClose(true)}>
+              <button className="lfui-alert_close" onClick={() => setClose(true)}>
                 <i className="icon-cancel-music" />
               </button>
             )
