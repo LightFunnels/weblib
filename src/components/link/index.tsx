@@ -4,7 +4,7 @@ import { LinkHTMLAttributes } from "react";
 
 import "./link.scss";
 import "../button/button.scss"
-import { SpinnerSVG } from '../spinner';
+import { Spinner, SpinnerSVG } from '../spinner';
 
 const linkVariants = cva(
   "",
@@ -30,17 +30,14 @@ const linkVariants = cva(
 interface LinkProps extends LinkHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof linkVariants> {
   button?: boolean;
   loading?: boolean;
-  leftIcon?: string;
-  rightIcon?: string;
-  IconClassName?: string;
   to?: string;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, variant, button, loading, size, leftIcon, rightIcon, IconClassName, children, to, href, ...props }, ref) => {
+  ({ className, variant, button, loading, size, children, to, href, ...props }, ref) => {
     const linkClass = clsx(
       linkVariants({ variant: button ? (variant || 'primary') : 'default', size }),
-      button && "lfui-button flex items-center gap-2",
+      button && "lfui-button",
       className
     );
 
@@ -53,12 +50,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       >
         {button ? (
           loading ? (
-            <SpinnerSVG className="lfui-button__spinner" />
+            <Spinner/>
           ) : (
             <>
-              {leftIcon && <i className={clsx(IconClassName, leftIcon)} />}
-              <span className="flex-1 flex items-center justify-center">{children}</span>
-              {rightIcon && <i className={clsx(IconClassName, rightIcon)} />}
+              {children}
             </>
           )
         ) : (

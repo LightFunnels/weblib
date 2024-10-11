@@ -18,7 +18,7 @@ export interface LabelProps
 
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
   ({ helpIcon, action, children, className, ...props }, ref) => (
-    <div className="lfui-label-container">
+    <div className="lfui-labelContainer">
       <label
         ref={ref}
         className={clsx(labelVariants(), className)}
@@ -26,7 +26,7 @@ const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
       >
         {children}
         {helpIcon && (
-          <HelpIcon placement='bottom'>{helpIcon}</HelpIcon>
+          <HelpIcon>{helpIcon}</HelpIcon>
         )}
       </label>
       {action}
@@ -46,7 +46,7 @@ interface HelpIconProps {
 }
 
 const HelpIcon: React.FC<HelpIconProps> = ({
-  placement = 'bottom',
+  placement,
   children,
   className,
   iconClassName
@@ -60,11 +60,11 @@ const HelpIcon: React.FC<HelpIconProps> = ({
   return (
     <React.Fragment>
       <span
-        className={clsx('lfui-help-icon', className)}
+        className={clsx('lfui-helpIcon', className)}
         ref={refCodeInput}
       >
         <svg 
-          className={clsx('lfui-help-icon__svg', iconClassName)}
+          className={clsx('lfui-helpIconSvg', iconClassName)}
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 24 24" 
           fill="none" 

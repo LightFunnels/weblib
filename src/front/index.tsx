@@ -15,7 +15,6 @@ import {
 	Text,
 	Code,
 	// ErrorBoundary,
-	Spinner,
 	// AsyncSelect,
 	Alert,
     Link,
@@ -28,6 +27,7 @@ import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import "./styles.scss";
+import { Spinner } from "../components/spinner";
 
 function Front() {
 	const [m1, setM1] = React.useState(false);
@@ -198,8 +198,8 @@ function Front() {
 		  				Loading
 		  			</Heading>
 		  			<div>
-			  			<Spinner />
-			  			<Spinner className="w-10 h-10" />
+			  			<Spinner variant="primary"/>
+			  			<Spinner variant="primary" className="w-10 h-10 fill-red-500" />
 		  			</div>
 		  			{/*<FormGroup label="Async Select">
 		  				<AsyncSelect

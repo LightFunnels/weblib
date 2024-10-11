@@ -8,7 +8,7 @@
   border-style: solid;
 }
 
-.lfui-badge_content {
+.lfui-badgeContent {
   display: flex;
   padding: 0.25rem 0.5rem;
   align-items: center;
@@ -16,21 +16,21 @@
   white-space: nowrap;
 }
 
-.lfui-badge_icon {
+.lfui-badgeIcon {
   flex-shrink: 0;
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
 }
 
-.lfui-badge_label {
+.lfui-badgeLabel {
   flex-shrink: 0;
   font-size: 0.875rem;
   color: var(--font-color);
   text-transform: capitalize;
 }
 
-.lfui-badge_dropdown-icon {
+.lfui-badgeDropdownIcon {
   display: flex;
   padding: 0 0.25rem;
   align-self: stretch;
@@ -40,18 +40,18 @@
   gap: 0.625rem;
 }
 
-.lfui-badge_dropdown-icon svg {
+.lfui-badgeDropdownIcon svg {
   color: var(--font-color);
   width: 1rem;
   height: 1rem;
 }
 
-.lfui-badge_ltr .lfui-badge_dropdown-icon {
+.lfui-badge_ltr .lfui-badgeDropdownIcon {
   border-left-width: 1px;
   border-left-style: solid;
 }
 
-.lfui-badge_rtl .lfui-badge_dropdown-icon {
+.lfui-badge_rtl .lfui-badgeDropdownIcon {
   border-right-width: 1px;
   border-right-style: solid;
 }
@@ -61,11 +61,11 @@
   border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
 }
 
-.lfui-badge_primary .lfui-badge_icon {
+.lfui-badge_primary .lfui-badgeIcon {
   background-color: var(--primary-color);
 }
 
-.lfui-badge_primary .lfui-badge_dropdown-icon {
+.lfui-badge_primary .lfui-badgeDropdownIcon {
   border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
 }
 
@@ -74,11 +74,11 @@
   border-color: color-mix(in srgb, var(--destructive-color) 40%, transparent);
 }
 
-.lfui-badge_warning .lfui-badge_icon {
+.lfui-badge_warning .lfui-badgeIcon {
   background-color: var(--destructive-color);
 }
 
-.lfui-badge_warning .lfui-badge_dropdown-icon {
+.lfui-badge_warning .lfui-badgeDropdownIcon {
   border-color: color-mix(in srgb, var(--destructive-color) 40%, transparent);
 }
 
@@ -87,11 +87,11 @@
   border-color: color-mix(in srgb, var(--success-color) 40%, transparent);
 }
 
-.lfui-badge_success .lfui-badge_icon {
+.lfui-badge_success .lfui-badgeIcon {
   background-color: var(--success-color);
 }
 
-.lfui-badge_success .lfui-badge_dropdown-icon {
+.lfui-badge_success .lfui-badgeDropdownIcon {
   border-color: color-mix(in srgb, var(--success-color) 40%, transparent);
 }
 
@@ -100,11 +100,11 @@
   border-color: color-mix(in srgb, var(--lf-gray-nova) 40%, transparent);
 }
 
-.lfui-badge_neutral .lfui-badge_icon {
+.lfui-badge_neutral .lfui-badgeIcon {
   background-color: var(--lf-gray-nova);
 }
 
-.lfui-badge_neutral .lfui-badge_dropdown-icon {
+.lfui-badge_neutral .lfui-badgeDropdownIcon {
   border-color: color-mix(in srgb, var(--lf-gray-nova) 40%, transparent);
 }
 
@@ -113,28 +113,28 @@
   border-color: color-mix(in srgb, var(--warning-color) 40%, transparent);
 }
 
-.lfui-badge_caution .lfui-badge_icon {
+.lfui-badge_caution .lfui-badgeIcon {
   background-color: var(--warning-color);
 }
 
-.lfui-badge_caution .lfui-badge_dropdown-icon {
+.lfui-badge_caution .lfui-badgeDropdownIcon {
   border-color: color-mix(in srgb, var(--warning-color) 40%, transparent);
 }
 
-.lfui-badge_large .lfui-badge_content {
+.lfui-badge_large .lfui-badgeContent {
   padding: 0.375rem 0.75rem;
 }
 
-.lfui-badge_large .lfui-badge_label {
+.lfui-badge_large .lfui-badgeLabel {
   font-size: 1rem;
 }
 
-.lfui-badge_large .lfui-badge_icon {
+.lfui-badge_large .lfui-badgeIcon {
   width: 0.625rem;
   height: 0.625rem;
 }
 
-.lfui-badge_large .lfui-badge_dropdown-icon svg {
+.lfui-badge_large .lfui-badgeDropdownIcon svg {
   width: 1.25rem;
   height: 1.25rem;
 }

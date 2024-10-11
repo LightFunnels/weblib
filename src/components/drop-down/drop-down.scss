@@ -5,7 +5,9 @@
   align-items: center;
   column-gap: var(--inline-gap);
   align-items: center;
+  align-self: stretch;
   display: flex;
+  font-size: 0.875rem;
 }
 
 .lfui-dropdownItem:not(.lfui-dropdownItem_active):hover {

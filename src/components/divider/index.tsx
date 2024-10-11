@@ -9,7 +9,7 @@ const dividerVariants = cva(
     variants: {
       variant: {
         default: "lfui-divider_default",
-        withText: "lfui-divider_with-text",
+        withText: "lfui-divider_withText",
       },
       orientation: {
       	"horizontal":"lfui-divider_horizontal",
@@ -37,7 +37,7 @@ export const Divider = React.forwardRef< HTMLDivElement, DividerProps >(
       className={clsx(dividerVariants({ variant:text? "withText" :"default" ,orientation, className }))}
       {...props}
     >
-        {text && <span className="lfui-divider_text">{text}</span>}
+        {text && <span className="lfui-dividerText">{text}</span>}
     </div>
   )
 )

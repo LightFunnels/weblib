@@ -16,7 +16,7 @@ import {
  *  */
 
 import clsx from 'clsx';
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import styles from "./date.scss";
 
 import { modals } from "../drop-down";
@@ -214,7 +214,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 		if (
 			endDateHover && ((nowTime <= endDateHover) && (nowTime >= startDate!.getTime()))
 		) {
-			className += ' bg-slate-200 ';
+			className += ' in-selecting-range ';
 		}
 
 		if (
@@ -258,10 +258,9 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 	const propsDisabled = props.disabled ?? true;
 
 	return (
-		<div className={clsx(styles.range, "lfui-datepicker", props.className, "[@media(max-width:764px)]:w-[300px] shadow-[0px_2px_20px_rgba(32,32,35,.13)]")}>
-			<div className={"flex [@media(max-width:764px)]:flex-col"}>
-				<div className='[@media(max-width:764px)]:order-2'>
-					<div className={clsx("flex [@media(max-width:764px)]:flex-col [@media(max-width:764px)]:max-h-[300px] [@media(max-width:764px)]:overflow-auto [@media(max-width:764px)]:pt-2 [@media(max-width:764px)]:border-t [@media(max-width:764px)]:border-neutral-200")} onMouseOver={(startDate && !endDate) ? onMouseOver : undefined} >
+		<div className={clsx(styles.range, "lfui-datepicker", props.className)}>
+			<div className={"lfui-rangeDatepickerContainer"}>
+				<div className='lfui-rangeDatePickerLeft' onMouseOver={(startDate && !endDate) ? onMouseOver : undefined}>
 						<ReactDatePicker
 							openToDate={leftDate}
 							inline
@@ -320,7 +319,6 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 							inline
 							maxDate={today}
 						/>
-					</div>
 					{ props.append }
 				</div>
 				{
@@ -339,11 +337,12 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 							}
 						/>
 					) : (
-						<div className={"[@media(min-width:764px)]:border-l border-input [@media(max-width:764px)]:max-h-[220px] [@media(max-width:764px)]:overflow-auto [@media(max-width:764px)]:order-1"}>
+						<div className={"lfui-rangeDatePickerRight"}>
 							{
 								presets.map((item) => (
 									<DropdownItem 
 										className={props.dateItemClass ?? ''}
+                    active={active === item.value}
 										key={item.label} 
 										onClick={() => {
 											let val = generateFromValue(item.value);
@@ -361,7 +360,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 					)
 				}
 			</div>
-			<div className={`flex items-center justify-end gap-2 p-2 bg-accent ${props.footerClass ?? ''}`}>
+			<div className={`lfui-rangeDatePickerFooter ${props.footerClass ?? ''}`}>
 				<Button 
 					onClick={props.onCancel} 
 					variant='secondary'
@@ -512,6 +511,7 @@ const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes
 				variant="secondary"
 				children={
 					<div className="lfui-dropdownLabelChildren">
+            <CalendarIcon className='lfui-datepickerCalendarIcon'/>
 						<div>
 							{props.children}
 						</div>

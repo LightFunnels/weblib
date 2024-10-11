@@ -6,41 +6,78 @@ import "./modal.scss";
 
 import { modals } from "../drop-down";
 
-type Props = {
-	header?: React.ReactNode
-	body: React.ReactNode
-	footer?: React.ReactNode
-	bodyClassName?: string
-	headerClassName?: string
-	close: () => void
+interface ModalProps {
+  active?: boolean;
+  close?: () => void;
+  children: React.ReactElement;
+  className?: string;
 }
 
-export function Modal(props: Props){
-	return (
-		<Fragment>
-			{
-				createPortal(
-					<div className="lfui-modal">
-						<div onClick={() => props.close()} className="lfui-modalBackground"></div>
-						<div className={clsx("lfui-modalBlock", props.bodyClassName)}>
-							{
-								props.header && (
-									<div className={`lfui-modalHeader ${props.headerClassName ?? ""}`}>{props.header}</div>
-								)
-							}
-							<div className={"lfui-modalBody"} >
-								{props.body}
-							</div>
-							{
-								props.footer && (
-									<div className={"lfui-modalFooter"}>{props.footer}</div>
-								)
-							}
-						</div>
-					</div>,
-					modals
-				)
-			}
-		</Fragment>
-	)
+export function Modal(props: ModalProps) {
+  return !(props.active === false) ? (
+    createPortal(
+      <ModalContent {...props} />,
+      modals
+    )
+  ) : null;
 }
+
+function ModalContent(props: ModalProps) {
+  React.useEffect(() => {
+    if (!props.close) {
+      return;
+    }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        props.close!();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [props.close]);
+
+  return (
+    <div className={clsx('lfui-modal', props.className)}>
+      <div className="lfui-modalBackground" onClick={props.close} />
+      <props.children.type 
+        {...props.children.props} 
+        className={clsx(
+          'lfui-modalBlock',
+          props.children.props.className
+        )} 
+      />
+    </div>
+  )
+}
+
+Modal.useModalState = function(initState: boolean = false) {
+  const [state, setState] = React.useState(initState);
+
+  return [
+    state,
+    () => setState(true),
+    () => setState(false)
+  ] as const;
+}
+
+Modal.Title = function (props: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props} className={clsx('lfui-modalHeader', props.className)}/>
+  )
+}
+
+Modal.Footer = function (props: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props} className={clsx('lfui-modalFooter', props.className)} />
+  )
+}
+
+Modal.Body = function (props: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props} className={clsx('lfui-modalBody', props.className)} />
+  )
+}
+
+Modal.modals = modals;

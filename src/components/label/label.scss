@@ -15,20 +15,20 @@
   gap: var(--gap);
 }
 
-.lfui-label-container {
+.lfui-labelContainer {
    display: flex;
    align-items: center;
    justify-content: space-between;
 }
 
-.lfui-help-icon {
+.lfui-helpIcon {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
-  &__svg {
-    color: var(--lf-gray-spark);
-    width: 1.125rem;
-    height: 1.125rem;
-  }
+}
+
+.lfui-helpIconSvg{
+  color: var(--lf-gray-spark);
+  width: 1.125rem;
+  height: 1.125rem;
 }

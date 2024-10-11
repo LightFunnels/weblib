@@ -69,41 +69,41 @@ export function AlertContent({
 
   return (
     <div className={alertClassName} {...props}>
-      <div className="lfui-alert_wrapper">
+      <div className="lfui-alertWrapper">
         {icon && (
-          <div className="lfui-alert_icon-container">
-            <div className="lfui-alert_icon">
+          <div className="lfui-alertIconContainer">
+            <div className="lfui-alertIcon">
               {icon}
             </div>
           </div>
         )}
-        <div className="lfui-alert_content">
-          <div className="lfui-alert_text-container">
+        <div className="lfui-alertContent">
+          <div className="lfui-alertTextContainer">
             {label && (
-              <div className={clsx("lfui-alert_title", labelClassName)}>
+              <div className={clsx("lfui-alertTitle", labelClassName)}>
                 {label}
               </div>
             )}
             {message && (
-              <div className={clsx("lfui-alert_message", messageClassName, {
-                "lfui-alert_message_only": !label
+              <div className={clsx("lfui-alertMessage", messageClassName, {
+                "lfui-alertMessageOnly": !label
               })}>
                 {message}
               </div>
             )}
             {bottomActions && (
-              <div className="lfui-alert_bottom-actions">
+              <div className="lfui-alertBottomActions">
                 {bottomActions}
               </div>
             )}
           </div>
           {actions ? (
-            <div className="lfui-alert_actions">
+            <div className="lfui-alertActions">
               {actions}
             </div>
           ) : (
             (setClose && !noClose) && (
-              <button className="lfui-alert_close" onClick={() => setClose(true)}>
+              <button className="lfui-alertClose" onClick={() => setClose(true)}>
                 <i className="icon-cancel-music" />
               </button>
             )

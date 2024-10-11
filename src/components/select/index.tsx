@@ -61,13 +61,13 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 				variant="secondary"
 				children={
 					<div className="lfui-dropdownLabelChildren">
-						<div>
+						<div className="lfui-dropdown_selectedLabel">
 							{selected?.label ?? "Select"}
 						</div>
 						{
 							(props.cancellable && selected) ? (
 								<i
-									className={`icon icon-X-Close text-lg`}
+									className={`icon-X-Close`}
 									onClick={
 										props.disabled ? undefined :
 										function (event) {
@@ -111,6 +111,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 												ref={e => {
 													ref1.current[mapValueToKey(option.value)] = e
 												}}
+                        active={option.value === props.value}
 												onClick={
 													props.onChange && (
 														() => {
@@ -171,6 +172,7 @@ const Search = React.forwardRef<HTMLInputElement, SearchProps>(
 export function sanitizeStringForReg(q: string){
   return q.replace(/\\/g, "");
 }
+
 function mapValueToKey(v): string {
 	if (v === undefined) {
 		return 'undefined';

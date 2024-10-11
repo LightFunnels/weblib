@@ -76,16 +76,16 @@ export const Badge: React.FC<BadgeProps> = ({
       className={badgeVariants({ variant: selectedVariant, size, direction: dir, className })}
       dir={dir}
     >
-      <div className="lfui-badge_content">
+      <div className="lfui-badgeContent">
         {showIcon && (
-          <span className="lfui-badge_icon" />
+          <span className="lfui-badgeIcon" />
         )}
-        <span className={`lfui-badge_label ${labelClassName}`}>
+        <span className={`lfui-badgeLabel ${labelClassName}`}>
           {hideDropdown ? label : value?.name}
         </span>
       </div>
       {!hideDropdown && options.length > 0 && (
-        <div className="lfui-badge_dropdown-icon">
+        <div className="lfui-badgeDropdownIcon">
           <DropdownIcon />
         </div>
       )}
