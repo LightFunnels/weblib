@@ -2,8 +2,16 @@
   border-radius: 0.75rem;
   position: relative;
   overflow: hidden;
-
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 0.75rem;
+  --alert-color: var(--primary-color);
+  background-color: color-mix(in srgb, var(--alert-color) 10%, transparent);
+  // ErFmOGC we may move this to app instead
   &::before {
+  	background-color: var(--alert-color);
     content: '';
     position: absolute;
     left: 0;
@@ -13,37 +21,17 @@
   }
 }
 
-.lfui-alertWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 1rem;
-  gap: 0.75rem;
-}
-
-.lfui-alertIconContainer {
+.lfui-alertThumbnail, .lfui-alertIcon {
   flex-shrink: 0;
+  color: var(--alert-color);
+  fill: var(--alert-color);
 }
 
-.lfui-alertIcon {
-  color: inherit;
-  font-size: 1.357rem;
-}
-
-.lfui-alertContent {
+.lfui-alertBody {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  gap: 0.75rem;
-}
-
-.lfui-alertClose {
-  right: 1.125rem;
-  top: 0.75rem;
-  position: absolute;
-  font-size: 1.125rem;
-  cursor: pointer;
-  color: var(--lf-gray-flash);
+  gap: var(--gap);
 }
 
 .lfui-alertTitle {
@@ -58,69 +46,19 @@
   color: var(--font-color);
 }
 
-.lfui-alertMessageOnly {
-  font-weight: 500;
-}
-
-.lfui-alertBottomActions {
+// ekxQ9LepnX3mEe we may remove this
+.lfui-alertBodyActions {
   margin-top: 0.75rem;
 }
 
-.lfui-alertTextContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.lfui-alertActions {
-  align-self: flex-start;
-  white-space: nowrap;
-}
-
-.lfui-alert_info {
-  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
-}
-
-.lfui-alert_info::before {
-  background-color: var(--primary-color);
-}
-
-.lfui-alert_info .lfui-alertIcon {
-  color: var(--primary-color);
-}
-
 .lfui-alert_success {
-  background-color: color-mix(in srgb, var(--success-color) 10%, transparent);
-}
-
-.lfui-alert_success::before {
-  background-color: var(--success-color);
-}
-
-.lfui-alert_success .lfui-alertIcon {
-  color: var(--success-color);
+	--alert-color: var(--success-color);
 }
 
 .lfui-alert_warning {
-  background-color: color-mix(in srgb, var(--warning-color) 10%, transparent);
-}
-
-.lfui-alert_warning::before {
-  background-color: var(--warning-color);
-}
-
-.lfui-alert_warning .lfui-alertIcon {
-  color: var(--warning-color);
+  --alert-color: var(--warning-color);
 }
 
 .lfui-alert_destructive {
-  background-color: color-mix(in srgb, var(--destructive-color) 10%, transparent);
-}
-
-.lfui-alert_destructive::before {
-  background-color: var(--destructive-color);
-}
-
-.lfui-alert_destructive .lfui-alertIcon {
-  color: var(--destructive-color);
+  --alert-color: var(--destructive-color);
 }
