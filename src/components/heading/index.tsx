@@ -28,8 +28,7 @@ type Props = VariantProps<typeof headingVariants> & {
 }
 
 export function Heading({version, className, ...props}: Props){
-	const Com : any = version ?? "h1";
-	return (
+	const Com : any = version ?? "h1"; return (
 		<Com {...props} className={clsx(headingVariants({ version, className }))}>
 			{props.children}
 		</Com>

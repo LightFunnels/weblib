@@ -1,30 +1,64 @@
-.lfui-alert{
-	border: 1px solid;
-	display: flex;
-	border-radius: var(--radius);
-	padding: 0.5rem;
-	gap: var(--gap);
+.lfui-alert {
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 0.75rem;
+  --alert-color: var(--primary-color);
+  background-color: color-mix(in srgb, var(--alert-color) 10%, transparent);
+  // ErFmOGC we may move this to app instead
+  &::before {
+  	background-color: var(--alert-color);
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.25rem;
+  }
 }
 
-.lfui-alert_destructive{
-	color: var(--destructive-color);
+.lfui-alertThumbnail, .lfui-alertIcon {
+  flex-shrink: 0;
+  color: var(--alert-color);
+  fill: var(--alert-color);
 }
 
-.lfui-alert_informative{
-	color: var(--success-color);
+.lfui-alertBody {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: var(--gap);
 }
 
-.lfui-alert_primary{
-	color: var(--primary-color);
+.lfui-alertTitle {
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1;
 }
 
-.lfui-alertBody{
-	display:flex;
-	flex-direction: column;
-	gap: calc(var(--gap)/2);
-	flex-grow: 1;
+.lfui-alertMessage {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--font-color);
 }
 
-.lfui-alertMessage{
-	font-size: 0.9rem;
+// ekxQ9LepnX3mEe we may remove this
+.lfui-alertBodyActions {
+  margin-top: 0.75rem;
+}
+
+.lfui-alert_success {
+	--alert-color: var(--success-color);
+}
+
+.lfui-alert_warning {
+  --alert-color: var(--warning-color);
+}
+
+.lfui-alert_destructive {
+  --alert-color: var(--destructive-color);
 }
