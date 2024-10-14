@@ -216,24 +216,24 @@ function Front() {
 		  			<Heading version="h3" children="Alert" />
 		  			<Alert
               variant="warning"
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
 		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  			<Alert
               variant='success'
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  			  label="Maniace palladia overthin schoenus"
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  			  label={<div className="cusom-class">Maniace palladia overthin schoenus</div>}
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  			<Alert
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300 flex justify-center items-center" children="NB" />}
 		  				variant="info"
 		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
             <Alert
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
 		  				variant="error"
 		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."

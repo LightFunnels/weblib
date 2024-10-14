@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Alert, Button } from '../components';
+import { Alert, Button, Close } from '../components';
 
 const PlaceholderIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="22" height="22" {...props}>
@@ -15,7 +15,7 @@ const meta: Meta<typeof Alert> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['error', 'warning', 'info', 'success'],
+      options: ['error', 'warning', 'success'],
     },
     message: {
       control: 'text',
@@ -23,31 +23,26 @@ const meta: Meta<typeof Alert> = {
     label: {
       control: 'text',
     },
-    icon: {
+    thumbnail: {
       control: 'text',
     },
-    actions: {
+    action: {
       control: 'object',
     },
     bottomActions: {
       control: 'object',
     },
-    setClose: {
-      action: 'closed',
-    },
-    noClose: {
-      control: 'boolean',
-    },
   },
 };
 
 export default meta;
+
 type Story = StoryObj<typeof Alert>;
 
 export const Default: Story = {
   args: {
     message: 'This is an alert message',
-    icon: <PlaceholderIcon />
+    thumbnail: <PlaceholderIcon />
   },
 };
 
@@ -56,7 +51,7 @@ export const Error: Story = {
     variant: 'error',
     label: 'Error',
     message: 'An error has occurred',
-    icon: <PlaceholderIcon />
+    thumbnail: <PlaceholderIcon />
   },
 };
 
@@ -65,16 +60,7 @@ export const Warning: Story = {
     variant: 'warning',
     label: 'Warning',
     message: 'This action may have consequences',
-    icon:<PlaceholderIcon />
-  },
-};
-
-export const Info: Story = {
-  args: {
-    variant: 'info',
-    label: 'Information',
-    message: 'Here is some important information',
-    icon:<PlaceholderIcon />
+    thumbnail:<PlaceholderIcon />
   },
 };
 
@@ -83,7 +69,7 @@ export const Success: Story = {
     variant: 'success',
     label: 'Success',
     message: 'Operation completed successfully',
-    icon:<PlaceholderIcon />
+    thumbnail:<PlaceholderIcon />
 
   },
 };
@@ -92,24 +78,22 @@ export const WithActions: Story = {
   args: {
     label: 'With Actions',
     message: 'This alert has action buttons',
-    icon:<PlaceholderIcon />,
-    actions: (
-      <>
-        <Button>Confirm</Button>
-        <Button variant='secondary'>Cancel</Button>
-      </>
+    thumbnail:<PlaceholderIcon />,
+    action: (
+      <Close className="alertCloseIcon" />
     ),
   },
 };
 
-export const WithBottomActions: Story = {
+export const WithBodyActions: Story = {
   args: {
-    label: 'With Bottom Actions',
-    message: 'This alert has bottom action buttons',
-    icon:<PlaceholderIcon />,
+    label: 'With body Actions',
+    message: 'This alert has body action buttons',
+    thumbnail:<PlaceholderIcon />,
     bottomActions: (
       <>
-        <Button>Learn More</Button>
+        <Button>Confirm</Button>
+        <Button variant='secondary'>Cancel</Button>
       </>
     ),
   },
