@@ -4,7 +4,7 @@ import { LinkHTMLAttributes } from "react";
 
 import "./link.scss";
 import "../button/button.scss"
-import { Spinner, SpinnerSVG } from '../spinner';
+import { Spinner} from '../spinner';
 
 const linkVariants = cva(
   "",
@@ -27,7 +27,7 @@ const linkVariants = cva(
   }
 );
 
-interface LinkProps extends LinkHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof linkVariants> {
+type LinkProps = LinkHTMLAttributes<HTMLAnchorElement>& VariantProps<typeof linkVariants> &{
   button?: boolean;
   loading?: boolean;
   to?: string;
@@ -48,14 +48,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         href={to || href}
         {...props}
       >
-        {button ? (
-          loading ? (
-            <Spinner/>
-          ) : (
-            <>
-              {children}
-            </>
-          )
+        {button && loading ? (
+          <Spinner />
         ) : (
           children
         )}

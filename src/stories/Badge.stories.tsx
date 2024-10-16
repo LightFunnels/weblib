@@ -68,7 +68,11 @@ export const Large: Story = {
 export const RTL: Story = {
   args: {
     ...Default.args,
+    showIcon:true,
     dir: 'rtl',
+    options: options,
+    value: options[0],
+    hideDropdown: false,
   },
 };
 

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { cva, type VariantProps } from "class-variance-authority";
 import "./badge.scss";
-import { Dropdown, DropdownItem } from '..';
+import { Down, Dropdown, DropdownItem } from '..';
 
 export type Option = {
   name: string;
@@ -26,19 +26,19 @@ const badgeVariants = cva(
         large: "lfui-badge_large",
       },
       direction: {
-        ltr: "lfui-badge_ltr",
-        rtl: "lfui-badge_rtl",
+        start: "lfui-badge_start",
+        end: "lfui-badge_end",
       }
     },
     defaultVariants: {
       variant: "primary",
       size: "default",
-      direction: "ltr",
+      direction: "start",
     }
   }
 );
 
-interface BadgeProps extends VariantProps<typeof badgeVariants> {
+export type BadgeProps = VariantProps<typeof badgeVariants> & {
   label?: React.ReactNode;
   value?: Option;
   options?: Option[];
@@ -49,12 +49,6 @@ interface BadgeProps extends VariantProps<typeof badgeVariants> {
   className?: string;
   dir?: 'ltr' | 'rtl';
 }
-
-const DropdownIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.13333" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
 
 export const Badge: React.FC<BadgeProps> = ({
   label,
@@ -70,10 +64,11 @@ export const Badge: React.FC<BadgeProps> = ({
   variant,
 }) => {
   const selectedVariant = value?.variant || variant || 'primary';
+  const directionClass = dir === 'ltr' ? 'start' : 'end';
 
   const badgeContent = (
     <div
-      className={badgeVariants({ variant: selectedVariant, size, direction: dir, className })}
+      className={badgeVariants({ variant: selectedVariant, size, direction: directionClass , className })}
       dir={dir}
     >
       <div className="lfui-badgeContent">
@@ -85,8 +80,8 @@ export const Badge: React.FC<BadgeProps> = ({
         </span>
       </div>
       {!hideDropdown && options.length > 0 && (
-        <div className="lfui-badgeDropdownIcon">
-          <DropdownIcon />
+        <div className="lfui-badgeDropdownIconContainer">
+          <Down className='lfui-badgeDropdownIcon'/>
         </div>
       )}
     </div>

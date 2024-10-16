@@ -20,15 +20,6 @@ const meta: Meta<typeof Link> = {
     loading: {
       control: 'boolean',
     },
-    leftIcon: {
-      control: 'text',
-    },
-    rightIcon: {
-      control: 'text',
-    },
-    IconClassName: {
-      control: 'text',
-    },
     children: {
       control: 'text',
     },
@@ -104,21 +95,4 @@ export const Loading: Story = {
   },
 };
 
-export const WithLeftIcon: Story = {
-  args: {
-    children: 'Link with Left Icon',
-    button: true,
-    leftIcon: 'icon-class',
-    href: '#',
-  },
-};
-
-export const WithRightIcon: Story = {
-  args: {
-    children: 'Link with Right Icon',
-    button: true,
-    rightIcon: 'icon-class',
-    href: '#',
-  },
-};
 

@@ -77,8 +77,8 @@ export const StaticPopover = React.forwardRef<HTMLDivElement, StaticPopoverProps
         className={clsx(popoverVariants({ placement: derivedVariantPlacement }), className)}
         {...props}
       >
-        <div className="lfui-popoverArrow" ref={arrowRef}>
-          <div className={clsx("lfui-popoverArrowVisual", arrowClassName)}></div>
+        <div className="lfui-popover__arrow" ref={arrowRef}>
+          <div className={clsx("lfui-popover__arrow-visual", arrowClassName)}></div>
         </div>
         {children}
       </div>

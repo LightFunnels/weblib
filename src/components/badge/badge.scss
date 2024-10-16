@@ -6,6 +6,10 @@
   max-width: fit-content;
   border-width: 1px;
   border-style: solid;
+
+  --badge-color: var(--primary-color);
+  background-color: color-mix(in srgb, var(--badge-color) 10%, transparent);
+  border-color: color-mix(in srgb, var(--badge-color) 40%, transparent);
 }
 
 .lfui-badgeContent {
@@ -21,6 +25,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
+  background-color: var(--badge-color);
 }
 
 .lfui-badgeLabel {
@@ -30,7 +35,7 @@
   text-transform: capitalize;
 }
 
-.lfui-badgeDropdownIcon {
+.lfui-badgeDropdownIconContainer {
   display: flex;
   padding: 0 0.25rem;
   align-self: stretch;
@@ -38,87 +43,40 @@
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
+  border-color: color-mix(in srgb, var(--badge-color) 40%, transparent);
 }
 
-.lfui-badgeDropdownIcon svg {
+.lfui-badgeDropdownIcon {
   color: var(--font-color);
   width: 1rem;
   height: 1rem;
 }
 
-.lfui-badge_ltr .lfui-badgeDropdownIcon {
+.lfui-badge_start .lfui-badgeDropdownIconContainer {
   border-left-width: 1px;
   border-left-style: solid;
 }
 
-.lfui-badge_rtl .lfui-badgeDropdownIcon {
+.lfui-badge_end .lfui-badgeDropdownIconContainer {
   border-right-width: 1px;
   border-right-style: solid;
 }
 
-.lfui-badge_primary {
-  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
-  border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
-}
-
-.lfui-badge_primary .lfui-badgeIcon {
-  background-color: var(--primary-color);
-}
-
-.lfui-badge_primary .lfui-badgeDropdownIcon {
-  border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
-}
-
 .lfui-badge_warning {
-  background-color: color-mix(in srgb, var(--destructive-color) 10%, transparent);
-  border-color: color-mix(in srgb, var(--destructive-color) 40%, transparent);
-}
-
-.lfui-badge_warning .lfui-badgeIcon {
-  background-color: var(--destructive-color);
-}
-
-.lfui-badge_warning .lfui-badgeDropdownIcon {
-  border-color: color-mix(in srgb, var(--destructive-color) 40%, transparent);
+  --badge-color: var(--destructive-color);
 }
 
 .lfui-badge_success {
-  background-color: color-mix(in srgb, var(--success-color) 10%, transparent);
-  border-color: color-mix(in srgb, var(--success-color) 40%, transparent);
-}
-
-.lfui-badge_success .lfui-badgeIcon {
-  background-color: var(--success-color);
-}
-
-.lfui-badge_success .lfui-badgeDropdownIcon {
-  border-color: color-mix(in srgb, var(--success-color) 40%, transparent);
+  --badge-color: var(--success-color);
 }
 
 .lfui-badge_neutral {
-  background-color: color-mix(in srgb, var(--lf-gray-nova) 10%, transparent);
-  border-color: color-mix(in srgb, var(--lf-gray-nova) 40%, transparent);
+  --badge-color: var(--lf-gray-nova);
 }
 
-.lfui-badge_neutral .lfui-badgeIcon {
-  background-color: var(--lf-gray-nova);
-}
-
-.lfui-badge_neutral .lfui-badgeDropdownIcon {
-  border-color: color-mix(in srgb, var(--lf-gray-nova) 40%, transparent);
-}
 
 .lfui-badge_caution {
-  background-color: color-mix(in srgb, var(--warning-color) 10%, transparent);
-  border-color: color-mix(in srgb, var(--warning-color) 40%, transparent);
-}
-
-.lfui-badge_caution .lfui-badgeIcon {
-  background-color: var(--warning-color);
-}
-
-.lfui-badge_caution .lfui-badgeDropdownIcon {
-  border-color: color-mix(in srgb, var(--warning-color) 40%, transparent);
+  --badge-color: var(--warning-color);
 }
 
 .lfui-badge_large .lfui-badgeContent {
@@ -134,7 +92,7 @@
   height: 0.625rem;
 }
 
-.lfui-badge_large .lfui-badgeDropdownIcon svg {
+.lfui-badge_large .lfui-badgeDropdownIcon {
   width: 1.25rem;
   height: 1.25rem;
 }

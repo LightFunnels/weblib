@@ -23,7 +23,7 @@ const dividerVariants = cva(
   }
 )
 
-interface DividerProps extends React.HTMLAttributes<HTMLDivElement>,VariantProps<typeof dividerVariants>{
+export type DividerProps = React.HTMLAttributes<HTMLDivElement>&VariantProps<typeof dividerVariants> &{
  text? : string;
 };
 

@@ -4,7 +4,7 @@ import * as React from "react";
 import "./input.scss";
 import { Text } from "..";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> &{
 	error?: React.ReactNode
 	inputClassName?: string
 	className?: string
@@ -47,6 +47,7 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
 		</label>
 	)
 })
+
 Input.displayName = "Input"
 
 export function InputError(props: {message: React.ReactNode, className?: string}){

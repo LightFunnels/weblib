@@ -1,40 +1,40 @@
 import clsx from "clsx";
 import * as React from "react";
-import { Label } from "..";
+import { Label, isHTMLElement } from "..";
 import './radio.scss'
 
-type Props = React.HTMLAttributes<HTMLInputElement> & {
+export type RadioProps = React.HTMLAttributes<HTMLInputElement> & {
   checked: boolean;
-  label: React.ReactNode;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  label?: React.ReactNode;
   disabled?: boolean;
-  name: string;
-  value: string;
 }
 
-export function Radio(props: Props) {
+export function Radio({label,checked,disabled,...props}: RadioProps) {
   return (
     <Label className={clsx("lfui-radio", props.className, { "lfui-radio_disabled": props.disabled })}>
       <input
-        checked={props.checked}
-        disabled={props.disabled}
-        onChange={props.onChange}
+        checked={checked}
+        disabled={disabled}
         type="radio"
-        name={props.name}
-        value={props.value}
         className="lfui-radioInput"
       />
       <div
         className={clsx("lfui-radioIcon", {
-          "lfui-radio_checked": props.checked,
-          "lfui-radio_disabled": props.disabled
+          "lfui-radio_checked": checked,
+          "lfui-radio_disabled": disabled
         })}
       >
-        {props.checked && (
+        {checked && (
           <div className="lfui-radioInnerCircle" />
         )}
       </div>
-      <span>{props.label}</span>
+      {isHTMLElement(label) ? 
+      <label.type {...label.props} className={clsx(label.props.className)} key={label.key}/>
+      : label && (
+        <span className={clsx("lfui-radioLabel")}>
+          {label}
+        </span>
+      )}
     </Label>
   )
 }

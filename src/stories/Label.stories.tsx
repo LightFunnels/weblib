@@ -7,7 +7,6 @@ const meta: Meta<typeof Label> = {
   tags: ['autodocs'],
   argTypes: {
     children: { control: 'text' },
-    helpIcon: { control: 'text' },
     action: { control: 'boolean' },
   },
 };
@@ -21,24 +20,9 @@ export const Default: Story = {
   },
 };
 
-export const WithHelpIcon: Story = {
-  args: {
-    children: 'Label with Help Icon',
-    helpIcon: 'This is a helpful tooltip',
-  },
-};
-
 export const WithAction: Story = {
   args: {
     children: 'Label with Action',
-    action: <Button size="small">Action</Button>,
-  },
-};
-
-export const WithHelpIconAndAction: Story = {
-  args: {
-    children: 'Label with Help Icon and Action',
-    helpIcon: 'This is a helpful tooltip',
     action: <Button size="small">Action</Button>,
   },
 };

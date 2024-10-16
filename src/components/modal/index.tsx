@@ -6,7 +6,7 @@ import "./modal.scss";
 
 import { modals } from "../drop-down";
 
-interface ModalProps {
+export type ModalProps = {
   active?: boolean;
   close?: () => void;
   children: React.ReactElement;

@@ -325,6 +325,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 					window.innerWidth < 425 ? (
 						<Select
 						  label='Select a date'
+              labelClassName='lfui-rangeDatePickerSelect'
 							options={presets}
 							value={presets[0].label}
 							onChange={

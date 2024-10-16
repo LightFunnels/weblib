@@ -58,7 +58,7 @@ export function Alert({
           </div>
         )}
         {isHTMLElement(message) ?
-        	<message.type {...message.props} className={clsx(message.props.className, "lfui-alertTitle")} key={message.key} />
+        	<message.type {...message.props} className={clsx(message.props.className, "lfui-alertMessage")} key={message.key} />
         	: message && (
           <div className={clsx("lfui-alertMessage")}>
             {message}

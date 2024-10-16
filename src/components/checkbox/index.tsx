@@ -1,30 +1,39 @@
 import clsx from "clsx";
 import * as React from "react";
-import { Label } from "../";
+import { Label, isHTMLElement } from "../";
  
 import "./checkbox.scss";
 
-type Props = React.HTMLAttributes<HTMLInputElement> & {
+export type CheckboxProps = React.HTMLAttributes<HTMLInputElement> & {
 	checked: boolean
-	label: React.ReactNode
-	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+	label?: React.ReactNode
   disabled?: boolean 
 }
 
-export function Checkbox(props: Props){
+export function Checkbox({label,checked,disabled,...props}: CheckboxProps){
 	return (
-		<Label className={clsx("lfui-checkbox", props.className ,{ "lfui-checkbox_disabled": props.disabled })}>
-			<input checked={props.checked} disabled={props.disabled} onChange={props.onChange} type="checkbox" className="lfui-checkboxInput" />
+		<Label className={clsx("lfui-checkbox", props.className ,{ "lfui-checkbox_disabled": disabled })}>
+			<input 
+        {...props}
+        checked={checked}
+        disabled={disabled}
+        type="checkbox"
+        className="lfui-checkboxInput"
+      />
 			<div
-				className={clsx("lfui-checkboxIcon", {"lfui-checkbox_checked": props.checked,"lfui-checkbox_disabled": props.disabled})}
+				className={clsx("lfui-checkboxIcon", {"lfui-checkbox_checked" : checked,"lfui-checkbox_disabled": disabled})}
 			>
-				{props.checked && (
+				{checked && (
 					<CheckIcon className="lfui-checkboxCheckIcon" />
 				)}
 			</div>
-			<span>
-				{props.label}
-			</span>
+      {isHTMLElement(label) ? 
+      <label.type {...label.props} className={clsx(label.props.className)} key={label.key}/>
+      : label && (
+        <span className={clsx("lfui-checkboxLabel")}>
+          {label}
+        </span>
+      )}
 		</Label>
 	)
 }

@@ -230,7 +230,10 @@
   border-left: 1px solid var(--lf-gray-glow);
 }
 
-
+.lfui-rangeDatePickerSelect{
+  margin: 1rem 0.5rem 0rem 0.5rem;
+  align-self: stretch;
+}
 .lfui-rangeDatePickerFooter{
   display: flex;
   padding: 1rem;
