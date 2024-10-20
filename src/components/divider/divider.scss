@@ -1,0 +1,36 @@
+.lfui-divider {
+	background-color: var(--seperator-color);
+	flex-shrink: 0;
+}
+
+.lfui-divider_horizontal{
+	width: 100%;
+	height: 1px;
+}
+
+.lfui-divider_vertical{
+	height: 100%;
+	width: 1px;
+}
+
+.lfui-divider_withText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+}
+
+.lfui-divider_withText::before,
+.lfui-divider_withText::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--seperator-color);
+}
+
+.lfui-dividerText {
+  padding: 0 0.875rem;
+  font-size: var(--font-size, 1rem);
+  color: var(--caption-gray);
+  white-space: nowrap;
+}

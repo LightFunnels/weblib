@@ -7,19 +7,18 @@ import {
 	DropdownItem,
 	FormGroup,
 	Heading,
-	Hr,
 	Input,
 	Label,
 	Modal,
-	NativeLink,
 	RangeDatePicker,
 	Select,
 	Text,
 	Code,
 	// ErrorBoundary,
-	Spinner,
 	// AsyncSelect,
 	Alert,
+    Link,
+    Divider,
 } from "../components";
 
 import Buttons from "./examples/buttons"
@@ -28,6 +27,7 @@ import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import "./styles.scss";
+import { Spinner } from "../components/spinner";
 
 function Front() {
 	const [m1, setM1] = React.useState(false);
@@ -43,6 +43,9 @@ function Front() {
 		  	<Buttons />
 	  		<div className="grid grid-cols-2 gap-4 items-start">
 		  		<div className="grid gap-4">
+            <Label helpIcon="label with popover" children={
+              <span>test</span>
+            }/>
 		  			<Heading>
 		  				heading 1
 		  			</Heading>
@@ -52,11 +55,9 @@ function Front() {
 		  			<Heading version="h3">
 		  				heading 3
 		  			</Heading>
-		  			<Hr/>
 		  			<Text>
 		  				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat numquam ratione iure maxime, nobis minus assumenda nostrum placeat veritatis neque laudantium dolorem unde! Architecto, magni dolor at labore, ad molestias.
 		  			</Text>
-		  			<Hr/>
 		  			<div>
 			  			<Button onClick={() => setM1(true)}>
 			  				Modal
@@ -77,7 +78,6 @@ function Front() {
 		  					/>
 		  				)
 		  			}
-		  			<Hr/>
 		  			<Label>
 		  				Input
 		  			</Label>
@@ -98,7 +98,6 @@ function Front() {
 		  			<FormGroup label={"Form Group Label"}>
 		  				<Input />
 		  			</FormGroup>
-		  			<Hr/>
 	  				<div className="flex gap-2 items-center">
 			  			<Dropdown
 			  				label={
@@ -121,7 +120,6 @@ function Front() {
 								</DropdownItem>
 			  			</Dropdown>
 	  				</div>
-		  			<Hr/>
 		  			<Label>Avatar</Label>
 		  			<div className="flex gap-2">
 		  				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
@@ -155,7 +153,6 @@ function Front() {
 			  			/>
 		  			</FormGroup>
 		  			<Checkbox onChange={event => setChecked(event.target.checked)} checked={checked} label="Checkbox" />
-		  			<Hr/>
 		  			<FormGroup label={"Date Picker"}>
 			  			<DatePicker
 			  				clearable
@@ -176,8 +173,24 @@ function Front() {
 			  				value={range}
 			  			/>
 		  			</FormGroup>
-		  			<Hr />
-		  			<NativeLink href="https://www.example.com" >Link</NativeLink>
+            <div className="flex items-center gap-3">
+              <RangeDatePicker
+			  				clearable
+			  				onChange={setRange}
+			  				value={range}
+			  			/>
+              <Divider orientation="vertical"/>
+              <RangeDatePicker
+			  				clearable
+			  				onChange={setRange}
+			  				value={range}
+			  			/>
+            </div>
+		  			<Divider text="testing"/>
+            <Divider/>
+		  			<Link href="https://www.example.com" >Link</Link>
+		  			<Link button variant="destructive" href="https://www.example.com" >Link</Link>
+		  			<Link button variant="primary" href="https://www.example.com" >Link</Link>
 		  			<Code copiable value="something" />
 		  		</div>
 		  		<div className="grid gap-4">
@@ -185,8 +198,8 @@ function Front() {
 		  				Loading
 		  			</Heading>
 		  			<div>
-			  			<Spinner className="mb-2" />
-			  			<Spinner className="w-10 h-10" />
+			  			<Spinner variant="primary"/>
+			  			<Spinner variant="primary" className="w-10 h-10 fill-red-500" />
 		  			</div>
 		  			{/*<FormGroup label="Async Select">
 		  				<AsyncSelect
@@ -202,20 +215,27 @@ function Front() {
 		  			</FormGroup>*/}
 		  			<Heading version="h3" children="Alert" />
 		  			<Alert
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  				title="Maniace palladia overthin schoenus"
+              variant="warning"
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  			<Alert
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  				title="Maniace palladia overthin schoenus"
+              variant='success'
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  			  label={<div className="cusom-class">Maniace palladia overthin schoenus</div>}
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
-		  				variant="informative"
 		  			/>
 		  			<Alert
-		  				icon={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
-		  				variant="destructive"
-		  				title="Maniace palladia overthin schoenus"
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300 flex justify-center items-center" children="NB" />}
+		  				variant="info"
+		  				label="Maniace palladia overthin schoenus"
+		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
+		  			/>
+            <Alert
+		  				thumbnail={<div className="w-10 h-10 border rounded-full bg-gray-300" />}
+		  				variant="error"
+		  				label="Maniace palladia overthin schoenus"
 		  				message="sulcated introgression dedicatee palladia overthin schoenus equinus jamlike harmoniphon cloudland ophthalmoplasty."
 		  			/>
 		  		</div>

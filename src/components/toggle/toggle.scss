@@ -1,0 +1,77 @@
+.lfui-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  column-gap: var(--inline-gap);
+  gap: 0.5rem;
+  
+  &.lfui-toggle_disabled {
+    cursor: not-allowed;
+  }
+}
+
+.lfui-toggleInput {
+  position: absolute;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.lfui-toggleIcon {
+  width: 2.25rem;
+  height: 1.25rem;
+  background-color: var(--lf-gray-glow);
+  border-radius: 0.625rem;
+  position: relative;
+  transition: background-color 0.2s ease-in-out;
+  
+  &.lfui-toggle_disabled {
+    opacity: 0.5;
+  }
+
+  &:hover:not(.lfui-toggle_disabled) {
+    box-shadow: 0px 0px 0px 4px var(--lf-gray-ray);
+  }
+}
+
+.lfui-toggle_checked .lfui-toggleIcon {
+  background-color: var(--primary-color);
+  
+  &:hover:not(.lfui-toggle_disabled) {
+    box-shadow: 0px 0px 0px 4px color-mix(in srgb, var(--primary-color) 40%, transparent);
+  }
+}
+
+.lfui-toggleHandle {
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--white);
+  border-radius: 50%;
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 0px 1px 4px -2px var(--shadow-color);
+}
+
+.lfui-toggle_checked .lfui-toggleHandle {
+  transform: translateX(1rem);
+}
+
+.lfui-toggle_small {
+  .lfui-toggleIcon {
+    width: 1.75rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .lfui-toggleHandle {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  &.lfui-toggle_checked .lfui-toggleHandle {
+    transform: translateX(0.75rem);
+  }
+}
