@@ -1,7 +1,7 @@
 import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 import React, { Fragment } from "react";
-import "./divider.scss";
 
+import "./divider.scss";
 
 const dividerVariants = cva(
   "lfui-divider",

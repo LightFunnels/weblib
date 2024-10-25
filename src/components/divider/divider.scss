@@ -2,6 +2,7 @@
 	display: flex;
 	align-items: center;
 	justify-items: center;
+	gap: var(--gap);
 }
 
 .lfui-divider_horizontal{
@@ -21,9 +22,8 @@
 	flex-grow: 1;
 }
 
-.lfui-dividerText { // TODO i belive we should just import text element here
-  padding: 0 0.875rem; // TODO
-  font-size: var(--font-size, 1rem);
+.lfui-dividerText {
+  font-size: var(--font-size);
   color: var(--caption-gray);
   white-space: nowrap;
 }
