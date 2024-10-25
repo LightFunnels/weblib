@@ -1,7 +1,8 @@
+import { cx } from "class-variance-authority";
 import React, { Fragment } from "react";
-import { Button, DropdownItem, DropdownMenu, InputError, useToggle } from "../";
-import { modals } from "../drop-down";
 import { createPortal } from 'react-dom';
+import { Button, Close, DropdownItem, DropdownMenu, InputError, usePopover } from "../";
+import { modals } from "../drop-down";
 
 import "./select.scss";
  
@@ -19,7 +20,6 @@ export type SelectComponentProps = {
 		disabled?: boolean
 	}[]
 	error?: string
-	medium?: boolean
 	onChange: (v) => void
 	value: SelectComponentProps["options"][number]["value"] | null
 	cancellable?: boolean
@@ -30,9 +30,9 @@ export type SelectComponentProps = {
 	menuClassName?: string
 }
 
-export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ labelClassName, options, error, medium, ...props }, _ref) {
+export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ labelClassName, options, error, ...props }, _ref) {
 
-	const [ref, refMenu, active, setIsOpen] = useToggle<HTMLButtonElement, HTMLDivElement>();
+	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>();
 	const selected = options.find(option => option.value === props.value);
 	const [query, setQuery] = React.useState('');
 	const Reg = React.useMemo(() => {
@@ -60,42 +60,31 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 				className={labelClassName}
 				variant="secondary"
 				children={
-					<div className="lfui-dropdownLabelChildren">
-						<div className="lfui-dropdown_selectedLabel">
-							{selected?.label ?? "Select"}
-						</div>
+					<Fragment>
+						{selected?.label ?? "Select"}
 						{
 							(props.cancellable && selected) ? (
-								<i
-									className={`icon-X-Close`}
+								<Close
+									className={"lfui-cancelIcon"}
 									onClick={
 										props.disabled ? undefined :
 										function (event) {
 											event.stopPropagation();
-											// event.nativeEvent.ignoreToggleClick = (event.nativeEvent.ignoreToggleClick || []).conca( props.refMenu.current );
 											props.onChange(null);
-											// props.setIsOpen(false);
 										}
 									}
 								/>
 							) : <Down className="lfui-dropdownIcon" />
 						}
-					</div>
+					</Fragment>
 				}
-				// selected={selected?.label}
-				// cancellable={props.cancellable}
 			/>
 			{
 				active && (
 					createPortal(
 						<DropdownMenu
-							className={props.menuClassName ?? ''}
+							className={cx(props.menuClassName)}
 							ref={refMenu} 
-							onClick={e => {
-								// if (props.isSearchable && refMenu && (typeof refMenu !== 'function')) {
-								// 	e.nativeEvent.ignoreToggleClick = (e.nativeEvent.ignoreToggleClick || []).concat(refMenu.current);
-								// }
-							}}
 						>
 							{
 								props.isSearchable && (
@@ -154,7 +143,9 @@ const Search = React.forwardRef<HTMLInputElement, SearchProps>(
 	function Search(props: SearchProps, inputRef){
 		const rf = React.useRef<HTMLInputElement>(null);
 		React.useEffect(() => {
-			rf.current!.focus();
+			setTimeout(() => {
+				rf.current!.focus();
+			})
 		}, []);
 		return (
 			<input

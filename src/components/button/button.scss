@@ -16,31 +16,28 @@
     cursor: not-allowed;
 		opacity: 50%;
 	}
-  --button-color: var(--primary-color);
-	background-color: var(--button-color);
   background-color: var(--button-color);
 	border: 1px solid var(--button-color);
+  box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px color-mix(in srgb, var(--white) 30%, transparent) inset;
   &:focus{
 		box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 4px color-mix(in srgb, var(--button-color) 40%, transparent);
 	}
 }
 
 .lfui-button_primary{
+  --button-color: var(--primary-color);
 	color: var(--white);
-  box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 2px color-mix(in srgb, var(--white) 30%, transparent) inset;
 }
 
 .lfui-button_destructive{
   --button-color: var(--destructive-color);
 	color: var(--white);
-  box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px color-mix(in srgb, var(--white) 30%, transparent) inset;
 }
 
 .lfui-button_secondary{
-  color: var(--font-color);
-  box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px color-mix(in srgb, var(--white) 30%, transparent) inset;
-  background: var(--white);
   --button-color: var(--border-color);
+  color: var(--font-color);
+  background: var(--white);
   box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 1px var(--seperator-color) inset;
 }
 

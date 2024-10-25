@@ -4,15 +4,14 @@ import { Label, isHTMLElement } from "../";
  
 import "./checkbox.scss";
 
-export type CheckboxProps = React.HTMLAttributes<HTMLInputElement> & {
-	checked: boolean
+export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
 	label?: React.ReactNode
   disabled?: boolean 
 }
 
-export function Checkbox({label,checked,disabled,...props}: CheckboxProps){
+export function Checkbox({label, checked, disabled,...props}: CheckboxProps){
 	return (
-		<Label className={clsx("lfui-checkbox", props.className ,{ "lfui-checkbox_disabled": disabled })}>
+		<label className={clsx("lfui-checkbox", props.className ,{ "lfui-checkbox_disabled": disabled })}>
 			<input 
         {...props}
         checked={checked}
@@ -21,7 +20,7 @@ export function Checkbox({label,checked,disabled,...props}: CheckboxProps){
         className="lfui-checkboxInput"
       />
 			<div
-				className={clsx("lfui-checkboxIcon", {"lfui-checkbox_checked" : checked,"lfui-checkbox_disabled": disabled})}
+				className={clsx("lfui-checkboxIcon", {"lfui-checkboxIcon_checked": checked, "lfui-checkboxIcon_disabled": disabled})}
 			>
 				{checked && (
 					<CheckIcon className="lfui-checkboxCheckIcon" />
@@ -34,7 +33,7 @@ export function Checkbox({label,checked,disabled,...props}: CheckboxProps){
           {label}
         </span>
       )}
-		</Label>
+		</label>
 	)
 }
 

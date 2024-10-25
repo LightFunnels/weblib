@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "lfui-button_primary",
+        primary: "lfui-button_primary",
         destructive: "lfui-button_destructive",
         secondary: "lfui-button_secondary",
       },
@@ -19,7 +19,7 @@ const buttonVariants = cva(
       }
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
     }
   }
 );

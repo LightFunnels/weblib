@@ -6,9 +6,6 @@ const spinnerVariants = cva(
   "lfui-spinner",
   {
     variants: {
-      variant: {
-        primary: "lfui-spinner_primary",
-      },
       size: {
         small: "lfui-spinner_small",
         medium: "lfui-spinner_medium",
@@ -23,11 +20,11 @@ const spinnerVariants = cva(
 
 export type SpinnerProps = React.SVGAttributes<SVGElement>& VariantProps<typeof spinnerVariants>;
 
-export function Spinner({ className, variant, size, ...props }: SpinnerProps) {
+export function Spinner({ className, size, ...props }: SpinnerProps) {
   return (
     <SpinnerSVG
       {...props}
-      className={clsx(spinnerVariants({ variant, size }),className)}
+      className={clsx(spinnerVariants({ size }),className)}
     />
   );
 }

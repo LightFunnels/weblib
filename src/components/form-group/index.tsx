@@ -1,18 +1,17 @@
 import clsx from "clsx";
 import { Label } from "../";
+import {Fallback} from "../utilities";
 
 import "./form-group.scss";
 
-type Props = React.HTMLAttributes<HTMLDivElement> & {label?: React.ReactNode};
+export type FormGroupProps = React.HTMLAttributes<HTMLDivElement> & T;
 
-export function FormGroup({label, ...props}: Props){
+export function FormGroup({label, action, ...props}: FormGroupProps){
 	return (
 		<div {...props} className={clsx(props.className, "lfui-formgroup")} >
 			{
-				label &&
-				<Label>
-					{label}
-				</Label>
+				(label || action) &&
+				<FormgroupHeader action={action} label={label} />
 			}
 			{props.children}
 		</div>
@@ -20,3 +19,21 @@ export function FormGroup({label, ...props}: Props){
 }
 
 FormGroup.displayName = "FormGroup";
+
+type T = {
+	label?: React.ReactNode
+	action?: React.ReactNode
+}
+
+export type formgroupHeaderProps = React.HTMLAttributes<HTMLDivElement> & T;
+
+export function FormgroupHeader(props: formgroupHeaderProps){
+	return (
+		<div className="lfui-formgroupHeader">
+			{Fallback(props.label, <Label children={props.label} />)}
+			{/* force space betwen alignemt */}
+			<div />
+			{Fallback(props.action, <Label children={props.action} />)}
+		</div>
+	)
+}

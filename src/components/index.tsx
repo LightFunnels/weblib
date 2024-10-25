@@ -15,5 +15,10 @@ export * from "./checkbox";
 export * from "./date";
 export * from "./code";
 export * from "./link";
+export * from "./badge";
+export * from "./radio";
 // export * from "./error"
-export * from "./alert"
+export * from "./alert";
+export * from "./popover";
+
+import "./utilities.scss";

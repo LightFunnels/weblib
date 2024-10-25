@@ -1,5 +1,5 @@
 import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
-import React from "react";
+import React, { Fragment } from "react";
 import "./divider.scss";
 
 
@@ -7,37 +7,38 @@ const dividerVariants = cva(
   "lfui-divider",
   {
     variants: {
-      variant: {
-        default: "lfui-divider_default",
-        withText: "lfui-divider_withText",
-      },
       orientation: {
-      	"horizontal":"lfui-divider_horizontal",
-      	"vertical":"lfui-divider_vertical",
+      	horizontal:"lfui-divider_horizontal",
+      	vertical:"lfui-divider_vertical",
       },
     },
     defaultVariants: {
-      variant: "default",
       orientation: "horizontal",
     }
   }
 )
 
-export type DividerProps = React.HTMLAttributes<HTMLDivElement>&VariantProps<typeof dividerVariants> &{
- text? : string;
-};
+export type DividerProps = React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof dividerVariants>;
 
 export const Divider = React.forwardRef< HTMLDivElement, DividerProps >(
   (
-    { className, orientation, variant,text, ...props },
+    { className, orientation, children, ...props },
     ref
   ) => (
     <div
       ref={ref}
-      className={clsx(dividerVariants({ variant:text? "withText" :"default" ,orientation, className }))}
+      className={clsx(dividerVariants({ orientation, className }))}
       {...props}
     >
-        {text && <span className="lfui-dividerText">{text}</span>}
+    	<div className="lfui-dividerLine" />
+      {
+      	children && (
+      		<Fragment>
+      			<span className="lfui-dividerText">{children}</span>
+    				<div className="lfui-dividerLine" />
+      		</Fragment>
+      	)
+      }
     </div>
   )
 )

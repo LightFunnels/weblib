@@ -1,5 +1,6 @@
 import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
+import { isHTMLElement } from "../utilities";
 
 import "./alert.scss";
 
@@ -10,7 +11,7 @@ const alertVariants = cva(
       variant: {
         error: "lfui-alert_destructive",
         warning: "lfui-alert_warning",
-        info: "",
+        info: "lfui-alert_info",
         success: "lfui-alert_success",
       },
     },
@@ -27,10 +28,6 @@ export type AlertProps = VariantProps<typeof alertVariants> & {
   bottomActions?: React.ReactNode;
   label?: React.ReactNode;
   message: React.ReactNode;
-}
-
-export function isHTMLElement(e: React.ReactNode) : e is React.ReactElement{
-	return React.isValidElement(e);
 }
 
 export function Alert({ 
@@ -77,3 +74,5 @@ export function Alert({
     </div>
   );
 }
+
+export { isHTMLElement };

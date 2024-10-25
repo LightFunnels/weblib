@@ -1,15 +1,14 @@
 .lfui-alert {
-  border-radius: 0.75rem;
+  border-radius: 0.75rem; // TODO
+  overflow: hidden; // TODO - may remove when we move ::before
   position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 1rem;
-  gap: 0.75rem;
-  --alert-color: var(--primary-color);
+  padding: 1rem; // TODO
+  gap: 0.75rem; // TODO
   background-color: color-mix(in srgb, var(--alert-color) 10%, transparent);
-  // ErFmOGC we may move this to app instead
+  // TODO ErFmOGC we may move this to app instead
   &::before {
   	background-color: var(--alert-color);
     content: '';
@@ -35,14 +34,14 @@
 }
 
 .lfui-alertTitle {
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1;
+  font-weight: 500; // TODO
+  font-size: 0.875rem; // TODO
+  line-height: 1; // TODO
 }
 
 .lfui-alertMessage {
-  font-size: 0.8125rem;
-  line-height: 1.4rem;
+  font-size: 0.8125rem; // TODO
+  line-height: 1.4rem; // TODO
   color: var(--font-color);
 }
 
@@ -56,4 +55,8 @@
 
 .lfui-alert_destructive {
   --alert-color: var(--destructive-color);
+}
+
+.lfui-alert_info {
+  --alert-color: var(--primary-color);
 }

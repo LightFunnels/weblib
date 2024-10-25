@@ -1,5 +1,5 @@
-import clsx from 'clsx';
 import { Instance, Placement, createPopper } from '@popperjs/core';
+import clsx from 'clsx';
 import React, { Fragment } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -19,7 +19,7 @@ export const modals = document.getElementById("modals") ?? document.body;
 
 export function Dropdown(props: Props){
 
-  const [ref_label, ref_menu, active] = useToggle<HTMLButtonElement, HTMLDivElement>({
+  const [ref_label, ref_menu, active] = usePopover<HTMLButtonElement, HTMLDivElement>({
     placement: props.placement,
     offset: props.offset
   });
@@ -40,8 +40,8 @@ export function Dropdown(props: Props){
           active && (
             props.menu ? (
               <props.menu.type
-                ref={ref_menu}
                 {...props.menu.props}
+                ref={ref_menu}
                 onClick={
                   !props.keep_on_click_in ?
                   props.menu.props.onClick :
@@ -68,10 +68,6 @@ export function Dropdown(props: Props){
   )
 }
 
-export interface DropdownItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  active?: boolean;
-}
-
 export const DropdownMenu = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	function DropdownMenu(props, ref){
 		return (
@@ -83,6 +79,8 @@ export const DropdownMenu = React.forwardRef<HTMLDivElement, React.HTMLAttribute
 		)
 	}
 );
+
+export type DropdownItemProps = React.HTMLAttributes<HTMLDivElement> & {active?: boolean;}
 
 export const DropdownItem = React.forwardRef<HTMLDivElement, DropdownItemProps>(
 	function DropdownItem({ active, ...props }, ref) {
@@ -101,14 +99,39 @@ type UseToggleOpts = {
 	placement?: Placement
 	offset?: [number,number]
 	followTargetWidth?: boolean
+	nonTogglable?: boolean
 }
 
-export function useToggle<Ref extends HTMLElement = HTMLElement, Menu extends HTMLElement = HTMLElement>(options: UseToggleOpts = {}) {
+export function usePopover<Ref extends HTMLElement = HTMLElement, Menu extends HTMLElement = HTMLElement>(options: UseToggleOpts = {}) {
 
 	const [isOpen, setIsOpen] = React.useState<boolean>(options.state || false);
 	const ref = React.useRef<Ref>(null);
 	const refMenu = React.useRef<Menu>(null);
 	const popper = React.useRef<Instance | null>(null);
+	const arrowRef = React.useRef<HTMLDivElement>(null);
+
+	React.useLayoutEffect(() => {
+		if(options.nonTogglable){
+			return;
+		}
+		function docHandler(event){
+			setIsOpen(false);
+		}
+		function handler(){
+			setIsOpen(true);
+		}
+		ref.current.addEventListener("click", handler);
+		let t = setTimeout(() => {
+			if(isOpen){
+				document.addEventListener("click", docHandler);
+			}
+		});
+		return () => {
+			clearTimeout(t);
+			ref.current.removeEventListener("click", handler);
+			document.removeEventListener("click", docHandler);
+		}
+	}, [isOpen]);
 
 	React.useLayoutEffect(
 		function () {
@@ -117,79 +140,52 @@ export function useToggle<Ref extends HTMLElement = HTMLElement, Menu extends HT
 				return;
 			}
 
+			if(!isOpen){
+				return;
+			}
+
 			// console.log(options.key);
 			let btnClick, documentClick, tm;
 
 			// if the modal is already open
-			if (isOpen) {
-				if (!ref.current || !refMenu.current) {
-					console.log(ref.current , refMenu.current);
-					throw new Error('missing one of ref, refMenu');
-				}
-				if(options?.followTargetWidth !== false){
-					refMenu.current!.style.minWidth = ref.current!.offsetWidth + "px";
-				}
-				let opts: {placement?, modifiers?, onFirstUpdate?} = {
-					modifiers: [
-						{
-							name: 'offset',
-							options: {
-								offset: options.offset ?? [0, 8]
-							}
-						},
-						{
-							name: 'preventOverflow',
-							options: {
-								altAxis: true,
-							}
-						},
-					]
-				};
-				if (options.placement) {
-					opts.placement = options.placement;
-				}
-				popper.current = createPopper(
-					ref.current,
-					refMenu.current,
-					opts
-				);
-				// click event handler
-				documentClick = function (event) {
-					if (event.ignoreToggleClick?.includes(refMenu.current)) {
-						return;
-					}
-					setIsOpen(false);
-				}
-
-				tm = setTimeout(
-					function () {
-						document.addEventListener('click', documentClick)
-					}
-				);
-
-			} else {
-				btnClick = () => setIsOpen(true);
-				if (ref.current) {
-					ref.current.addEventListener('click', btnClick)
-				}
+			if (!ref.current || !refMenu.current) {
+				console.log(ref.current , refMenu.current);
+				throw new Error('missing one of ref, refMenu');
 			}
 
+			if(options?.followTargetWidth !== false){
+				refMenu.current!.style.minWidth = ref.current!.offsetWidth + "px";
+			}
+			let opts: {placement?, modifiers?, onFirstUpdate?} = {
+				modifiers: [
+					{
+						name: 'offset',
+						options: {
+							offset: options.offset ?? [0, 8]
+						}
+					},
+					{
+						name: 'preventOverflow',
+						options: {
+							altAxis: true,
+						}
+					},
+				]
+			};
+			if (options.placement) {
+				opts.placement = options.placement;
+			}
+
+			popper.current = createPopper(
+				ref.current,
+				refMenu.current,
+				opts
+			);
+
 			return () => {
-				if (tm) {
-					clearTimeout(tm);
-				}
-				
 				if(popper.current){
 					popper.current.destroy();
 					popper.current = null;
-					document.removeEventListener('click', documentClick);
-				}
-
-				if (btnClick && ref.current) {
-					ref.current.removeEventListener(
-						'click',
-						btnClick,
-					)
 				}
 			}
 
@@ -203,5 +199,8 @@ export function useToggle<Ref extends HTMLElement = HTMLElement, Menu extends HT
 		isOpen,
 		setIsOpen,
 		popper,
+		<div className={clsx("lfui-popoverArrow")} ref={arrowRef}>
+		  <div className={clsx("lfui-popoverArrowVisual")}></div>
+		</div>
 	] as const;
 }

@@ -2,8 +2,8 @@
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
-  border: 1px solid var(--lf-gray-glow);
-  overflow:hidden;
+  border: 1px solid var(--lf-gray-glow); // TODO check color
+  overflow: hidden;
 }
 .lfui-avatarPlaceholder{
 	width: 100%;
@@ -11,7 +11,7 @@
 	vertical-align: middle;
 }
 .lfui-avatar_md{
-	width: 50px;
+	width: 50px; // TODO
 }
 .lfui-avatarFallback{
 	position: absolute;

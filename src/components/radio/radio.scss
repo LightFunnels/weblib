@@ -3,12 +3,12 @@
   align-items: center;
   cursor: pointer;
   position: relative;
-  column-gap: var(--inline-gap);
-  gap: var(--radius);
-  
-  &.lfui-radio_disabled {
-    cursor: not-allowed;
-  }
+  gap: var(--inline-gap);
+}
+
+.lfui-radio_disabled {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity); // TODO should variablilize for all
 }
 
 .lfui-radioInput {
@@ -19,34 +19,26 @@
 }
 
 .lfui-radioIcon {
-  border: 1px solid var(--border-color);
   border-radius: 50%;
-  width: 1.125rem;
-  height: 1.125rem;
-  cursor: pointer;
-  box-shadow: 0px 1px 4px -2px var(--shadow-color);
+  width: 18px;
+  height: 18px;
   position: relative;
-  
-  &.lfui-radio_disabled {
-    opacity: 0.5;
-  }
-
-  &:hover:not(.lfui-radio_disabled) {
-    box-shadow: 0px 0px 0px 4px var(--lf-gray-ray);
-  }
-
-}
-
-.lfui-radio_checked {
-  border-color: var(--primary-color);
-   &:hover:not(.lfui-checkbox_disabled) {
-    box-shadow: 0px 0px 0px 4px color-mix(in srgb, var(--primary-color) 40%, transparent);
+  border: 1px solid var(--border-color); // TODO deal with colors
+  box-shadow: var(--checkable-shadow);
+  --radio-shadow-color: var(--lf-gray-ray);
+  &:focus, &:hover{
+  	box-shadow: 0px 0px 0px 4px color-mix(in srgb, var(--radio-shadow-color) 40%, transparent);
   }
 }
 
-.lfui-radioInnerCircle {
-  width: 0.625rem;
-  height: 0.625rem;
+.lfui-radioIcon_checked {
+	border-color: var(--primary-color); // TODO; in figma this is diffrent than bg
+	--radio-shadow-color: var(--primary-color);
+}
+
+.lfui-radioCheckIcon {
+  width: 10px;
+  height: 10px;
   background-color: var(--primary-color);
   border-radius: 50%;
   position: absolute;

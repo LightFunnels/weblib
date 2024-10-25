@@ -11,11 +11,7 @@ const meta: Meta<typeof Divider> = {
       control: 'radio',
       options: ['horizontal', 'vertical'],
     },
-    variant:{
-      control: 'radio',
-      options: ['default', 'withText']
-    },
-    text: {
+    children: {
       control: 'text',
     },
     className: {
@@ -37,8 +33,7 @@ export const Default: Story = {
 export const WithText: Story = {
   args: {
     orientation: 'horizontal',
-    variant: 'withText',
-    text: 'Divider Text',
+    children: 'Divider Text',
   },
 }
 

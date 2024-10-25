@@ -20,10 +20,7 @@ const textVariants = cva(
   }
 )
 
-export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement>, VariantProps<typeof textVariants> {
-  children?: React.ReactNode;
-  className?: string;
-}
+export type TextProps = React.HTMLAttributes<HTMLParagraphElement> & VariantProps<typeof textVariants>;
 
 export const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
   function Text({ className, size, ...props }, ref) {

@@ -17,15 +17,10 @@ const avatarVariants = cva(
         medium: "lfui-avatar_md",
       },
       rounded:{
-      	medium: "lfui-utils-corners-rounded",
-      	full: "lfui-utils-corners-full",
+      	medium: "lfui-class-corners-rounded",
+      	full: "lfui-class-corners-full",
       }
-    },
-    // dont use this here for the size and rounded
-    // defaultVariants: {
-    //   size: "medium",
-    //   rounded: "medium"
-    // }
+    }
   }
 );
 

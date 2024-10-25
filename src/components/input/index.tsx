@@ -15,28 +15,50 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAr
 	hint?:string 
 }
 
-export const initialInputClassName = "lfui-inputWrapper";
-
-export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, textarea,hint, ...props }, ref) => {
-	const InputComponent = textarea ? 'textarea' : 'input';
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, textarea,hint, ...props }, ref) => {
 	return (
 		<label
 			data-state={props.disabled ? "disabled" : undefined}
 			className={clsx(`lfui-inputLabel`, className)}
 		>
-			<div className={clsx(initialInputClassName, inputContainerClassName, {'error': error})}>
+			<div className={clsx("lfui-inputWrapper", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
 				{leftIcon}
-				<InputComponent
-					type={textarea ? undefined : type}
+				<input
 					className={clsx(
 						"lfui-input",
+						inputClassName
+					)}
+					ref={ref}
+					type="text"
+					{...props}
+				/>
+				{icon}
+			</div>
+			{error && (
+				<InputError message={error} />
+			)}
+			{hint && (
+				<Text size="medium" children={hint}/>
+			)}
+		</label>
+	)
+});
+
+export const Textarea = React.forwardRef<HTMLTextAreaElement, InputProps>(({ className, inputClassName, error, inputContainerClassName, textarea,hint, ...props }, ref) => {
+	return (
+		<label
+			data-state={props.disabled ? "disabled" : undefined}
+			className={clsx(`lfui-inputLabel`, className)}
+		>
+			<div className={clsx("lfui-inputWrapper", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
+				<textarea
+					className={clsx(
+						"lfui-textarea",
 						inputClassName,
-						{ 'lfui-textarea': textarea }
 					)}
 					ref={ref as any}
 					{...props}
 				/>
-				{icon}
 			</div>
 			{error && (
 				<InputError message={error} />

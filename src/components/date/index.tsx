@@ -7,7 +7,7 @@ import {
 	DropdownItem,
 	InputError,
 	Select,
-	useToggle
+	usePopover
 } from '../';
 
 /**
@@ -38,7 +38,7 @@ export type DatePickerProps = {
 }
 export function DatePicker({ name, error, value, clearable, ...props }: DatePickerProps) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
-	const [ref, refMenu, active, setIsOpen] = useToggle<HTMLButtonElement, HTMLDivElement>({followTargetWidth: false});
+	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>({followTargetWidth: false});
 	const displayFormat = props.displayFormat ?? "yyyy-mm-dd";
 
 	return (
@@ -413,7 +413,7 @@ export type RangeDatePickerProps = {
 	datePickerContainerClass?: string
 }
 export function RangeDatePicker(props: RangeDatePickerProps) {
-	const [ref, refMenu, isOpen, setIsOpen, ignore] = useToggle<HTMLDivElement, HTMLDivElement>({placement: "bottom-start"});
+	const [ref, refMenu, isOpen, setIsOpen, ignore] = usePopover<HTMLDivElement, HTMLDivElement>({placement: "bottom-start"});
 	return (
 		<Fragment>
 			<div ref={ref}>
