@@ -1,7 +1,7 @@
 .lfui-formgroup{
 	display: flex;
 	flex-direction: column;
-	row-gap: 8px;
+	row-gap: var(--gap);
 }
 
 .lfui-formgroupHeader{

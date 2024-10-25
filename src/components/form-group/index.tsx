@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Label } from "../";
-import {Fallback} from "../utilities";
+import { Fallback } from "../utilities";
 
 import "./form-group.scss";
 
@@ -32,8 +32,13 @@ export function FormgroupHeader(props: formgroupHeaderProps){
 		<div className="lfui-formgroupHeader">
 			{Fallback(props.label, <Label children={props.label} />)}
 			{/* force space betwen alignemt */}
-			<div />
-			{Fallback(props.action, <Label children={props.action} />)}
+			{
+				!props.label &&
+				!props.action &&
+				<div />
+			}
+			{props.action}
 		</div>
 	)
 }
+
