@@ -2,8 +2,8 @@
   padding: 10px;
   background: var(--white);
   border: 1px solid var(--lf-gray-glow);
-  box-shadow: 0px 2px 15px 0px rgba(var(--font-color), 0.13);
+  box-shadow: 0px 2px 15px 0px color-mix(in srgb, var(--font-color) 13%, transparent);
   border-radius: 4px;
   color: var(--font-color);
-  z-index: 10;
+  z-index: 10; // TODO
 }

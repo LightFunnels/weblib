@@ -5,30 +5,14 @@ import "./popover.scss";
 
 const popoverVariants = cva(
   "lfui-popover",
-  {
-    variants: {
-      placement: {
-        top: "lfui-popover_top",
-        bottom: "lfui-popover_bottom",
-        left: "lfui-popover_left",
-        right: "lfui-popover_right",
-      },
-    },
-    defaultVariants: {
-      placement: "bottom",
-    }
-  }
 );
 
 type PopoverVariantProps = VariantProps<typeof popoverVariants>;
 
-export type PopoverProps = React.HTMLAttributes<HTMLDivElement> & {
-  arrowClassName?: string;
-  offset?: [number, number];
-}
+export type PopoverProps = React.HTMLAttributes<HTMLDivElement>
 
 export const PopoverCard = React.forwardRef<HTMLDivElement, PopoverProps>(
-  ({ className, arrowClassName, children, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     const arrowRef = React.useRef<HTMLDivElement>(null);
     return (
       <div

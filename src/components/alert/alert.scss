@@ -1,23 +1,12 @@
 .lfui-alert {
   border-radius: 0.75rem; // TODO
-  overflow: hidden; // TODO - may remove when we move ::before
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 1rem; // TODO
+  padding: var(--card-padding);
   gap: 0.75rem; // TODO
   background-color: color-mix(in srgb, var(--alert-color) 10%, transparent);
-  // TODO ErFmOGC we may move this to app instead
-  &::before {
-  	background-color: var(--alert-color);
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 0.25rem;
-  }
 }
 
 .lfui-alertThumbnail, .lfui-alertIcon {
