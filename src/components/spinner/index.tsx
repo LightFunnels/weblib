@@ -6,6 +6,9 @@ const spinnerVariants = cva(
   "lfui-spinner",
   {
     variants: {
+    	variant: {
+        primary: "lfui-spinner_primary",
+      },
       size: {
         small: "lfui-spinner_small",
         medium: "lfui-spinner_medium",

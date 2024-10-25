@@ -1,8 +1,8 @@
 .lfui-spinner{
-  color : var(--primary-color);
 	animation: spin 1s linear infinite;
 	margin-right: 4px;
 }
+
 .lfui-spinner_small {
   width: 1.125rem;
   height: 1.125rem;
@@ -16,6 +16,10 @@
 .lfui-spinner_large {
   width: 2rem;
   height: 2rem;
+}
+
+.lfui-spinner_primary{
+  color : var(--primary-color);
 }
 
 @keyframes spin {
