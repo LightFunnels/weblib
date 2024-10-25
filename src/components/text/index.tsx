@@ -15,7 +15,7 @@ const textVariants = cva(
       }
     },
     defaultVariants: {
-      size: "large",
+      size: "medium",
     }
   }
 )

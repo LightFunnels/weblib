@@ -2,12 +2,12 @@ import clsx from 'clsx';
 
 import "./code.scss";
 
-type Props = {
+export type CodeProps = {
 	copiable?: boolean
 	value: string
 }
 
-export function Code({copiable, value, ...props}: React.HTMLAttributes<HTMLElement> & Props) {
+export function Code({copiable, value, ...props}: React.HTMLAttributes<HTMLElement> & CodeProps) {
   return (
     <code {...props} className={clsx("lfui-code", props.className)}>
       {value}

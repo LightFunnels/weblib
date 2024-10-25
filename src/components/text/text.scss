@@ -1,17 +1,17 @@
 .lfui-text {
-  line-height: 1.5em; // TODO
+  line-height: var(--line-height);
   color: var(--caption-gray);
   margin: 0;
 }
 
 .lfui-text_large {
-  font-size: 1rem;
+  font-size: calc(var(--font-size) + 20%);
 }
 
 .lfui-text_medium {
-  font-size: 0.875rem;
+  font-size: var(--font-size);
 }
 
 .lfui-text_small {
-  font-size: 0.75rem;
+  font-size: calc(var(--font-size) - 20%);
 }

@@ -5,9 +5,9 @@
 	align-items: center;
 	border-radius: var(--radius); 
 	font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; 
-	font-size: 0.8rem; // TODO
+	font-size: calc(var(--font-size) - 20%);
 	background-color: var(--interaction-color);
-	padding: 4px; // TODO
+	padding: var(--inline-gap);
 }
 
 .lfui-codeIcon{
