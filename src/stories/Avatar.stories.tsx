@@ -7,12 +7,18 @@ const meta: Meta<typeof Avatar> = {
   tags: ['autodocs'],
   argTypes: {
     size: {
-      control: 'select',
-      options: ['medium'],
+      control: 'radio',
+      options: [
+      	"l2",
+      	"l",
+      	"regular",
+      	"s",
+      	"s2",
+      ],
     },
-    rounded: {
-      control: 'select',
-      options: ['medium', 'full'],
+    borderRadius: {
+      control: 'radio',
+      options: ['regular', 'full'],
     },
     src: {
       control: 'text',
@@ -34,15 +40,15 @@ type Story = StoryObj<typeof Avatar>;
 
 export const Default: Story = {
   args: {
-    size: 'medium',
-    rounded: 'medium',
+    size: 'regular',
+    borderRadius: 'regular',
   },
 };
 
 export const WithImage: Story = {
   args: {
     ...Default.args,
-    rounded: 'full',
+    borderRadius: 'full',
     src: 'https://www.gravatar.com/avatar/80f1a2a8129391042704c5276a49fe46',
   },
 };
@@ -57,7 +63,7 @@ export const WithFallback: Story = {
 export const FullyRounded: Story = {
   args: {
     ...Default.args,
-    rounded: 'full',
+    borderRadius: 'full',
   },
 };
 

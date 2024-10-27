@@ -10,12 +10,12 @@ const textVariants = cva(
     variants: {
       size: {
         large: "lfui-text_large",
-        medium: "lfui-text_medium",
+        regular: "lfui-text_regular",
         small: "lfui-text_small",
       }
     },
     defaultVariants: {
-      size: "medium",
+      size: "regular",
     }
   }
 )

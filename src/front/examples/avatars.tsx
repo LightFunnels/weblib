@@ -6,8 +6,8 @@ export default function Avatars(){
 			<Heading>Avatars</Heading>
 			<div className="flex gap-2">
 				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" />
-				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" rounded="full" />
-				<Avatar children="NB" rounded="full" />
+				<Avatar src="https://websites.umich.edu/~bbowman/photos/moon/the_Moon(60x)-072907-1156pm-tan-th.jpg" borderRadius="full" />
+				<Avatar children="NB" borderRadius="full" />
 			</div>
 		</div>
 	)

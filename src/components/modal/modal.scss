@@ -26,18 +26,18 @@
 }
 
 .lfui-modalHeader{
-	padding: var(--gap);
+	padding: var(--inline-gap);
 }
 
 .lfui-modalFooter{
-	padding: var(--gap);
+	padding: var(--inline-gap);
 	display: flex;
-	gap: var(--gap);
+	gap: var(--inline-gap);
 	justify-content: flex-end;
 }
 
 .lfui-modalBody{
-	padding: var(--gap);
+	padding: var(--inline-gap);
 	flex-grow: 1;
 	overflow-y: auto;
 }

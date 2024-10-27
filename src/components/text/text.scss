@@ -5,13 +5,13 @@
 }
 
 .lfui-text_large {
-  font-size: calc(var(--font-size) + 20%);
+  font-size: calc(var(--font-size) * 1.2);
 }
 
-.lfui-text_medium {
+.lfui-text_regular {
   font-size: var(--font-size);
 }
 
 .lfui-text_small {
-  font-size: calc(var(--font-size) - 20%);
+  font-size: calc(var(--font-size) * 0.8);
 }

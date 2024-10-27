@@ -14,10 +14,14 @@ const avatarVariants = cva(
   {
     variants: {
       size: {
-        medium: "lfui-avatar_md",
+        regular: "",
+        l2: "lfui-avatar_l2",
+        l: "lfui-avatar_l",
+        s: "lfui-avatar_s",
+        s2: "lfui-avatar_s2",
       },
-      rounded:{
-      	medium: "lfui-class-corners-rounded",
+      borderRadius:{
+      	regular: "lfui-class-corners-regular",
       	full: "lfui-class-corners-full",
       }
     }
@@ -25,9 +29,9 @@ const avatarVariants = cva(
 );
 
 export function Avatar(props: Props){
-	const corners = avatarVariants({rounded: props.rounded ?? "medium"});
+	const corners = avatarVariants({borderRadius: props.borderRadius ?? "regular"});
 	return (
-		<div className={cx("lfui-avatar", avatarVariants({size: props.size ?? "medium"}), corners, props.className)}>
+		<div className={cx("lfui-avatar", avatarVariants({size: props.size ?? "regular"}), corners, props.className)}>
 			<img
 				className={cx("lfui-avatarPlaceholder", corners)}
 				src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />

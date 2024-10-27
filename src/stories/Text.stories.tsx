@@ -9,7 +9,7 @@ const meta: Meta<typeof Text> = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['large', 'medium', 'small'],
+      options: ['large', 'regular', 'small'],
     },
     children: {
       control: 'text',
@@ -30,10 +30,10 @@ export const Large: Story = {
   },
 };
 
-export const Medium: Story = {
+export const Regular: Story = {
   args: {
-    size: 'medium',
-    children: 'This is medium text',
+    size: 'regular',
+    children: 'This is regular text',
   },
 };
 
@@ -47,7 +47,7 @@ export const Small: Story = {
 
 export const LongText: Story = {
   args: {
-    size: 'medium',
+    size: 'regular',
     children: 'This is a longer piece of text to demonstrate how the component handles multiple lines. It should wrap properly and maintain the correct line height and spacing.',
   },
 };

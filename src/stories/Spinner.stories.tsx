@@ -8,7 +8,7 @@ const meta: Meta<typeof Spinner> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['small', 'regular', 'large'],
     },
   },
 };
@@ -21,9 +21,9 @@ export const Default: Story = {
   },
 };
 
-export const Medium: Story = {
+export const Regular: Story = {
   args: {
-    size: 'medium',
+    size: 'regular',
   },
 };
 

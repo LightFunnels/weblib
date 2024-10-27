@@ -1,8 +1,11 @@
-.lfui-class-corners-rounded{
+.lfui-class-corners-regular{
 	border-radius: var(--radius);
 }
 .lfui-class-corners-full{
 	border-radius: 50%;
+}
+.lfui-class-corners-max{
+	border-radius: 999px;
 }
 
 // TODO - discuss this option

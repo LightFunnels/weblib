@@ -11,7 +11,7 @@ const spinnerVariants = cva(
       },
       size: {
         small: "lfui-spinner_small",
-        medium: "lfui-spinner_medium",
+        regular: "lfui-spinner_regular",
         large: "lfui-spinner_large",
       }
     },
