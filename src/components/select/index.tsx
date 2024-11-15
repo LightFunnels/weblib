@@ -143,9 +143,13 @@ const Search = React.forwardRef<HTMLInputElement, SearchProps>(
 	function Search(props: SearchProps, inputRef){
 		const rf = React.useRef<HTMLInputElement>(null);
 		React.useEffect(() => {
-			setTimeout(() => {
+			// TODO, listen to popover end instead
+			let i = setTimeout(() => {
 				rf.current!.focus();
-			})
+			});
+			return () => {
+				clearTimeout(i);
+			}
 		}, []);
 		return (
 			<input
