@@ -1,7 +1,7 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Modal } from '../components/modal';
+import React from 'react';
 import { Button } from '../components/button';
+import { Modal } from '../components/modal';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Modal',
@@ -17,23 +17,25 @@ const meta: Meta<typeof Modal> = {
 export default meta;
 type Story = StoryObj<typeof Modal>;
 
+function useModalState(){
+	const [s, ss] = React.useState(false);
+	return [s, () => ss(true), () => ss(false)] as const;
+}
+
 const createModalStory = (title: string, content: React.ReactNode) => {
   return () => {
-    const [isOpen, openModal, closeModal] = Modal.useModalState();
-
+    const [isOpen, openModal, closeModal] = useModalState();
     return (
       <>
         <Button onClick={openModal}>Open {title}</Button>
-        <Modal active={isOpen} close={closeModal}>
-          <div>
-            <Modal.Title onClick={closeModal}>{title}</Modal.Title>
-            <Modal.Body>{content}</Modal.Body>
-            <Modal.Footer>
-              <Button onClick={closeModal} variant="secondary">Cancel</Button>
-              <Button onClick={closeModal}>Confirm</Button>
-            </Modal.Footer>
-          </div>
-        </Modal>
+        {
+        	isOpen &&
+	        <Modal
+	        	header={title}
+	        	body={content}
+	        	close={closeModal}>
+	        </Modal>
+        }
       </>
     );
   };
@@ -58,23 +60,22 @@ export const WithLongContent: Story = {
   )
 };
 
-
-
 export const WithoutFooter: Story = {
   render: () => {
-    const [isOpen, openModal, closeModal] = Modal.useModalState();
+    const [isOpen, openModal, closeModal] = useModalState();
 
     return (
       <>
         <Button onClick={openModal}>Open Modal Without Footer</Button>
-        <Modal active={isOpen} close={closeModal}>
-          <div>
-            <Modal.Title onClick={closeModal}>Modal Without Footer</Modal.Title>
-            <Modal.Body>
-              <p>This modal doesn't have a footer section.</p>
-            </Modal.Body>
-          </div>
-        </Modal>
+        {
+        	isOpen && (
+		        <Modal
+		        	header="Modal Without Footer"
+		        	body={<p>This modal doesn't have a footer section.</p>}
+		        	close={closeModal}>
+		        </Modal>
+        	)
+        }
       </>
     );
   }
