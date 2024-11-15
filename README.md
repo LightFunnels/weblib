@@ -31,5 +31,3 @@ recheck
 	opacity
 	zindex
 	colors
-close:
-	buttons
