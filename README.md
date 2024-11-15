@@ -26,3 +26,10 @@ don´t use css condition:
 	  background-color: var(--interaction-color);
 	}
 dont use interfaces
+
+recheck
+	opacity
+	zindex
+	colors
+close:
+	buttons
