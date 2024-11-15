@@ -4,8 +4,11 @@
 	width: 20px;
 }
 
-.lfui-selectSearch{
+.lfui-selectSearch, .lfui-selectSearchDivider{
 	margin-top: calc(var(--inline-gap) / -2); // TODO
+}
+
+.lfui-selectSearch{
 	&, &:focus-within{
 		border: none;
 		box-shadow: none;

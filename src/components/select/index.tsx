@@ -1,8 +1,7 @@
 import { cx } from "class-variance-authority";
 import React, { Fragment } from "react";
 import { createPortal } from 'react-dom';
-import { Button, Close, DropdownItem, DropdownMenu, InputError, usePopover } from "../";
-import { modals, InputWrapper } from "../";
+import { Button, Close, Divider, DropdownItem, DropdownMenu, InputError, InputWrapper, modals, usePopover } from "../";
 
 import "./select.scss";
  
@@ -154,7 +153,12 @@ const Search = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof In
 				clearTimeout(i);
 			}
 		}, []);
-		return <InputWrapper {...props} leftIcon={<SearchIcon />} ref={ref} inputContainerClassName="lfui-selectSearch" />
+		return (
+			<Fragment>
+				<InputWrapper {...props} leftIcon={<SearchIcon />} ref={ref} inputContainerClassName="lfui-selectSearch" />
+				<Divider className="lfui-selectSearchDivider" />
+			</Fragment>
+		)
 	}
 )
 
