@@ -38,7 +38,9 @@ export type DatePickerProps = {
 }
 export function DatePicker({ name, error, value, clearable, ...props }: DatePickerProps) {
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
-	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>({followTargetWidth: false});
+	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>({
+		followTargetWidth: false,
+	});
 	const displayFormat = props.displayFormat ?? "yyyy-mm-dd";
 
 	return (
@@ -413,7 +415,10 @@ export type RangeDatePickerProps = {
 	datePickerContainerClass?: string
 }
 export function RangeDatePicker(props: RangeDatePickerProps) {
-	const [ref, refMenu, isOpen, setIsOpen, ignore] = usePopover<HTMLDivElement, HTMLDivElement>({placement: "bottom-start"});
+	const [ref, refMenu, isOpen, setIsOpen, ignore] = usePopover<HTMLDivElement, HTMLDivElement>({
+		placement: "bottom-start",
+		keepOpenOnMenu: true
+	});
 	return (
 		<Fragment>
 			<div ref={ref}>
@@ -513,9 +518,12 @@ const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes
 				children={
 					<div className="lfui-dropdownLabelChildren">
             <CalendarIcon className='lfui-datepickerCalendarIcon'/>
-						<div>
-							{props.children}
-						</div>
+            {
+            	props.children &&
+							<div>
+								{props.children}
+							</div>
+            }
 						{
 							clear && 
 							<Close
