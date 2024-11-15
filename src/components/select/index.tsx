@@ -53,7 +53,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 	);
 
 	return (
-		<Fragment>
+		<div className="lfui-select">
 			<Button
 				onClick={() => setIsOpen(true)}
 				ref={ref}
@@ -130,7 +130,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 					<InputError message={error} />
 				)
 			}
-		</Fragment>
+		</div>
 	)
 });
 Select.displayName = "Select";

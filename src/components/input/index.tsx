@@ -1,21 +1,20 @@
 import clsx from "clsx";
 import * as React from "react";
 
-import "./input.scss";
 import { Text } from "..";
+import "./input.scss";
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> &{
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &{
 	error?: React.ReactNode
 	inputClassName?: string
 	className?: string
 	icon?: React.ReactNode 
 	leftIcon?: React.ReactNode
 	inputContainerClassName?: string
-	textarea?: boolean
 	hint?:string 
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, textarea,hint, ...props }, ref) => {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, hint, ...props }, ref) => {
 	return (
 		<label
 			data-state={props.disabled ? "disabled" : undefined}
@@ -38,13 +37,21 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className
 				<InputError message={error} />
 			)}
 			{hint && (
-				<Text size="medium" children={hint}/>
+				<Text size="small" children={hint}/>
 			)}
 		</label>
 	)
 });
 
-export const Textarea = React.forwardRef<HTMLTextAreaElement, InputProps>(({ className, inputClassName, error, inputContainerClassName, textarea,hint, ...props }, ref) => {
+export type TextareaProps = React.InputHTMLAttributes<HTMLTextAreaElement> &{
+	error?: React.ReactNode
+	inputClassName?: string
+	className?: string
+	inputContainerClassName?: string
+	hint?: string 
+}
+
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, inputClassName, error, inputContainerClassName, hint, ...props }, ref) => {
 	return (
 		<label
 			data-state={props.disabled ? "disabled" : undefined}
@@ -64,7 +71,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, InputProps>(({ cla
 				<InputError message={error} />
 			)}
 			{hint && (
-				<Text size="medium" children={hint}/>
+				<Text size="small" children={hint}/>
 			)}
 		</label>
 	)

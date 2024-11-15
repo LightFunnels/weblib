@@ -18,3 +18,8 @@
 	}
 }
 
+.lfui-select{
+	display: flex;
+	flex-direction: column;
+	row-gap: var(--error-gap);
+}
