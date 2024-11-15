@@ -5,7 +5,7 @@
 }
 
 .lfui-selectSearch, .lfui-selectSearchDivider{
-	margin-top: calc(var(--inline-gap) / -2); // TODO
+	margin-top: var(--fallback-padding);
 }
 
 .lfui-selectSearch{

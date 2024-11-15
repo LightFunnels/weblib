@@ -5,9 +5,10 @@
 	border-radius: var(--radius);
 	--font-size: var(--font-size);
 	font-size: var(--font-size);
-	padding: 9px var(--card-padding);
+	padding: var(--fallback-padding) var(--card-padding);
 	font-weight: var(--label-wight);
 	line-height: 1;
+	min-height: 36px;
 	vertical-align: middle;
 	cursor: pointer;
   text-align: center;

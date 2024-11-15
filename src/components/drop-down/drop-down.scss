@@ -26,8 +26,8 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--inline-gap) / 2);
-  padding: calc(var(--inline-gap) / 2) 0;
+  gap: var(--fallback-padding);
+  padding: var(--fallback-padding) 0;
   background-color: var(--white);
   box-shadow: 0px 3px 10px rgba(0,0,0,0.08); // TODO check if we can varaiblelize this
   border: 1px solid var(--lf-gray-glow);
