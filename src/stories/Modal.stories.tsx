@@ -1,14 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { Button } from '../components/button';
-import { Modal } from '../components/modal';
+import React, {Fragment} from 'react';
+import { Button, Modal, Text } from '../components';
 
 const meta: Meta<typeof Modal> = {
   title: 'Components/Modal',
   component: Modal,
   tags: ['autodocs'],
   argTypes: {
-    active: { control: 'boolean' },
     close: { action: 'closed' },
     className: { control: 'text' },
   },
@@ -44,7 +42,7 @@ const createModalStory = (title: string, content: React.ReactNode) => {
 export const Default: Story = {
   render: createModalStory(
     "Default Modal",
-    <p>This is the default modal content.</p>
+    <Text>This is the default modal content.</Text>
   )
 };
 
@@ -52,9 +50,9 @@ export const WithLongContent: Story = {
   render: createModalStory(
     "Long Content Modal",
     <>
-      <p>This modal has a lot of content to demonstrate scrolling behavior.</p>
+      <Text>This modal has a lot of content to demonstrate scrolling behavior.</Text>
       {Array(20).fill(null).map((_, index) => (
-        <p key={index}>This is paragraph {index + 1} of the long content.</p>
+        <Text key={index}>This is paragraph {index + 1} of the long content.</Text>
       ))}
     </>
   )
@@ -71,7 +69,13 @@ export const WithoutFooter: Story = {
         	isOpen && (
 		        <Modal
 		        	header="Modal Without Footer"
-		        	body={<p>This modal doesn't have a footer section.</p>}
+		        	body={"This modal doesn't have a footer section."}
+		        	footer={
+		        		<Fragment>
+		        			<Button children="Cancel" variant="secondary" />
+		        			<Button children="Save" />
+		        		</Fragment>
+		        	}
 		        	close={closeModal}>
 		        </Modal>
         	)

@@ -8,11 +8,12 @@ import { modals } from "../drop-down";
 
 type Props = {
 	header?: React.ReactNode
-	body: React.ReactNode
+	body: string | number | React.ReactElement
 	footer?: React.ReactNode
 	bodyClassName?: string
 	headerClassName?: string
 	close: () => void
+	className?: string
 }
 
 export function Modal(props: Props){
@@ -20,20 +21,28 @@ export function Modal(props: Props){
 		<Fragment>
 			{
 				createPortal(
-					<div className="lfui-modal">
+					<div className={clsx("lfui-modal", props.className)}>
 						<div onClick={props.close} className="lfui-modalBackground"></div>
-						<div className={clsx("lfui-modalBlock", props.bodyClassName)}>
+						<div
+							className={
+								clsx("lfui-modalBlock lfui-modalBlock_roundedTop lfui-modalBlock_roundedBottom", props.bodyClassName)
+							}
+						>
 							{
 								props.header && (
-									<div className={`lfui-modalHeader ${props.headerClassName ?? ""}`}>{props.header}</div>
+									<div className={clsx(`lfui-modalHeader lfui-modalBlock_roundedTop`, props.headerClassName)}>{props.header}</div>
 								)
 							}
-							<div className={"lfui-modalBody"} >
+							<div
+								className={clsx("lfui-modalBody", {
+									"lfui-modalBody_roundedTop": !Boolean(props.header),
+									"lfui-modalBody_roundedBottom": !Boolean(props.footer),
+								})} >
 								{props.body}
 							</div>
 							{
 								props.footer && (
-									<div className={"lfui-modalFooter"}>{props.footer}</div>
+									<div className={"lfui-modalFooter lfui-modalBlock_roundedBottom"}>{props.footer}</div>
 								)
 							}
 						</div>
