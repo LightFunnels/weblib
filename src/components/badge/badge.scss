@@ -5,11 +5,11 @@
   --badge-color: var(--base-color);
   background-color: color-mix(in srgb, var(--badge-color) 10%, transparent);
   border-color: color-mix(in srgb, var(--badge-color) 40%, transparent);
-  padding: var(--inline-gap) 12px; // TODO
+  padding: var(--inline-gap) var(--block-gap);
   gap: var(--inline-gap);
   color: var(--font-color);
   font-size: var(--font-size);
-  line-height: 1em;
+  line-height: 1em; // TODO
 }
 
 .lfui-badge_warning {
