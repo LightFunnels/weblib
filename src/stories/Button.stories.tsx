@@ -10,10 +10,6 @@ const meta: Meta<typeof Button> = {
       control: 'select',
       options: ['default', 'destructive', 'secondary'],
     },
-    size: {
-      control: 'radio',
-      options: ['default', 'small'],
-    },
     loading: {
       control: 'boolean',
     },
@@ -53,13 +49,6 @@ export const Disabled: Story = {
   args: {
     disabled: true,
     children: 'Disabled Button',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: 'small',
-    children: 'Small Button',
   },
 };
 

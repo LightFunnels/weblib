@@ -17,7 +17,6 @@ const meta: Meta<typeof Input> = {
     className: { control: 'text' },
     inputClassName: { control: 'text' },
     inputContainerClassName: { control: 'text' },
-    textarea: { control: 'boolean' },
     hint: { control: 'text' },
   },
 } as const;

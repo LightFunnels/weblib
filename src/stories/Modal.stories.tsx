@@ -20,7 +20,7 @@ function useModalState(){
 	return [s, () => ss(true), () => ss(false)] as const;
 }
 
-const createModalStory = (title: string, content: React.ReactNode) => {
+const createModalStory = (title: string, content: string|React.ReactElement) => {
   return () => {
     const [isOpen, openModal, closeModal] = useModalState();
     return (
