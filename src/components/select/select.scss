@@ -5,16 +5,10 @@
 }
 
 .lfui-selectSearch{
-	display: block;
-	width: 100%;
-	padding: 0.438rem 1rem; // TODO
-	outline: none;
-	border: none;
-	border-bottom: 1px solid var(--border-color);
-	border-start-start-radius: var(--radius);
-	border-start-end-radius: var(--radius);
-	&::placeholder {
-		color: var(--placeholder-color);
+	margin-top: calc(var(--inline-gap) / -2); // TODO
+	&, &:focus-within{
+		border: none;
+		box-shadow: none;
 	}
 }
 

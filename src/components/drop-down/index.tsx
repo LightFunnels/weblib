@@ -100,7 +100,7 @@ type UseToggleOpts = {
 	offset?: [number,number]
 	followTargetWidth?: boolean
 	nonTogglable?: boolean
-	keepOpenOnMenu?: boolean
+	testClose?: (event: MouseEvent) => boolean
 }
 
 export function usePopover<Ref extends HTMLElement = HTMLElement, Menu extends HTMLElement = HTMLElement>(options: UseToggleOpts = {}) {
@@ -115,11 +115,9 @@ export function usePopover<Ref extends HTMLElement = HTMLElement, Menu extends H
 		if(options.nonTogglable){
 			return;
 		}
-		function docHandler(event){
-			if(options.keepOpenOnMenu){
-				if(refMenu.current.contains(event.target)){
-					return;
-				}
+		function docHandler(event: MouseEvent){
+			if(!(options.testClose?.(event) ?? true)){
+				return
 			}
 			setIsOpen(false);
 		}
@@ -137,7 +135,7 @@ export function usePopover<Ref extends HTMLElement = HTMLElement, Menu extends H
 			ref.current.removeEventListener("click", handler);
 			document.removeEventListener("click", docHandler);
 		}
-	}, [isOpen, options.keepOpenOnMenu]);
+	}, [isOpen, options.testClose]);
 
 	React.useLayoutEffect(
 		function () {

@@ -5,8 +5,7 @@
   padding: 0;
   background-color: transparent;
   font-size: var(--font-size);
-  line-height: 1em;
-  height: var(--font-size);
+  height: 100%;
 }
 
 .lfui-textarea {
@@ -29,13 +28,14 @@
   display: flex;
   align-items: center;
   gap: 10px; // TODO
-  padding: 9px; // TODO
+  padding: 0 10px; // TODO
   border-radius: var(--radius); 
   border-width: 1px; 
   width: 100%;
   border: 1px solid var(--lf-gray-glow);
   box-shadow: 0px 1px 3px 0px color-mix(in srgb, var(--font-color) 8%, transparent);
   transition: border-color 0.2s, box-shadow 0.2s;
+  height: 36px;
 
   &:focus-within {
     border-color: var(--primary-color);

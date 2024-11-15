@@ -417,7 +417,12 @@ export type RangeDatePickerProps = {
 export function RangeDatePicker(props: RangeDatePickerProps) {
 	const [ref, refMenu, isOpen, setIsOpen, ignore] = usePopover<HTMLDivElement, HTMLDivElement>({
 		placement: "bottom-start",
-		keepOpenOnMenu: true
+		testClose(event){
+			if(refMenu.current.contains(event.target)){
+				return false;
+			}
+			return true;
+		}
 	});
 	return (
 		<Fragment>

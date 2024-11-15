@@ -2,7 +2,7 @@ import { cx } from "class-variance-authority";
 import React, { Fragment } from "react";
 import { createPortal } from 'react-dom';
 import { Button, Close, DropdownItem, DropdownMenu, InputError, usePopover } from "../";
-import { modals } from "../drop-down";
+import { modals, InputWrapper } from "../";
 
 import "./select.scss";
  
@@ -32,13 +32,21 @@ export type SelectComponentProps = {
 
 export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(function ({ labelClassName, options, error, ...props }, _ref) {
 
-	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>();
+	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>({
+		testClose(event){
+			if(refMenu.current.contains(event.target as HTMLElement)){
+				return false;
+			}
+			return true;
+		}
+	});
 	const selected = options.find(option => option.value === props.value);
 	const [query, setQuery] = React.useState('');
 	const Reg = React.useMemo(() => {
 		return new RegExp(sanitizeStringForReg(query), 'ig');
 	}, [query]);
 	const ref1 = React.useRef<{ [key: string]: HTMLDivElement | null }>({});
+	const inputRef = React.useRef<HTMLInputElement>(null);
 
 	React.useEffect(
 		function () {
@@ -88,7 +96,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 						>
 							{
 								props.isSearchable && (
-									<Search value={query} onChange={value => setQuery(value)} />
+									<Search ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} />
 								)
 							}
 							{
@@ -135,32 +143,18 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 });
 Select.displayName = "Select";
 
-type SearchProps = {
-	value: string
-	onChange: (value: string) => void
-}
-const Search = React.forwardRef<HTMLInputElement, SearchProps>(
-	function Search(props: SearchProps, inputRef){
-		const rf = React.useRef<HTMLInputElement>(null);
+const Search = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof InputWrapper>>(
+	function Search(props, ref: React.MutableRefObject<HTMLInputElement>){
 		React.useEffect(() => {
 			// TODO, listen to popover end instead
 			let i = setTimeout(() => {
-				rf.current!.focus();
+				ref.current.focus();
 			});
 			return () => {
 				clearTimeout(i);
 			}
 		}, []);
-		return (
-			<input
-				type="text"
-				value={props.value}
-				className="lfui-selectSearch"
-				onChange={e => props.onChange(e.target.value)}
-				placeholder="Search"
-				ref={rf}
-			/>
-		)
+		return <InputWrapper {...props} leftIcon={<SearchIcon />} ref={ref} inputContainerClassName="lfui-selectSearch" />
 	}
 )
 
@@ -176,6 +170,26 @@ function mapValueToKey(v): string {
 	} else {
 		return v.toString();
 	}
+}
+
+function SearchIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg
+	    xmlns="http://www.w3.org/2000/svg"
+	    width={20}
+	    height={20}
+	    fill="none"
+	    {...props}
+	  >
+	    <path
+	      stroke="#7B8DA3"
+	      strokeLinecap="round"
+	      strokeLinejoin="round"
+	      strokeWidth={1.667}
+	      d="M9.167 15.833a6.667 6.667 0 1 0 0-13.333 6.667 6.667 0 0 0 0 13.333ZM18.333 18.333l-4.458-4.458"
+	    />
+	  </svg>
+	)
 }
 
 // type AsyncSelectValueType = Array<string|number>|ReadonlyArray<string|number>;

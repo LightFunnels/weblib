@@ -14,25 +14,13 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &{
 	hint?:string 
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, inputClassName, type, error, icon, leftIcon, inputContainerClassName, hint, ...props }, ref) => {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, error, hint, ...props }, ref) => {
 	return (
 		<label
 			data-state={props.disabled ? "disabled" : undefined}
 			className={clsx(`lfui-inputLabel`, className)}
 		>
-			<div className={clsx("lfui-inputWrapper", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
-				{leftIcon}
-				<input
-					className={clsx(
-						"lfui-input",
-						inputClassName
-					)}
-					ref={ref}
-					type="text"
-					{...props}
-				/>
-				{icon}
-			</div>
+			<InputWrapper {...props} />
 			{error && (
 				<InputError message={error} />
 			)}
@@ -42,6 +30,26 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className
 		</label>
 	)
 });
+
+export const InputWrapper = React.forwardRef<HTMLInputElement, InputProps>(
+	function InputWrapper({ inputClassName, type, error, icon, leftIcon, inputContainerClassName, ...props }, ref){
+		return (
+			<div className={clsx("lfui-inputWrapper", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
+				{leftIcon}
+				<input
+					ref={ref}
+					type={type}
+					{...props}
+					className={clsx(
+						"lfui-input",
+						inputClassName
+					)}
+				/>
+				{icon}
+			</div>
+		)
+	}
+)
 
 export type TextareaProps = React.InputHTMLAttributes<HTMLTextAreaElement> &{
 	error?: React.ReactNode
