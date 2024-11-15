@@ -23,14 +23,14 @@
 }
 
 .lfui-alertTitle {
-  font-weight: 500; // TODO
+  font-weight: var(--label-wight);
   font-size: 14px; // TODO
   line-height: 1; // TODO
 }
 
 .lfui-alertMessage {
-  font-size: 13px; // TODO
-  line-height: 1.4rem; // TODO
+  font-size: 14px; // TODO
+  line-height: 1.4em; // TODO
   color: var(--font-color);
 }
 
