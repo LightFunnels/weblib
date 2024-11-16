@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import dateformat from 'dateformat';
 import React, { Fragment } from "react";
-import ReactDatePicker, {ReactDatePickerCustomHeaderProps} from "react-datepicker";
+import ReactDatePicker, { ReactDatePickerCustomHeaderProps } from "react-datepicker";
 import { createPortal } from "react-dom";
 import {
 	Button,
@@ -10,14 +10,14 @@ import {
 	Select,
 	usePopover
 } from '../';
+import { modals } from "../drop-down";
 import {
 	CalendarIcon,
 	Close,
 	Left,
 	Right
 } from "../icons";
-import styles from "./date.scss";
-import { modals } from "../drop-down";
+import "./date.scss";
 import {
 	SafeDate,
 	format,
@@ -308,7 +308,7 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 	}
 
 	return (
-		<div className={clsx(styles.range, "lfui-datepickerModal", props.className)}>
+		<div className={clsx("lfui-datepickerModal", props.className)}>
 			<div className={"lfui-rangeDatepickerBody"}>
 				<div className='lfui-rangeDatePickerCalendars' >
 					<ReactDatePicker
