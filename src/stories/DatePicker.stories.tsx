@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { DatePicker, RangeDatePicker } from '../components/date';
+import { format } from '../components/date/utils';
 
 const meta: Meta<typeof DatePicker> = {
   title: 'Components/Date',
@@ -26,7 +27,7 @@ type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {
   args: {
-    value: new Date(),
+    value: format(new Date()),
     clearable: true,
   },
 };

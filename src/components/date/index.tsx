@@ -186,7 +186,10 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 
 	const [v, sv] = React.useState(() => new Date());
 
-	const R = React.useRef<{left: ReactDatePickerCustomHeaderProps, right: ReactDatePickerCustomHeaderProps}>({});
+	const R = React.useRef<{left: ReactDatePickerCustomHeaderProps, right: ReactDatePickerCustomHeaderProps}>({
+		left: undefined,
+		right: undefined,
+	});
 
 	const leftDate = React.useMemo(
 		function () {

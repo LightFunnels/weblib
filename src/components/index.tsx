@@ -20,5 +20,6 @@ export * from "./radio";
 // export * from "./error"
 export * from "./alert";
 export * from "./popover";
+export * from "./tabs";
 
 import "./utilities.scss";
