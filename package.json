@@ -57,8 +57,6 @@
     "typescript": "^5",
     "vite": "^4.4.9",
     "vite-plugin-dts": "^4.2.1",
-    "vite-plugin-externalize-deps": "^0.8.0",
-    "vite-plugin-pwa": "^0.16.5",
-    "vite-plugin-relay": "^2.0.0"
+    "vite-plugin-externalize-deps": "^0.8.0"
   }
 }
