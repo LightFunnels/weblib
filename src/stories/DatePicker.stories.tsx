@@ -26,7 +26,7 @@ type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {
   args: {
-    value: null,
+    value: new Date(),
     clearable: true,
   },
 };

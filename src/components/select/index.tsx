@@ -1,7 +1,8 @@
 import { cx } from "class-variance-authority";
 import React, { Fragment } from "react";
 import { createPortal } from 'react-dom';
-import { Button, Close, Divider, DropdownItem, DropdownMenu, InputError, InputWrapper, modals, usePopover } from "../";
+import { Button, Divider, DropdownItem, DropdownMenu, InputError, InputWrapper, modals, usePopover } from "../";
+import { Close } from "../icons";
 
 import "./select.scss";
  
@@ -60,7 +61,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectComponentProps>(fun
 	);
 
 	return (
-		<div className="lfui-select">
+		<div className={cx("lfui-select", props.className)}>
 			<Button
 				onClick={() => setIsOpen(true)}
 				ref={ref}

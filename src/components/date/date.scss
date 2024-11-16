@@ -1,13 +1,9 @@
-.lfui-datepicker {
+.lfui-datepickerModal {
 	background: var(--white);
 	border-radius: var(--radius);
   border: 1px solid var(--lf-gray-glow);
   box-shadow: 0px 1px 4px 0px color-mix(in srgb, var(--shadow-color) 12%, transparent), 0px 0px 0px 2px color-mix(in srgb, var(--white) 30%, transparent) inset;
   max-width: fit-content;
-  @media(max-width: 964px){
-    width: 280px;
-    flex-direction: column;
-  }
 }
 
 .lfui-dropdownLabelChildren{
@@ -22,53 +18,83 @@
   flex-shrink: 0;
 }
 
-.react-datepicker__current-month{
-  display: flex;
-  justify-content: center;
-  align-self: stretch;
-  align-items: center;
-  height: 1.5rem;
-  .label{
-    line-height: 1.5rem;
-    text-align: center;
-    flex: 1 0 0;
-  }
-  .navigation{
-    fill: var(--lf-gray-flash);
-    width: 24px;
-    height: 24px;
-    &:hover{
-      fill: hsl(var(--accent));
-    }
+.lfui-datepickerNavigation{
+  fill: var(--lf-gray-flash);
+  width: 24px;
+  height: 24px;
+  &:hover{
+    fill: hsl(var(--accent));
   }
 }
+
+/*  header */
 .react-datepicker__header{
   display: inline-flex;
   flex-direction: column;
   align-self: stretch;
   align-items: flex-start;
-  gap: 1.125rem;
+  gap: 18px;
   background-color: var(--white) ;
   padding: 0;
 }
+.lfui-datepickerHeaderMonth{
+  display: flex;
+  justify-content: center;
+  align-self: stretch;
+  align-items: center;
+  height: 24px;
+}
+.lfui-datepickerHeaderMonthLabel{
+  text-align: center;
+  flex: 1 0 0;
+}
+.react-datepicker__day-names{
+  display: grid;
+  gap: 4px;
+  align-items: center;
+  grid-template-columns: repeat(7, 1fr);
+  align-self: stretch;
+  color: var(--lf-gray-spark);
+  text-align: center;
+  font-size: 14px; // TODO
+  height: 17px; // TODO
+}
+/* end */
+
+/*  month */
+.lfui-datepickerDay{
+  font-size: 14px;
+  color: var(--font-color) ;
+  height: 28px;
+  width: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  cursor: pointer;
+  &:hover{
+    background-color: var(--interaction-color);
+  }
+}
+.lfui-datepickerDay_inSelectingRange{
+  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+.lfui-datepickerDay_edgeRange{
+	&, &:hover{
+	  background: var(--primary-color);
+	  color: var(--white);
+	}
+}
+.lfui-datepickerDay_inRange{
+  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+/* end */
+
+.react-datepicker__triangle, .react-datepicker__aria-live{
+	display: none;
+}
+
 .react-datepicker{
-  font-family: sans-serif ; //to change with matter when I add it
-
-  .react-datepicker__day--selected{
-    background: var(--primary-color);
-    color: var(--white) !important;
-  }
-
-  .react-datepicker__day-names{
-    display: grid;
-    gap: 4px;
-    grid-template-columns: repeat(7, 1fr);
-    align-self: stretch;
-    color: var(--lf-gray-spark);
-    text-align: center;
-    font-size: 0.875rem;
-    line-height: 1.063rem;
-  }
 
   .react-datepicker__month{
     margin: 0;
@@ -84,105 +110,79 @@
   }
 
   .react-datepicker__month-container{
-    padding: 0.75rem;
+    padding: var(--block-gap);
     display: inline-flex;
     flex-direction: column;
-    gap: 0.625rem
-  }
-
-  .react-datepicker__day{
-    font-size: 14px;
-    color: var(--font-color) ;
-    height: 28px;
-    width: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius);
-    cursor: pointer;
-    &:not(.react-datepicker__day--outside-month):not(.edgeRange):not(.react-datepicker__day--in-selecting-range):not(.react-datepicker__day--selected):hover{
-      background-color: var(--interaction-color);
-    }
+    gap: 10px;
   }
 
   .react-datepicker__day--outside-month, .react-datepicker__day--disabled{
     opacity: .4;
-    cursor: not-allowed !important;
+    cursor: not-allowed;
     pointer-events: none;
   }
 }
 
-.lfui-datePicker {
-  position: relative;
-  .react-datepicker-wrapper, .react-datepicker__input-container {
-    width: 100%;
-  }
-}
-
-.lfui-rangeDatepickerContainer{
+/*  modal */
+.lfui-rangeDatepickerBody{
   display: flex;
   align-items: flex-start;
-  @media(max-width:964px){
-    width: 280px;
-    flex-direction: column;
-    .lfui-rangeDatePickerLeft{
-      width: 100%;
-      flex-direction: column;
-      max-height: 300px;
-      overflow: auto;
-      order: 2;
-    } 
-    .lfui-rangeDatePickerRight{
-      max-height: 156px;
-      min-width: 100%;
-      overflow:auto;
-      border-bottom: 1px solid var(--lf-gray-glow);
-      border-left:0;
-    }
-  }
 }
 
-.lfui-rangeDatePickerLeft{
+.lfui-rangeDatePickerCalendars{
   display: flex;
   padding: 1rem 0.5rem;
   align-items: flex-start;
   gap: 0.75rem;
-  .in-range:not(.react-datepicker__day--outside-month){
-    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
-  }
-  .edgeRange{
-    &:not(.react-datepicker__day--outside-month){
-      background: var(--primary-color);
-      color: var(--white) !important;
-    }
-  }
-  .in-selecting-range{
-    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
-  }
 }
 
-.lfui-rangeDatePickerRight{
+.lfui-rangeDatePickerSidebar{
   display: flex;
   width: 7.5rem;
   max-width: 7.5rem;
   padding: 0.75rem 0rem;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 0.25rem;
-  border-left: 1px solid var(--lf-gray-glow);
-}
-
-.lfui-rangeDatePickerSelect{
-  margin: 1rem 0.5rem 0rem 0.5rem;
-  align-self: stretch;
+  border-inline-start: 1px solid var(--lf-gray-glow);
 }
 
 .lfui-rangeDatePickerFooter{
   display: flex;
-  padding: 1rem;
+  padding: var(--card-padding);
   justify-content: flex-end;
   align-items: center;
-  gap: 1rem;
+  gap: var(--card-padding);
   align-self: stretch;
   background-color: var(--footer-color);
+}
+
+.lfui-rangeDatePickerSelect {
+  margin: 1rem 0.5rem 0rem 0.5rem;
+  align-self: stretch;
+}
+/* end */
+
+@media(min-width: 965px){
+	.lfui-rangeDatePickerSelect {
+		display: none;
+	}
+}
+
+@media(max-width: 964px){
+	.lfui-datepickerModal {
+		width: 280px;
+	}
+	.lfui-rangeDatepickerBody{
+		flex-direction: column;
+	}
+	.lfui-rangeDatePickerCalendars{
+	  width: 100%;
+	  flex-direction: column;
+	  overflow: auto;
+	  order: 2;
+	} 
+	.lfui-rangeDatePickerSidebar{
+	  display: none;
+	}
 }

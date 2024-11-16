@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Alert, Button, Close } from '../components';
+import { Alert, Button } from '../components';
+import { Close } from "../components/icons";
 
 const PlaceholderIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="22" height="22" {...props}>

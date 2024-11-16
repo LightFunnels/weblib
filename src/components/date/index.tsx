@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import dateformat from 'dateformat';
 import React, { Fragment } from "react";
-import ReactDatePicker from "react-datepicker";
+import ReactDatePicker, {ReactDatePickerCustomHeaderProps} from "react-datepicker";
 import { createPortal } from "react-dom";
 import {
 	Button,
@@ -9,19 +10,21 @@ import {
 	Select,
 	usePopover
 } from '../';
-
-/**
- * to work on ui
- * mixed raw css and tailwind ?
- *  */
-
-import clsx from 'clsx';
-// import "react-datepicker/dist/react-datepicker.css";
+import {
+	CalendarIcon,
+	Close,
+	Left,
+	Right
+} from "../icons";
 import styles from "./date.scss";
-
 import { modals } from "../drop-down";
-
-const frmt = 'yyyy-mm-dd HH:MM:ss';
+import {
+	SafeDate,
+	format,
+	formatRangeDate,
+	generateFromValue,
+	presets
+} from "./utils";
 
 // we must validate the given property, it must match the given format
 export type DatePickerProps = {
@@ -42,6 +45,35 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 		followTargetWidth: false,
 	});
 	const displayFormat = props.displayFormat ?? "yyyy-mm-dd";
+
+	function renderDayContents(day: number, date: Date) {
+
+		function dayClassName() {
+
+			let className = ` lfui-datepickerDay `;
+
+			if(
+				(date.getMonth() === selected?.getMonth()) &&
+				(date.getDate() === selected.getDate())
+			){
+				className += "lfui-datepickerDay_edgeRange ";
+			}
+
+			return className;
+
+		}
+
+		return (
+			<div
+				className={dayClassName()}
+				tabIndex={-1}
+				aria-label={"Choose " + date.toString()}
+				role="option"
+				title=""
+				aria-disabled="false"
+				aria-selected="false">{day}</div>
+		)
+	}
 
 	return (
 		<div className={props.className ?? ''}>
@@ -64,20 +96,21 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 			{
 				active && (
 					createPortal(
-						<div ref={refMenu} className={"lfui-datepicker"}>
+						<div ref={refMenu} className={"lfui-datepickerModal"}>
 							<ReactDatePicker
 								{...props}
+								renderDayContents={renderDayContents}
 								inline
 								selected={selected}
 								renderCustomHeader={
 									function (e) {
 										return (
-											<div className="react-datepicker__current-month" >
-												<Left className="navigation" onClick={e.decreaseMonth} />
-												<span className="label">
+											<div className="lfui-datepickerHeaderMonth" >
+												<Left className="lfui-datepickerNavigation" onClick={e.decreaseMonth} />
+												<span className="lfui-datepickerHeaderMonthLabel">
 													{dateformat(SafeDate(e.date), `mmmm yyyy`)}
 												</span>
-												<Right className="navigation" onClick={e.increaseMonth} />
+												<Right className="lfui-datepickerNavigation" onClick={e.increaseMonth} />
 											</div>
 										)
 									}
@@ -106,13 +139,11 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 	);
 }
 
-
 type RangeDatePickerComponentProps = {
 	value:{
 		startDate: string|null
 		endDate: string|null
 	}
-	append?: React.ReactNode
 	onCancel: () => void
 	disabled?: boolean
 	onChange: (val: RangeDatePickerComponentProps["value"]) => void
@@ -154,10 +185,8 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 	const [endDateHover, setEndDateHover] = React.useState<number | null>(null);
 
 	const [v, sv] = React.useState(() => new Date());
-	const R = React.useRef({
-		left: undefined as any,
-		right: undefined as any
-	});
+
+	const R = React.useRef<{left: ReactDatePickerCustomHeaderProps, right: ReactDatePickerCustomHeaderProps}>({});
 
 	const leftDate = React.useMemo(
 		function () {
@@ -168,14 +197,10 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 		[v]
 	);
 
+	const [currentLeftMnth, setCurrentLeftMnth] = React.useState(() => leftDate.getMonth());
+
 	function onDatePickerChange(date: Date) {
 		let newValue: RangeDatePickerComponentProps["value"];
-		// console.log(startDate)
-		// if(!startDate){
-		// 	date.setHours(0, 0, 0, 0);
-		// } else {
-		// 	date.setHours(23, 59, 59, 0);
-		// }
 		if (
 			endDate ||
 			!startDate ||
@@ -201,44 +226,6 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 		tempChange(newValue);
 	}
 
-	function dayClassName(_day) {
-
-		let dayStart = new Date(_day);
-		dayStart.setHours(0, 0, 0, 0);
-		let dayEnd = new Date(dayStart);
-		dayEnd.setHours(23, 59, 59, 0);
-
-		let stringNow = dateformat(SafeDate(dayStart), 'yyyy-mm-dd HH:MM:ss');
-		let stringEnd = dateformat(SafeDate(dayEnd), 'yyyy-mm-dd HH:MM:ss');
-		let className = `day-${dateformat(SafeDate(dayStart), 'yyyy-mm-dd')} `;
-		let nowTime = dayStart.getTime();
-
-		if (
-			endDateHover && ((nowTime <= endDateHover) && (nowTime >= startDate!.getTime()))
-		) {
-			className += ' in-selecting-range ';
-		}
-
-		if (
-			(stringNow === tempvalue.startDate) ||
-			(stringEnd === tempvalue.endDate)
-		) {
-			className += " edgeRange ";
-		} else if ((dayStart > (startDate as Date)) && (dayStart < (endDate as Date))) {
-			className += " in-range ";
-		}
-		return className;
-	}
-
-	function onMouseOver(event) {
-		if (event.target.classList.contains('react-datepicker__day')) {
-			let date = new Date(
-				SafeDate(event.target.className.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g))
-			);
-			setEndDateHover(date.getTime());
-		}
-	}
-
 	const active = React.useMemo(() => {
 		let foudnValue = presets.find(val => {
 			let value = generateFromValue(val.value);
@@ -259,109 +246,166 @@ export function RangeDatePickerCalendar(props: RangeDatePickerComponentProps) {
 
 	const propsDisabled = props.disabled ?? true;
 
+	function renderDayContents(day: number, date: Date, cm: number) {
+
+		function dayClassName(_day: Date) {
+
+			let className = `lfui-datepickerDay `;
+
+			// thiw will exclude outside month days
+			if(_day.getMonth() !== cm){
+				return className;
+			}
+
+			let dayStart = new Date(_day);
+			dayStart.setHours(0, 0, 0, 0);
+			let dayEnd = new Date(dayStart);
+			dayEnd.setHours(23, 59, 59, 0);
+
+			/* to refactor this and depend on date functions directly instead of converting to string - performance++ */
+			let stringNow = dateformat(SafeDate(dayStart), 'yyyy-mm-dd HH:MM:ss');
+			let stringEnd = dateformat(SafeDate(dayEnd), 'yyyy-mm-dd HH:MM:ss');
+			let nowTime = dayStart.getTime();
+
+			if (
+				endDateHover && ((nowTime <= endDateHover) && (nowTime >= startDate!.getTime()))
+			) {
+				className += ' lfui-datepickerDay_inSelectingRange ';
+			}
+
+			if (
+				(stringNow === tempvalue.startDate) ||
+				(stringEnd === tempvalue.endDate)
+			) {
+				className += " lfui-datepickerDay_edgeRange ";
+			} else if ((dayStart > startDate) && (dayStart < endDate)) {
+				className += " lfui-datepickerDay_inRange ";
+			}
+
+			return className;
+		}
+
+		return (
+			<div
+				onMouseEnter={(startDate && !endDate) ? () => {
+					setEndDateHover(date.getTime())
+				} : undefined}
+				className={dayClassName(date)}
+				tabIndex={-1}
+				aria-label={"Choose " + date.toString()}
+				role="option"
+				title=""
+				aria-disabled="false"
+				aria-selected="false">{day}</div>
+		)
+	}
+
+	function adjustOutside(d: Date){
+		setCurrentLeftMnth(d.getMonth())
+	}
+
 	return (
-		<div className={clsx(styles.range, "lfui-datepicker", props.className)}>
-			<div className={"lfui-rangeDatepickerContainer"}>
-				<div className='lfui-rangeDatePickerLeft' onMouseOver={(startDate && !endDate) ? onMouseOver : undefined}>
-						<ReactDatePicker
-							openToDate={leftDate}
-							inline
-							onChange={(date) => {
-								onDatePickerChange(date!);
-							}}
-							dayClassName={dayClassName}
-							renderCustomHeader={
-								function (e) {
-									R.current.left = e;
-									return (
-										<div className="react-datepicker__current-month" >
-											<Left
-												className={"navigation " + (e.prevMonthButtonDisabled ? 'disabled' : '')}
-												onClick={
-													function () {
-														R.current.right.decreaseMonth();
-														e.decreaseMonth()
-													}
+		<div className={clsx(styles.range, "lfui-datepickerModal", props.className)}>
+			<div className={"lfui-rangeDatepickerBody"}>
+				<div className='lfui-rangeDatePickerCalendars' >
+					<ReactDatePicker
+						onMonthChange={adjustOutside}
+						openToDate={leftDate}
+						inline
+						renderDayContents={(day, date) => {
+							return renderDayContents(day, date, currentLeftMnth)
+						}}
+						onChange={(date) => {
+							onDatePickerChange(date!);
+						}}
+						renderCustomHeader={
+							function (e) {
+								R.current.left = e;
+								return (
+									<div className="lfui-datepickerHeaderMonth" >
+										<Left
+											className={"lfui-datepickerNavigation " + (e.prevMonthButtonDisabled ? 'disabled' : '')}
+											onClick={
+												function () {
+													R.current.right.decreaseMonth();
+													e.decreaseMonth()
 												}
-											/>
-											<span className="label">
-												{dateformat(SafeDate(e.date), `mmmm yyyy`)}
-											</span>
-										</div>
-									)
-								}
+											}
+										/>
+										<span className="lfui-datepickerHeaderMonthLabel">
+											{dateformat(SafeDate(e.date), `mmmm yyyy`)}
+										</span>
+									</div>
+								)
 							}
-						/>
-						<ReactDatePicker
-							openToDate={v}
-							onChange={(date) => {
-								sv(date!);
-								onDatePickerChange(date!);
-							}}
-							dayClassName={dayClassName}
-							renderCustomHeader={
-								function (e) {
-									R.current.right = e;
-									return (
-										<div className="react-datepicker__current-month" >
-											<span className="label">{dateformat(SafeDate(e.date), `mmmm yyyy`)}</span>
-											<Right
-												className={"navigation " + (e.nextMonthButtonDisabled ? 'disabled' : '')}
-												onClick={
-													function () {
-														R.current.left.increaseMonth();
-														e.increaseMonth();
-													}
+						}
+					/>
+					<ReactDatePicker
+						openToDate={v}
+						onChange={(date) => {
+							sv(date!);
+							onDatePickerChange(date!);
+						}}
+						renderDayContents={(day, date) => {
+							return renderDayContents(day, date, currentLeftMnth+1)
+						}}
+						renderCustomHeader={
+							function (e) {
+								R.current.right = e;
+								return (
+									<div className="lfui-datepickerHeaderMonth" >
+										<span className="lfui-datepickerHeaderMonthLabel">{dateformat(SafeDate(e.date), `mmmm yyyy`)}</span>
+										<Right
+											className={"lfui-datepickerNavigation " + (e.nextMonthButtonDisabled ? 'disabled' : '')}
+											onClick={
+												function () {
+													R.current.left.increaseMonth();
+													e.increaseMonth();
 												}
-											/>
-										</div>
-									)
-								}
+											}
+										/>
+									</div>
+								)
 							}
-							inline
-							maxDate={today}
-						/>
-					{ props.append }
+						}
+						inline
+						maxDate={today}
+					/>
 				</div>
-				{
-					window.innerWidth < 425 ? (
-						<Select
-						  label='Select a date'
-              labelClassName='lfui-rangeDatePickerSelect'
-							options={presets}
-							value={presets[0].label}
-							onChange={
-								function (value) {
-									let val = generateFromValue(value);
+				<Select
+				  label='Select a date'
+          className='lfui-rangeDatePickerSelect'
+					options={presets}
+					value={presets[0].label}
+					onChange={
+						function (value) {
+							let val = generateFromValue(value);
+							if(val){
+								tempChange(val);
+							}
+						}
+					}
+				/>
+				<div className={"lfui-rangeDatePickerSidebar"}>
+					{
+						presets.map((item) => (
+							<DropdownItem 
+								className={props.dateItemClass ?? ''}
+                active={active === item.value}
+								key={item.label} 
+								onClick={() => {
+									let val = generateFromValue(item.value);
 									if(val){
 										tempChange(val);
+										props.onChange(val);
 									}
-								}
-							}
-						/>
-					) : (
-						<div className={"lfui-rangeDatePickerRight"}>
-							{
-								presets.map((item) => (
-									<DropdownItem 
-										className={props.dateItemClass ?? ''}
-                    active={active === item.value}
-										key={item.label} 
-										onClick={() => {
-											let val = generateFromValue(item.value);
-											if(val){
-												tempChange(val);
-												props.onChange(val);
-											}
-										}}
-									>
-										{item.label}
-									</DropdownItem>
-								))
-							}
-						</div>
-					)
-				}
+								}}
+							>
+								{item.label}
+							</DropdownItem>
+						))
+					}
+				</div>
 			</div>
 			<div className={`lfui-rangeDatePickerFooter ${props.footerClass ?? ''}`}>
 				<Button 
@@ -544,207 +588,3 @@ const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes
 );
 DatePickerInput.displayName = "DatePickerInput";
 
-function Left (props: React.HTMLAttributes<HTMLOrSVGElement>) {
-	return (
-	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
-	    <path d="M665.66 230.356c14.165 14.163 14.165 37.126 0 51.289L435.307 511.999 665.66 742.356c14.165 14.161 14.165 37.124 0 51.29-14.161 14.161-37.124 14.161-51.29 0l-255.998-256c-14.163-14.165-14.163-37.129 0-51.29L614.37 230.355c14.165-14.163 37.129-14.163 51.29 0z" />
-	  </svg>
-	)
-}
-
-function Right (props: React.HTMLAttributes<HTMLOrSVGElement>) {
-	return (
-	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
-	    <path d="M358.372 230.356c-14.163 14.163-14.163 37.126 0 51.289l230.355 230.354-230.355 230.357c-14.163 14.161-14.163 37.124 0 51.29 14.163 14.161 37.126 14.161 51.289 0l255.999-256c14.165-14.165 14.165-37.129 0-51.29L409.661 230.355c-14.163-14.163-37.126-14.163-51.289 0z" />
-	  </svg>
-	)
-}
-
-export function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
-	return (
-	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
-	    <title />
-	    <path d="M793.66 281.646c14.165-14.163 14.165-37.126 0-51.289-14.161-14.163-37.124-14.163-51.285 0L512.018 460.711 281.662 230.357c-14.163-14.163-37.126-14.163-51.289 0s-14.163 37.126 0 51.289L460.728 512 230.373 742.357c-14.163 14.161-14.163 37.124 0 51.29 14.163 14.161 37.126 14.161 51.289 0L512.018 563.29l230.357 230.357c14.161 14.161 37.124 14.161 51.285 0 14.165-14.165 14.165-37.129 0-51.29L563.307 512 793.66 281.646z" />
-	  </svg>
-	);
-}
-
-function CalendarIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
-	return (
-	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
-	    <title />
-	    <path d="M718.95 85.334c0-20.029-16.239-36.267-36.267-36.267-20.032 0-36.267 16.237-36.267 36.267v49.067H377.574V85.334c0-20.029-16.237-36.267-36.267-36.267S305.04 65.304 305.04 85.334v49.067h-91.692c-67.158 0-121.6 54.442-121.6 121.6v597.332c0 67.157 54.442 121.6 121.6 121.6h597.334c67.157 0 121.6-54.443 121.6-121.6V256.001c0-67.158-54.443-121.6-121.6-121.6h-91.733V85.334zm140.8 305.067H164.283v-134.4c0-27.098 21.968-49.067 49.067-49.067h91.692v49.067c0 20.03 16.237 36.267 36.267 36.267s36.267-16.237 36.267-36.267v-49.067h268.842v49.067c0 20.03 16.235 36.267 36.267 36.267 20.028 0 36.267-16.237 36.267-36.267v-49.067h91.733c27.098 0 49.067 21.968 49.067 49.067v134.4zm-695.467 72.532H859.75v390.4c0 27.102-21.969 49.067-49.067 49.067H213.349c-27.099 0-49.067-21.965-49.067-49.067v-390.4z" />
-	  </svg>
-	)
-}
-
-export const presets = [
-	{
-		label: ('Today'),
-		value: 'today',
-	},
-	{
-		label: ('Yesterday'),
-		value: 'yesterday',
-	},
-	{
-		label: ('Last 7 days'),
-		value: 'lastSeven',
-	},
-	{
-		label: ("Last 14 days"),
-		value: 'fourteen',
-	},
-	{
-		label: ('Last 30 days'),
-		value: 'lastThiry',
-	},
-	{
-		label: ("Last 60 days"),
-		value: 'lastSixty',
-	},
-	{
-		label: ('Last 90 days'),
-		value: 'lastNinety',
-	},
-	{
-		label: ("Last 180 days"),
-		value: 'lastOneEighty',
-	},
-	{
-		label: ('Last year'),
-		value: 'lastYear',
-	},
-] as const;
-
-export function format(date: Date): string {
-	return dateformat(SafeDate(date), `yyyy-mm-dd HH:MM:ss`);
-}
-
-export function SafeDate(v) {
-  return (typeof v === 'string') ? v.replace(/-/g, "/") : v;
-}
-
-function generateFromValue(value: typeof presets[number]["value"]){
-	let now = new Date();
-	now.setHours(0, 0, 0, 0);
-	switch(value){
-		case 'today':{
-			let _now = dateformat(now, frmt);
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: _now,
-				endDate: dateformat(end, frmt),
-			};
-			break;
-		}
-		case 'yesterday':{
-			now.setDate(now.getDate() - 1);
-			let _now = dateformat(now, frmt);
-			let end = new Date(now)
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: _now,
-				endDate: dateformat(end, frmt)
-			};
-			break;
-		}
-		case  'lastSeven':{
-			let start = new Date(now);
-			start.setDate(start.getDate() - 6);
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			};
-			break;
-		}
-		case  'fourteen':{
-			let start = new Date(now);
-			start.setDate(start.getDate() - 13);
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			}
-			break;
-		}
-		case  'lastThiry':{
-			let start = new Date(SafeDate(now));
-			start.setDate(start.getDate() - 29);
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			}
-			break;
-		}
-		case  'lastSixty':{
-			let start = new Date(SafeDate(now));
-			start.setDate(start.getDate() - 59)
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			}
-			break;
-		}
-		case  'lastNinety':{
-			let start = new Date(SafeDate(now));
-			start.setDate(start.getDate() - 89)
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			}
-			break;
-		}
-		case  'lastOneEighty':{
-			let start = new Date(SafeDate(now));
-			start.setDate(start.getDate() - 179)
-			let end = new Date(now);
-			end.setHours(23, 59, 59, 0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			}
-			break;
-		}
-		case  'lastYear':{
-			let start = new Date();
-			start.setHours(0, 0, 0, 0);
-			start.setFullYear(start.getFullYear() - 1);
-			start.setMonth(0,1);
-			let end = new Date();
-			end.setMonth(0,1);
-			end.setHours(23, 59, 59, 0);
-			end.setDate(0);
-			return {
-				startDate: dateformat(start, frmt),
-				endDate: dateformat(end, frmt),
-			};
-			break;
-		}
-	}
-}
-
-export function formatRangeDate(startDate, endDate){
-	let comareFormat = 'dd mmm, yyyy';
-		let start = new Date(SafeDate(startDate)), end = new Date(SafeDate(endDate));
-		if(start.getFullYear() === end.getFullYear()){
-			comareFormat = 'dd mmm';
-			if(start.getMonth() === end.getMonth()){
-				comareFormat = "dd";
-				if(start.getDate() === end.getDate()){
-					comareFormat = "";
-				}
-			}
-		}
-	return comareFormat;
-}
