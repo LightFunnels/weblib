@@ -16,7 +16,7 @@ const meta: Meta<typeof Alert> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['error', 'warning', 'success'],
+      options: ['destructive', 'warning', 'success'],
     },
     message: {
       control: 'text',
@@ -49,7 +49,7 @@ export const Default: Story = {
 
 export const Error: Story = {
   args: {
-    variant: 'error',
+    variant: 'destructive',
     label: 'Error',
     message: 'An error has occurred',
     thumbnail: <PlaceholderIcon />

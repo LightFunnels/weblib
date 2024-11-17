@@ -15,7 +15,7 @@ type Props = {
   offset?: [number,number]
 }
 
-export const modals = document.getElementById("modals") ?? document.body;
+export const modals = typeof document === "undefined" ? undefined : (document.getElementById("modals") ?? document.body);
 
 export function Dropdown(props: Props){
 

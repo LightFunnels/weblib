@@ -9,7 +9,7 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        error: "lfui-alert_destructive",
+        destructive: "lfui-alert_destructive",
         warning: "lfui-alert_warning",
         info: "lfui-alert_info",
         success: "lfui-alert_success",
