@@ -20,3 +20,25 @@
 	flex-direction: column;
 	row-gap: var(--error-gap);
 }
+
+.lfui-asyncSelectItemsContainer{
+	display: flex;
+	gap: 4px; // TODO
+	padding: 4px; // TODO
+}
+
+.lfui-asyncSelectDeleteItem{
+	width: 20px;
+	height: 20px;
+}
+
+.lfui-asyncSelectItem{
+	padding: 4px; // TODO, decide between this or variable
+	// --inline-gap: 4px; // TODO
+	// --block-gap: 4px; // TODO
+}
+
+.lfui-loadingMoreContainer, .lfui-loadMoreContainer{
+	display: flex;
+	justify-content: center;
+}

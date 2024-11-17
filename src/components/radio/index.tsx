@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import {cx as clsx} from "class-variance-authority";
 import * as React from "react";
 import { Label, isHTMLElement } from "..";
 import './radio.scss';

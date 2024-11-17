@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import {cx as clsx} from 'class-variance-authority';
 import dateformat from 'dateformat';
 import React, { Fragment } from "react";
 import ReactDatePicker, { ReactDatePickerCustomHeaderProps } from "react-datepicker";

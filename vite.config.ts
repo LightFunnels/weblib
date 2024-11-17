@@ -22,18 +22,7 @@ export default defineConfig((opts) => {
 				name: "ui",
 				fileName: (format) => `ui.${format}.js`,
 				formats: ['es', 'cjs', 'umd'],
-			},
-			// rollupOptions: {
-	    //   external: [
-	    //   	'react',
-	    //   	'react-dom',
-		  //     '@popperjs/core',
-			// 		'class-variance-authority',
-			// 		'dateformat',
-			// 		'react-datepicker',
-			// 		'vite-plugin-dts',
-	    //   ]
-	    // }
+			}
 		}
 	}
 

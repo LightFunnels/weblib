@@ -23,11 +23,11 @@ const spinnerVariants = cva(
 
 export type SpinnerProps = React.SVGAttributes<SVGElement>& VariantProps<typeof spinnerVariants>;
 
-export function Spinner({ className, size, ...props }: SpinnerProps) {
+export function Spinner({ className, size, variant, ...props }: SpinnerProps) {
   return (
     <SpinnerSVG
       {...props}
-      className={clsx(spinnerVariants({ size }),className)}
+      className={clsx(spinnerVariants({ size, variant }),className)}
     />
   );
 }

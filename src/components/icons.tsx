@@ -33,3 +33,42 @@ export function CalendarIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
 	  </svg>
 	)
 }
+
+export function Down(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className={"lucide lucide-chevron-down " + (props.className ?? "")}
+      viewBox="0 0 24 24"
+    >
+      <path d="M6 9l6 6 6-6"></path>
+    </svg>
+	)
+}
+
+export function SearchIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg
+	    xmlns="http://www.w3.org/2000/svg"
+	    width={20}
+	    height={20}
+	    fill="none"
+	    {...props}
+	  >
+	    <path
+	      stroke="#7B8DA3"
+	      strokeLinecap="round"
+	      strokeLinejoin="round"
+	      strokeWidth={1.667}
+	      d="M9.167 15.833a6.667 6.667 0 1 0 0-13.333 6.667 6.667 0 0 0 0 13.333ZM18.333 18.333l-4.458-4.458"
+	    />
+	  </svg>
+	)
+}

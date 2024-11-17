@@ -1,8 +1,9 @@
 import { cx } from "class-variance-authority";
 import React, { Fragment } from "react";
 import { createPortal } from 'react-dom';
-import { Button, Divider, DropdownItem, DropdownMenu, InputError, InputWrapper, modals, usePopover } from "../";
-import { Close } from "../icons";
+import { Badge, Button, Divider, DropdownItem, DropdownMenu, InputError, InputWrapper, LinkText, Spinner as LoadingSpinner, Text, modals, usePopover } from "../";
+import { Close, Down, SearchIcon } from "../icons";
+import { mapValueToKey, sanitizeStringForReg } from "./utils";
 
 import "./select.scss";
  
@@ -161,356 +162,268 @@ const Search = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof In
 			</Fragment>
 		)
 	}
-)
+);
 
-export function sanitizeStringForReg(q: string){
-  return q.replace(/\\/g, "");
+type AsyncSelectValueType = Array<string|number>|ReadonlyArray<string|number>;
+
+type AsyncSelectProps = {
+	disabled?: boolean
+	menuClassName?: string
+	onChange: (e: AsyncSelectValueType) => void
+	className?: string
+	error?: React.ReactNode
+	value: AsyncSelectValueType
+	load: (args: PaginationArgs<{readonly ids?: (string|number)[]|readonly (string|number)[], query: string}>, ab: AbortController) => Promise<Pagination>
+	limit?: number
+	cancellable?: boolean
 }
 
-function mapValueToKey(v): string {
-	if (v === undefined) {
-		return 'undefined';
-	} else if (v === null) {
-		return 'null';
-	} else {
-		return v.toString();
+type PaginationArgs<T> = T & {
+	cursor: string|null
+	first: number
+}
+
+type DefaultPaginationVariables = {query: string, first: number};
+
+const def : Pagination = {
+	edges: [],
+	pageInfo:{
+		hasNextPage: false,
+		// hasPreviousPage: false,
+		// startCursor: null,
+		endCursor	: null,
 	}
-}
+};
+const notFoundMsg = "Not Found";
 
-function SearchIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
+export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
+
+	const limit = props.limit ?? 1;
+
+	const [ref, refMenu, active, setIsOpen, popper] = usePopover<HTMLButtonElement|HTMLDivElement, HTMLDivElement>({
+		testClose(event){
+			if(refMenu.current.contains(event.target as HTMLElement)){
+				return false;
+			}
+			return true;
+		}
+	});
+	const [key, setKey] = React.useState<number|null>(null);
+	const [data, setData] = React.useState<Pagination>(def);
+
+	const [query, setQuery] = React.useState('');
+	const [loading, setLoading] = React.useState(false);
+	const variables : DefaultPaginationVariables = React.useMemo(() => {
+		return {query, first: limit};
+	}, [query]);
+
+	const [selected, setSelected] = React.useState<Edge["node"][]>([]);
+
+	const refs = React.useRef({
+		variables,
+		timeout: null as any,
+	});
+
+	const isSingle = limit === 1;
+	const inputRef = React.useRef<HTMLInputElement>(null);
+
+	function onChange(value: AsyncSelectProps["value"]){
+		// apply limit
+		if(props.disabled){
+			return;
+		}
+		props.onChange(value.slice(-limit));
+		if(active){
+			popper.current!.update();
+		}
+		setIsOpen(false);
+	}
+
+	React.useEffect(() => {
+		if(refs.current.variables === variables){
+			return;
+		}
+		refs.current.variables = variables;
+		// reset data
+		clearTimeout(refs.current.timeout);
+		refs.current.timeout = setTimeout(() => {
+			setData(def);
+			setKey(Math.random());
+		});
+	}, [variables]);
+
+	React.useEffect(() => {
+		if(!active) return;
+		setLoading(true);
+		const ab = new AbortController();
+		props.load({...variables, cursor: data.pageInfo.endCursor}, ab)
+			.then(res => {
+				setData(currentD => {
+					if(res.edges.length === 0) return currentD;
+					return {
+						...currentD,
+						edges: currentD.edges.concat(res.edges),
+						pageInfo:{
+							...currentD.pageInfo,
+							...res.pageInfo
+						}
+					}
+				})
+			})
+			.catch(er => {
+				// do nothing here since errors should be handled by the loader
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+		return () => {
+			ab.abort();
+		}
+	}, [active, key]);
+
+	/* load selected */
+	React.useEffect(() => {
+		if(props.value.length){
+			const ab = new AbortController();
+			props.load({first: props.value.length, query: "", ids: props.value, cursor: null}, ab)
+				.then(pagination => {
+					setSelected(
+						pagination.edges
+							.map(item => item.node)
+							.filter((node) => (props.value.includes(node.value)))
+					);
+				})
+				.catch(res => {
+					// should be handled by loaders
+				})
+			return () => {
+				ab.abort();
+			}
+		} else if(selected.length) {
+			setSelected([]);
+		}
+	}, [props.value]);
+
 	return (
-		<svg
-	    xmlns="http://www.w3.org/2000/svg"
-	    width={20}
-	    height={20}
-	    fill="none"
-	    {...props}
-	  >
-	    <path
-	      stroke="#7B8DA3"
-	      strokeLinecap="round"
-	      strokeLinejoin="round"
-	      strokeWidth={1.667}
-	      d="M9.167 15.833a6.667 6.667 0 1 0 0-13.333 6.667 6.667 0 0 0 0 13.333ZM18.333 18.333l-4.458-4.458"
-	    />
-	  </svg>
+		<div>
+			<Button
+				disabled={props.disabled}
+				onClick={() => setIsOpen(true)}
+				ref={isSingle ? ref as React.MutableRefObject<HTMLButtonElement> : undefined}
+			>
+				{
+					isSingle ?
+						(selected.find(node => node.value === props.value[0])?.label ?? <span className="text-destructive">{notFoundMsg}</span>) :
+						"Select"
+				}
+				{
+					(props.cancellable && selected) ? (
+						<Close
+							className={"lfui-cancelIcon"}
+							onClick={
+								props.disabled ? undefined :
+								function (event) {
+									event.stopPropagation();
+									props.onChange([]);
+								}
+							}
+						/>
+					) : <Down className="lfui-dropdownIcon" />
+				}
+			</Button>
+			{
+				!isSingle && (
+					<div ref={ref as React.MutableRefObject<HTMLDivElement>} className="lfui-asyncSelectItemsContainer">
+						{
+							props.value.length === 0 ? (
+								<Text children="No items are selected" />
+							):
+							props.value.map(id => {
+								const item = selected.find(node => node.value === id);
+								return (
+									<Badge key={id} borderRadius="regular" variant={item ? "primary" : "destructive"} className="lfui-asyncSelectItem" >
+										{item? item.label : notFoundMsg}
+										<Close
+											className="lfui-asyncSelectDeleteItem"
+											onClick={() => {
+												onChange(props.value.filter(_id => _id !== id));
+											}} />
+									</Badge>
+								)
+							})
+						}
+					</div>
+				)
+			}
+			{
+				active && (
+					<DropdownMenu 
+						className={cx(props.menuClassName ?? '')}
+						ref={refMenu} 
+					>
+						<Search ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} />
+						{
+							data.edges.map(
+								edge => {
+									const option = edge.node;
+									return (
+										<DropdownItem
+											key={option.value + '-' + option.label}
+											onClick={
+												() => {
+													if(props.value.includes(option.value)){
+														onChange(props.value.filter(item => item !== option.value));
+													} else {
+														onChange(props.value.concat(option.value));
+													}
+												}
+											}
+										>
+											{option.label}
+										</DropdownItem>
+									)
+								}
+							)
+						}
+						{
+							loading ?
+							<div className="lfui-loadingMoreContainer">
+								<LoadingSpinner variant="primary" size="small" />
+							</div> :
+							(
+								data.pageInfo.hasNextPage &&
+								<div className="lfui-loadMoreContainer">
+									<LinkText
+										children="Load More"
+										onClick={() => {
+											if(loading) return;
+											setKey(Math.random());
+										}}
+									/>
+								</div>
+							)
+						}
+					</DropdownMenu>
+				)
+			}
+		</div>
 	)
 }
 
-// type AsyncSelectValueType = Array<string|number>|ReadonlyArray<string|number>;
+type Edge = {
+	node: {
+		label: string
+		value: string|number
+	}
+	cursor: string
+}
 
-// type AsyncSelectProps = {
-// 	disabled?: boolean
-// 	menuClassName?: string
-// 	medium?: boolean
-// 	onChange: (e: AsyncSelectValueType) => void
-// 	className?: string
-// 	error?: React.ReactNode
-// 	count?: number
-// 	value: AsyncSelectValueType
-// 	load<T extends DefaultPaginationVariables>(a: T): Observable<{pagination: Pagination}>
-// 	limit?: number
-// 	cancellable?: boolean
-// }
-
-// type DefaultPaginationVariables = {query: string, first: number};
-
-// const def : Pagination = {
-// 	edges: [],
-// 	pageInfo:{
-// 		hasNextPage: false,
-// 		hasPreviousPage: false,
-// 		startCursor: null,
-// 		endCursor	: null,
-// 	}
-// };
-// const notFoundMsg = "Not Found";
-
-
-// export function AsyncSelect({className, error, medium, ...props}: AsyncSelectProps){
-
-// 	const [ref, refMenu, active, setIsOpen, popper] = useToggle();
-// 	const [query, setQuery] = React.useState('');
-// 	const [loading, setLoading] = React.useState(false);
-// 	const [key, setKey] = React.useState<number|null>(null);
-// 	const [data, setData] = React.useState<Pagination>(def);
-// 	const variables : DefaultPaginationVariables = React.useMemo(() => {
-// 		return {query, first: props.count ?? 2};
-// 	}, [query]);
-// 	const refs = React.useRef({variables, data, initialised: false, timeout: null as any, active: active, subs: [] as Subscription[]});
-// 	const edges = data.edges as Edge[];
-// 	const [selected, setSelected] = React.useState<Edge["node"][]>([]);
-// 	const limit = props.limit ?? 1;
-// 	const isSingle = limit === 1;
-
-// 	function onChange(value: AsyncSelectProps["value"]){
-// 		// apply limit
-// 		if(props.disabled){
-// 			return;
-// 		}
-// 		props.onChange(value.slice(-limit));
-// 		if(active){
-// 			popper.current!.update();
-// 		}
-// 	}
-
-// 	// console.log(refs.current.subs)
-
-// 	function load(variables: DefaultPaginationVariables){
-// 		setLoading(true);
-// 		refs.current.variables = variables;
-// 		let sub : Subscription;
-// 		props.load({...variables, after: data.pageInfo.endCursor})
-// 			.subscribe({
-// 				start(_sub){
-// 					sub = _sub;
-// 					refs.current.subs.push(_sub);
-// 					setLoading(true);
-// 				},
-// 				complete(){
-// 					setLoading(false);
-// 				},
-// 				next(res){
-// 					if(!refs.current.active){
-// 						return;
-// 					}
-// 					refs.current.initialised = true;
-// 					setData(cd => {
-// 						return {
-// 							...cd,
-// 							...res.pagination,
-// 							edges: cd.edges.concat(res.pagination.edges)
-// 						}
-// 					});
-// 				},
-// 				unsubscribe(sub){
-// 					refs.current.subs = lodash.without(refs.current.subs, sub);
-// 				},
-// 				error(error){
-// 					setLoading(false);
-// 				}
-// 			});
-// 	}
-
-// 	React.useEffect(() => {
-// 		if(active){
-
-// 			const isDir = !lodash.isEqual(refs.current.variables, variables);
-
-// 			if(isDir && (data.pageInfo.endCursor !== null)){
-// 				setData(def);
-// 				setKey(Math.random());
-// 				return;
-// 			}
-
-// 			if(refs.current.timeout){
-// 				clearTimeout(refs.current.timeout);
-// 			}
-
-// 			refs.current.timeout = setTimeout(() => {
-// 				load(variables);
-// 			}, 300);
-
-// 			return () => {
-// 				// unsub
-// 			}
-// 		}
-// 	}, [active, variables, key]);
-
-// 	React.useEffect(() => {
-// 		refs.current.active = active;
-// 		if(active){
-// 			return () => {
-// 				refs.current.subs.forEach(sub => {
-// 					sub.unsubscribe();
-// 				});
-// 				if(refs.current.timeout){
-// 					clearTimeout(refs.current.timeout);
-// 				}
-// 				setQuery("");
-// 				setLoading(false);
-// 				refs.current.initialised = false;
-// 				setData(def);
-// 			}
-// 		}
-// 	}, [active]);
-
-// 	React.useEffect(() => {
-// 		if(props.value.length){
-// 			let sub: Subscription;
-// 			props.load({first: props.value.length, query: "", ids: props.value})
-// 				.subscribe({
-// 					start(_sub){
-// 						sub = _sub;
-// 					},
-// 					next(res){
-// 						setSelected(
-// 							res.pagination.edges
-// 								.map(item => item.node)
-// 								.filter((node) : node is any => ("value" in node) && (props.value.includes(node.value)))
-// 						);
-// 					}
-// 				});
-// 			return () => {
-// 				if(sub){
-// 					sub.unsubscribe();
-// 				}
-// 			}
-// 		} else if(selected.length) {
-// 			setSelected([]);
-// 		}
-// 	}, [props.value]);
-
-// 	return (
-// 		<div>
-// 			<SelectLabel
-// 				disabled={props.disabled}
-// 				onClick={() => setIsOpen(true)}
-// 				label={
-// 					isSingle ?
-// 						(selected.find(node => node.value === props.value[0])?.label ?? <span className="text-destructive">{notFoundMsg}</span>) :
-// 						undefined
-// 				}
-// 				cancellable={props.cancellable}
-// 				onCancel={() => {
-// 					onChange([]);
-// 				}}
-// 				ref={isSingle ? ref : undefined}
-// 			/>
-// 			{
-// 				!isSingle && (
-// 					<div ref={ref} className="flex gap-2 mt-2 flex-wrap">
-// 						{
-// 							props.value.length === 0 ? (
-// 								<Text children="No items are selected" />
-// 							):
-// 							props.value.map(id => {
-// 								const item = selected.find(node => node.value === id);
-// 								return (
-// 									<span key={id} className={"flex items-center rounded-md px-2 py-1 " + (item ? "bg-primary" : "bg-destructive")}>
-// 										{
-// 											item ?
-// 												<Text className="text-nowrap text-primary-foreground">
-// 													{item.label}
-// 												</Text> : 
-// 												<Text className="text-nowrap text-destructive-foreground">
-// 													{notFoundMsg}
-// 												</Text>
-// 										}
-// 										<Close
-// 											className={"w-5 ml-1 cursor-pointer " + (item ? "fill-primary-foreground" : "fill-destructive-foreground")}
-// 											onClick={() => {
-// 												onChange(props.value.filter(_id => _id !== id));
-// 											}} />
-// 									</span>
-// 								)
-// 							})
-// 						}
-// 					</div>
-// 				)
-// 			}
-// 			{
-// 				active && (
-// 					<MenuContainer 
-// 						className={(props.menuClassName ?? '') + " max-h-[250px] pt-0"}
-// 						ref={refMenu} 
-// 						onClick={e => {
-// 							if (refMenu && (typeof refMenu !== 'function')) {
-// 								e.nativeEvent.ignoreToggleClick = (e.nativeEvent.ignoreToggleClick || []).concat(refMenu.current);
-// 							}
-// 						}}
-// 					>
-// 						<Search className="sticky top-0 border-b border-neutral-200" value={query} onChange={value => setQuery(value)} />
-// 						{
-// 							edges.map(
-// 								edge => {
-// 									const option = edge.node;
-// 									return (
-// 										<DropdownItem
-// 											key={option.value + '-' + option.label}
-// 											onClick={
-// 												() => {
-// 													if(props.value.includes(option.value)){
-// 														onChange(props.value.filter(item => item !== option.value));
-// 													} else {
-// 														onChange(props.value.concat(option.value));
-// 													}
-// 												}
-// 											}
-// 										>
-// 											{option.label}
-// 										</DropdownItem>
-// 									)
-// 								}
-// 							)
-// 						}
-// 						{
-// 							loading ?
-// 							<LoadingSpinner size="sm" className="mt-1" /> :
-// 							(
-// 								refs.current.initialised &&
-// 								data.pageInfo.hasNextPage &&
-// 								<div className="text-center p-2">
-// 									<LinkText
-// 										children="Load More"
-// 										onClick={() => {
-// 											if(loading) return;
-// 											load(variables);
-// 										}}
-// 									/>
-// 								</div>
-// 							)
-// 						}
-// 					</MenuContainer>
-// 				)
-// 			}
-// 		</div>
-// 	)
-// }
-
-// type Edge = {
-// 	node: {
-// 		__typename: string
-// 		label: string
-// 		value: string|number
-// 	}
-// 	cursor: string
-// }
-
-// type NonTypedEdge = {
-// 	node: {
-// 		__typename: string
-// 	}
-// 	cursor: string
-// }
-
-// type Pagination = {
-// 	edges: ReadonlyArray<Edge|NonTypedEdge>
-// 	pageInfo:{
-// 	  hasNextPage: boolean
-// 	  hasPreviousPage: boolean
-// 	  startCursor: string|null
-// 	  endCursor: string|null
-// 	}
-// }
-
-// SelectLabel.displayName = "SelectLabel";
-
-export function Down(props: React.HTMLAttributes<HTMLOrSVGElement>){
-	return (
-		<svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      className={"lucide lucide-chevron-down " + (props.className ?? "")}
-      viewBox="0 0 24 24"
-    >
-      <path d="M6 9l6 6 6-6"></path>
-    </svg>
-	)
+type Pagination = {
+	edges: ReadonlyArray<Edge>
+	pageInfo:{
+	  hasNextPage: boolean
+	  // hasPreviousPage: boolean
+	  // startCursor: string|null
+	  endCursor: string|null
+	}
 }

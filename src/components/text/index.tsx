@@ -1,5 +1,4 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import clsx from 'clsx';
+import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 import React from "react";
 
 import "./text.scss";

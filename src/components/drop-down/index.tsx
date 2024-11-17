@@ -1,5 +1,5 @@
 import { Instance, Placement, createPopper } from '@popperjs/core';
-import clsx from 'clsx';
+import { cx as clsx } from 'class-variance-authority';
 import React, { Fragment } from 'react';
 import { createPortal } from 'react-dom';
 
