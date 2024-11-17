@@ -43,6 +43,12 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 	const selected = React.useMemo(() => (value ? new Date(SafeDate(value)) : null), [value]);
 	const [ref, refMenu, active, setIsOpen] = usePopover<HTMLButtonElement, HTMLDivElement>({
 		followTargetWidth: false,
+		testClose(event){
+			if(refMenu.current.contains(event.target as HTMLElement)){
+				return false;
+			}
+			return true;
+		}
 	});
 	const displayFormat = props.displayFormat ?? "yyyy-mm-dd";
 
@@ -86,13 +92,12 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 							props.onChange(null);
 						} : undefined
 				}
-			>
-				{
+				label={
 					value ?
 						dateformat(SafeDate(value), displayFormat) :
 						value
 				}
-			</DatePickerInput>
+			/>
 			{
 				active && (
 					createPortal(
@@ -123,6 +128,7 @@ export function DatePicker({ name, error, value, clearable, ...props }: DatePick
 										} else {
 											props.onChange(null);
 										}
+										setIsOpen(false);	
 									}
 								}
 							/>
@@ -453,7 +459,6 @@ export type RangeDatePickerProps = {
 	
 	// styling props
 	dateItemClass?: string
-	dateLabelIcon?: React.ReactNode
 	dateInputClass?: string 
 
 	actionBtnClass?: string
@@ -486,9 +491,8 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 								});
 							} : undefined
 					}	
-				>
-					<RangeDateLabel icon={props.dateLabelIcon} startDate={props.value.startDate} endDate={props.value.endDate} />
-				</DatePickerInput>
+					label={RangeDateLabel({startDate: props.value.startDate, endDate: props.value.endDate})}
+				/>
 			</div>
 			{
 				isOpen && (
@@ -525,42 +529,31 @@ export function RangeDatePicker(props: RangeDatePickerProps) {
 	)
 }
 
-export const RangeDateLabel = React.memo<{icon?: React.ReactNode, className?: string, startDate: string|null, endDate: string|null}>(
-	function RangeDateLabel(props) {
-		let {startDate, icon, endDate} = props;
-		if(!startDate && !endDate){
-			return null;
-		}
-		if(!startDate || !endDate){
-			return (
-				<div className={props.className ?? ''}>
-					{icon}
-					{!startDate && "- "}
-					{dateformat(SafeDate((startDate || endDate)!), 'dd mmm yyyy')}
-					{!endDate && " -"}
-				</div>
-			)
-		}
-		let format = formatRangeDate(startDate, endDate);
+function RangeDateLabel(props: {startDate, endDate}): string {
+	let {startDate, endDate} = props;
+	if(!startDate && !endDate){
+		return null;
+	}
+	if(!startDate || !endDate){
 		return (
-			<Fragment>
-				{
-					format && (
-						<Fragment>
-							{icon}
-							{dateformat( SafeDate(startDate), format )}
-							{" "}-{" "}
-						</Fragment>
-					)
-				}
-				{dateformat(SafeDate(endDate), 'dd mmm yyyy')}
-			</Fragment>
+			(!startDate && "- ") +
+			(dateformat(SafeDate((startDate || endDate)!), 'dd mmm yyyy')) +
+			(!endDate && " -")
 		)
-	},
-	(p, np) => ( (p.startDate === np.startDate) && (p.endDate === np.endDate) )
-);
+	}
+	let format = formatRangeDate(startDate, endDate);
+	return (
+		(
+			format && (
+					dateformat( SafeDate(startDate), format ) +
+					" - "
+			)
+		) +
+		dateformat(SafeDate(endDate), 'dd mmm yyyy')
+	)
+}
 
-const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement> & {clear?: (event: React.MouseEvent<HTMLOrSVGElement>) => void}>(
+const DatePickerInput = React.forwardRef<HTMLButtonElement, Omit<React.HTMLAttributes<HTMLButtonElement>, "children"> & {label: string, clear?: (event: React.MouseEvent<HTMLOrSVGElement>) => void}>(
 	function ({clear, ...props}, ref) {
 		return (
 			<Button
@@ -568,12 +561,12 @@ const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes
 				ref={ref}
 				variant="secondary"
 				children={
-					<div className="lfui-dropdownLabelChildren">
+					<Fragment>
             <CalendarIcon className='lfui-datepickerCalendarIcon'/>
             {
-            	props.children &&
+            	props.label &&
 							<div>
-								{props.children}
+								{props.label}
 							</div>
             }
 						{
@@ -583,7 +576,7 @@ const DatePickerInput = React.forwardRef<HTMLButtonElement, React.HTMLAttributes
 								onClick={clear}
 							/>
 						}
-					</div>
+					</Fragment>
 				}
 			/>
 		)
