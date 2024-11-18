@@ -179,7 +179,7 @@ type AsyncSelectProps = {
 }
 
 type PaginationArgs<T> = T & {
-	cursor: string|null
+	after: string|null
 	first: number
 }
 
@@ -256,7 +256,7 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 		if(!active) return;
 		setLoading(true);
 		const ab = new AbortController();
-		props.load({...variables, cursor: data.pageInfo.endCursor}, ab)
+		props.load({...variables, after: data.pageInfo.endCursor}, ab)
 			.then(res => {
 				setData(currentD => {
 					if(res.edges.length === 0) return currentD;
@@ -285,7 +285,7 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 	React.useEffect(() => {
 		if(props.value.length){
 			const ab = new AbortController();
-			props.load({first: props.value.length, query: "", ids: props.value, cursor: null}, ab)
+			props.load({first: props.value.length, query: "", ids: props.value, after: null}, ab)
 				.then(pagination => {
 					setSelected(
 						pagination.edges
@@ -356,7 +356,8 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 				)
 			}
 			{
-				active && (
+				active &&
+				createPortal(
 					<DropdownMenu 
 						className={cx(props.menuClassName ?? '')}
 						ref={refMenu} 
@@ -403,7 +404,8 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 								</div>
 							)
 						}
-					</DropdownMenu>
+					</DropdownMenu>,
+					modals
 				)
 			}
 		</div>
