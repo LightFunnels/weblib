@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { AsyncSelect } from '../components';
 import lodash from "lodash";
+import { AsyncSelect } from '../components';
 
 const meta: Meta<typeof AsyncSelect> = {
   title: 'Components/AsyncSelect',
@@ -26,13 +26,13 @@ export default meta;
 
 type Story = StoryObj<typeof AsyncSelect>;
 
-async function load(args, ab){
+async function load(args: {after: string, first: number, query: string}, ab){
 	// ab.signal.addEventListener("abort", () => { })
 	await new Promise((res) => {
 		setTimeout(res, 100);
 	});
-	let ndx = _edges.findIndex(e => e.cursor === args.cursor);
-	const edges = _edges.slice(ndx+1, ndx+2);
+	let ndx = _edges.findIndex(e => e.cursor === args.after);
+	const edges = _edges.slice(ndx+1, ndx+100);
 	return {
 		edges,
 		pageInfo:{
@@ -70,47 +70,12 @@ export const Multi: Story = {
 	render
 };
 
-const _edges = [
-	{
+const _edges = lodash.times(30).map(item => {
+	return {
 		node:{
-			value: "1",
-			label: "1"
+			value: item.toString(),
+			label: item.toString()
 		},
-		cursor: "1"
-	},
-	// {
-	// 	node:{
-	// 		value: "2",
-	// 		label: "2"
-	// 	},
-	// 	cursor: "2"
-	// },
-	// {
-	// 	node:{
-	// 		value: "3",
-	// 		label: "3"
-	// 	},
-	// 	cursor: "3"
-	// },
-	// {
-	// 	node:{
-	// 		value: "4",
-	// 		label: "4"
-	// 	},
-	// 	cursor: "4"
-	// },
-	// {
-	// 	node:{
-	// 		value: "5",
-	// 		label: "5"
-	// 	},
-	// 	cursor: "5"
-	// },
-	// {
-	// 	node:{
-	// 		value: "6",
-	// 		label: "6"
-	// 	},
-	// 	cursor: "6"
-	// },
-];
+		cursor: item.toString()
+	}
+});

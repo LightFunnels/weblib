@@ -4,10 +4,6 @@
 	width: 20px;
 }
 
-.lfui-selectSearch, .lfui-selectSearchDivider{
-	margin-top: calc(var(--fallback-padding) * -1);
-}
-
 .lfui-selectSearch{
 	flex-shrink: 0;
 	&, &:focus-within{

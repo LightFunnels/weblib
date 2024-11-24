@@ -68,14 +68,19 @@ export function Dropdown(props: Props){
   )
 }
 
-export const DropdownMenu = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export const DropdownMenu = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & {header?: React.ReactNode}>(
 	function DropdownMenu(props, ref){
 		return (
 			<div
 			  {...props}
 			  ref={ref}
 			  className={clsx('lfui-dropdownMenu', props.className)}
-			/>
+			>
+				{props.header}
+				<div className="lfui-dropdownMenuList">
+					{props.children}
+				</div>
+			</div>
 		)
 	}
 );
