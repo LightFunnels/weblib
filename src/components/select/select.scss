@@ -20,8 +20,8 @@
 
 .lfui-asyncSelectItemsContainer{
 	display: flex;
-	gap: 4px; // TODO
-	padding: 4px; // TODO
+	gap: var(--fallback-padding);
+	margin-top: var(--fallback-padding);
 }
 
 .lfui-asyncSelectDeleteItem{

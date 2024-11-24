@@ -311,6 +311,7 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 	return (
 		<div>
 			<Button
+				variant="secondary"
 				disabled={props.disabled}
 				onClick={() => {
 					setIsOpen(true);
