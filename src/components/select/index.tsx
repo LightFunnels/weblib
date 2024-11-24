@@ -304,6 +304,13 @@ export function AsyncSelect({className, error, ...props}: AsyncSelectProps){
 		}
 	}, [props.value]);
 
+	// recalculate popper position
+	React.useEffect(() => {
+		if(popper.current){
+			popper.current.forceUpdate();
+		}
+	}, [data, popper.current]);
+
 	return (
 		<div>
 			<Button
