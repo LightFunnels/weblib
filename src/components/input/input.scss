@@ -14,6 +14,7 @@
   overflow: auto;
   width: 100%;
   outline: none;
+  border: none;
 }
 
 .lfui-inputLabel {
@@ -23,19 +24,32 @@
   row-gap: var(--error-gap);
 }
 
+.lfui-inputWrapper_SingleLine{
+  height: 36px;
+}
+
+.lfui-inputWrapper_MultiLine{
+  padding: {
+  	top: 10px;
+  	bottom: 10px;
+  }; // TODO
+}
+
 .lfui-inputWrapper {
   background-color: var(--white);
   display: flex;
   align-items: center;
   gap: 10px; // TODO
-  padding: 0 10px; // TODO
+  padding: {
+  	left: 10px;
+  	right: 10px;
+  }; // TODO
   border-radius: var(--radius); 
   border-width: 1px; 
   width: 100%;
   border: 1px solid var(--lf-gray-glow);
   box-shadow: 0px 1px 3px 0px color-mix(in srgb, var(--font-color) 8%, transparent);
   transition: border-color 0.2s, box-shadow 0.2s;
-  height: 36px;
 
   &:focus-within {
     border-color: var(--primary-color);

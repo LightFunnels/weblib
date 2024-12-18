@@ -34,7 +34,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className
 export const InputWrapper = React.forwardRef<HTMLInputElement, InputProps>(
 	function InputWrapper({ inputClassName, type, error, icon, leftIcon, inputContainerClassName, ...props }, ref){
 		return (
-			<div className={clsx("lfui-inputWrapper", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
+			<div className={clsx("lfui-inputWrapper lfui-inputWrapper_SingleLine", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
 				{leftIcon}
 				<input
 					ref={ref}
@@ -65,7 +65,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ 
 			data-state={props.disabled ? "disabled" : undefined}
 			className={clsx(`lfui-inputLabel`, className)}
 		>
-			<div className={clsx("lfui-inputWrapper", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
+			<div className={clsx("lfui-inputWrapper lfui-inputWrapper_MultiLine", inputContainerClassName, {'lfui-inputWrapper_destructive': Boolean(error)})}>
 				<textarea
 					className={clsx(
 						"lfui-textarea",
