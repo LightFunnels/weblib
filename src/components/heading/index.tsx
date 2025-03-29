@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { clsx } from 'clsx';
+import { cx as clsx } from 'class-variance-authority';
 
 import "./heading.scss";
 
@@ -22,14 +22,13 @@ const headingVariants = cva(
   }
 )
 
-type Props = VariantProps<typeof headingVariants> & {
+export type HeadingProps = VariantProps<typeof headingVariants> & {
 	children: React.ReactNode
 	className?: string
 }
 
-export function Heading({version, className, ...props}: Props){
-	const Com : any = version ?? "h1";
-	return (
+export function Heading({version, className, ...props}: HeadingProps){
+	const Com : any = version ?? "h1"; return (
 		<Com {...props} className={clsx(headingVariants({ version, className }))}>
 			{props.children}
 		</Com>

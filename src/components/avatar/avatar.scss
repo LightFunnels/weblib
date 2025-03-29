@@ -2,15 +2,34 @@
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
+  border: 1px solid var(--lf-gray-glow); // TODO check color
+  overflow: hidden;
+  --avatar-width: 50px;
+  width: var(--avatar-width);
 }
+
 .lfui-avatarPlaceholder{
 	width: 100%;
 	display: inline-block;
 	vertical-align: middle;
 }
-.lfui-avatar_md{
-	width: 50px;
+
+.lfui-avatar_l{
+	width: calc(var(--avatar-width) * 1.2);
 }
+
+.lfui-avatar_l2{
+	width: calc(var(--avatar-width) * 1.4);
+}
+
+.lfui-avatar_s{
+	width: calc(var(--avatar-width) * 0.8);
+}
+
+.lfui-avatar_s2{
+	width: calc(var(--avatar-width) * 0.6);
+}
+
 .lfui-avatarFallback{
 	position: absolute;
 	left: 0;
@@ -22,6 +41,7 @@
 	justify-content: center;
 	align-items: center;
 }
+
 .lfui-avatarImage{
 	position: absolute;
 	left: 0;

@@ -1,9 +1,16 @@
 .lfui-code{
-	display: flex; 
+	display: inline-flex; 
 	position: relative; 
-	gap: 0.5rem;
+	gap: var(--inline-gap);
 	align-items: center;
 	border-radius: var(--radius); 
 	font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; 
-	font-size: 0.8rem;
+	font-size: calc(var(--font-size) - 20%);
+	background-color: var(--interaction-color);
+	padding: var(--inline-gap);
+}
+
+.lfui-codeIcon{
+	width: 16px;
+	cursor: pointer;
 }

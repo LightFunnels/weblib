@@ -1,0 +1,29 @@
+.lfui-tabsHeader{
+	border: 1px solid var(--lf-gray-glow);
+	border-radius: (8px); // TODO
+	background: var(--background-color);
+	padding: var(--fallback-padding);
+	display: inline-flex;
+	gap: var(--inline-gap);
+}
+
+.lfui-tabHeaderItem{
+	display: flex;
+	gap: var(--inline-gap);
+	align-items: center;
+	min-height: 28px;
+	padding: var(--fallback-padding) 14px; // TODO
+	border-radius: 4px; // TODO
+	font-size: 13px; // TODO
+	color: var(--placeholder-color);
+	cursor: pointer;
+	&:hover{
+		color: var(--font-color);
+	}
+}
+
+.lfui-tabHeaderItem_active{
+	background: var(--white);
+	box-shadow: 0px 0px 4px 0px color-mix(in srgb, var(--font-color) 15%, transparent);
+	color: var(--font-color);
+}

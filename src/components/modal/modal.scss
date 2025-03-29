@@ -12,7 +12,7 @@
 
 .lfui-modalBackground{
 	inset: 0;
-	background: rgba(25, 30, 36, .3);
+	background: rgba(25, 30, 36, .5);
 	position: absolute;
 }
 
@@ -20,24 +20,34 @@
 	z-index: 1;
 	background: var(--white);
 	position: relative;
-	border-radius: var(--radius);
 	display: flex;
 	flex-direction: column;
+	max-height: calc(100vh - (var(--card-padding) * 2));
 }
 
 .lfui-modalHeader{
-	padding: var(--gap);
+	padding: var(--inline-gap);
 }
 
 .lfui-modalFooter{
-	padding: var(--gap);
+	padding: var(--inline-gap);
 	display: flex;
-	gap: var(--gap);
+	gap: var(--inline-gap);
 	justify-content: flex-end;
+	background: var(--footer-color);
 }
 
 .lfui-modalBody{
-	padding: var(--gap);
+	padding: var(--inline-gap);
 	flex-grow: 1;
 	overflow-y: auto;
+}
+
+.lfui-modalBlock_roundedTop, .lfui-modalBlock{
+	border-top-left-radius: var(--radius);
+	border-top-right-radius: var(--radius);
+}
+.lfui-modalBlock_roundedBottom, .lfui-modalBlock{
+	border-bottom-left-radius: var(--radius);
+	border-bottom-right-radius: var(--radius);
 }

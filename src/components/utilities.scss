@@ -1,0 +1,31 @@
+.lfui-class-corners-regular{
+	border-radius: var(--radius);
+}
+.lfui-class-corners-full{
+	border-radius: 50%;
+}
+.lfui-class-corners-max{
+	border-radius: 999px;
+}
+
+// TODO - discuss this option
+/* .lfui-class-bgPrimary{
+	background-color: var(--primary-color);
+}
+.lfui-class-colorPrimaryContrast{
+	color: var(--white);
+}
+.lfui-class-borderColorPrimary{
+	border-color: var(--primary-color);
+}
+
+.lfui-class-bgDestructive{
+	background-color: var(--destructive-color);
+}
+.lfui-class-colorDestructiveContrast{
+	color: var(--white);
+}
+.lfui-class-borderColorDestructive{
+	border-color: var(--destructive-color);
+}
+ */

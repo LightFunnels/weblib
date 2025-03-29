@@ -1,5 +1,4 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import clsx from 'clsx';
+import { cx as clsx, cva, type VariantProps } from "class-variance-authority";
 import React from "react";
 
 import "./text.scss";
@@ -7,22 +6,29 @@ import "./text.scss";
 const textVariants = cva(
   "lfui-text",
   {
-    variants: {},
-    defaultVariants: {},
+    variants: {
+      size: {
+        large: "lfui-text_large",
+        regular: "lfui-text_regular",
+        small: "lfui-text_small",
+      }
+    },
+    defaultVariants: {
+      size: "regular",
+    }
   }
 )
 
-type Props = VariantProps<typeof textVariants> & {
-	children?: React.ReactNode
-	className?: string
-}
+export type TextProps = React.HTMLAttributes<HTMLParagraphElement> & VariantProps<typeof textVariants>;
 
-export const Text = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-	function Text({className, ...props}: Props, ref){
-		return (
-			<p ref={ref} className={clsx(textVariants({ className }))}>
-				{props.children}
-			</p>
-		)
-	}
+export const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
+  function Text({ className, size, ...props }, ref) {
+    return (
+      <p ref={ref} className={clsx(textVariants({ size, className }))}>
+        {props.children}
+      </p>
+    )
+  }
 )
+
+Text.displayName = "Text";

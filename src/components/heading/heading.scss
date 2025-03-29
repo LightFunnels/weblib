@@ -1,22 +1,22 @@
 .lfui-heading {
-	font-weight: 500;
+	font-weight: var(--label-weight);
 	margin: 0;
 }
 .lfui-heading1{
-	font-size: 2.5rem;
+	font-size: calc(var(--font-size) * 2.5);
 }
 .lfui-heading2{
-	font-size: 2rem;
+	font-size: calc(var(--font-size) * 2);
 }
 .lfui-heading3{
-	font-size: 1.75rem;
+	font-size: calc(var(--font-size) * 1.5);
 }
 .lfui-heading4{
-	font-size: 1.5rem;
+	font-size: var(var(--font-size));
 }
 .lfui-heading5{
-	font-size: 1.25rem;
+	font-size: calc(var(--font-size) * 0.8);
 }
 .lfui-heading6{
-	font-size: 1rem;
+	font-size: calc(var(--font-size) * 0.6);
 }

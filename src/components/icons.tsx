@@ -1,0 +1,74 @@
+import React from "react";
+
+export function Left (props: React.HTMLAttributes<HTMLOrSVGElement>) {
+	return (
+	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
+	    <path d="M665.66 230.356c14.165 14.163 14.165 37.126 0 51.289L435.307 511.999 665.66 742.356c14.165 14.161 14.165 37.124 0 51.29-14.161 14.161-37.124 14.161-51.29 0l-255.998-256c-14.163-14.165-14.163-37.129 0-51.29L614.37 230.355c14.165-14.163 37.129-14.163 51.29 0z" />
+	  </svg>
+	)
+}
+
+export function Right (props: React.HTMLAttributes<HTMLOrSVGElement>) {
+	return (
+	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
+	    <path d="M358.372 230.356c-14.163 14.163-14.163 37.126 0 51.289l230.355 230.354-230.355 230.357c-14.163 14.161-14.163 37.124 0 51.29 14.163 14.161 37.126 14.161 51.289 0l255.999-256c14.165-14.165 14.165-37.129 0-51.29L409.661 230.355c-14.163-14.163-37.126-14.163-51.289 0z" />
+	  </svg>
+	)
+}
+
+export function Close (props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
+	    <title />
+	    <path d="M793.66 281.646c14.165-14.163 14.165-37.126 0-51.289-14.161-14.163-37.124-14.163-51.285 0L512.018 460.711 281.662 230.357c-14.163-14.163-37.126-14.163-51.289 0s-14.163 37.126 0 51.289L460.728 512 230.373 742.357c-14.163 14.161-14.163 37.124 0 51.29 14.163 14.161 37.126 14.161 51.289 0L512.018 563.29l230.357 230.357c14.161 14.161 37.124 14.161 51.285 0 14.165-14.165 14.165-37.129 0-51.29L563.307 512 793.66 281.646z" />
+	  </svg>
+	);
+}
+
+export function CalendarIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+	  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
+	    <title />
+	    <path d="M718.95 85.334c0-20.029-16.239-36.267-36.267-36.267-20.032 0-36.267 16.237-36.267 36.267v49.067H377.574V85.334c0-20.029-16.237-36.267-36.267-36.267S305.04 65.304 305.04 85.334v49.067h-91.692c-67.158 0-121.6 54.442-121.6 121.6v597.332c0 67.157 54.442 121.6 121.6 121.6h597.334c67.157 0 121.6-54.443 121.6-121.6V256.001c0-67.158-54.443-121.6-121.6-121.6h-91.733V85.334zm140.8 305.067H164.283v-134.4c0-27.098 21.968-49.067 49.067-49.067h91.692v49.067c0 20.03 16.237 36.267 36.267 36.267s36.267-16.237 36.267-36.267v-49.067h268.842v49.067c0 20.03 16.235 36.267 36.267 36.267 20.028 0 36.267-16.237 36.267-36.267v-49.067h91.733c27.098 0 49.067 21.968 49.067 49.067v134.4zm-695.467 72.532H859.75v390.4c0 27.102-21.969 49.067-49.067 49.067H213.349c-27.099 0-49.067-21.965-49.067-49.067v-390.4z" />
+	  </svg>
+	)
+}
+
+export function Down(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className={"lucide lucide-chevron-down " + (props.className ?? "")}
+      viewBox="0 0 24 24"
+    >
+      <path d="M6 9l6 6 6-6"></path>
+    </svg>
+	)
+}
+
+export function SearchIcon(props: React.HTMLAttributes<HTMLOrSVGElement>){
+	return (
+		<svg
+	    xmlns="http://www.w3.org/2000/svg"
+	    width={20}
+	    height={20}
+	    fill="none"
+	    {...props}
+	  >
+	    <path
+	      stroke="#7B8DA3"
+	      strokeLinecap="round"
+	      strokeLinejoin="round"
+	      strokeWidth={1.667}
+	      d="M9.167 15.833a6.667 6.667 0 1 0 0-13.333 6.667 6.667 0 0 0 0 13.333ZM18.333 18.333l-4.458-4.458"
+	    />
+	  </svg>
+	)
+}

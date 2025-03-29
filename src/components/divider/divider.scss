@@ -1,0 +1,29 @@
+.lfui-divider {
+	display: flex;
+	align-items: center;
+	justify-items: center;
+	gap: var(--inline-gap);
+}
+
+.lfui-divider_horizontal{
+	width: 100%;
+}
+
+.lfui-divider_vertical{
+	flex-flow: column;
+	height: 100%;
+}
+
+.lfui-dividerLine{
+	width: 1px;
+	height: 1px;
+	background-color: var(--seperator-color);
+	flex-shrink: 0;
+	flex-grow: 1;
+}
+
+.lfui-dividerText {
+  font-size: var(--font-size);
+  color: var(--caption-gray);
+  white-space: nowrap;
+}

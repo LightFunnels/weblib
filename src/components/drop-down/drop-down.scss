@@ -1,20 +1,96 @@
-.lfui-dropdownItem{
-	padding: 10px;
-	cursor: pointer;
-	font-size: flex;
-	align-items: center;
-	column-gap: var(--inline-gap);
-	align-items: center;
-	display: flex;
+.lfui-dropdownItem {
+  padding: 4px 10px; // TODO - (4px) would only make sense when content is multi lines
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  column-gap: var(--inline-gap);
+  align-items: center;
+  font-size: 14px; // TODO
+  min-height: 36px;
 }
 
-.lfui-dropdownMenu{
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-	padding: 1px 0;
-	background-color: var(--white);
-	box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
-	border: 1px solid var(--border-color);
-	border-radius: var(--radius);
+.lfui-dropdownItem:hover {
+  background-color: var(--interaction-color);
+}
+
+.lfui-dropdownItem_active {
+  background-color: color-mix(in srgb, var(--primary-color) 10%, transparent); // TODO why only 5% diff
+  color: var(--primary-color);
+}
+
+.lfui-dropdownItem_active:hover {
+  background-color: color-mix(in srgb, var(--primary-color) 15%, transparent); // TODO why only 5% diff
+}
+
+.lfui-dropdownMenu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.08); // TODO check if we can varaiblelize this
+  border: 1px solid var(--lf-gray-glow);
+  border-radius: var(--radius);
+  max-height: min(50vh, 220px);
+  overflow-y: hidden;
+}
+
+.lfui-dropdownMenuList{
+  padding: var(--fallback-padding) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fallback-padding);
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+.lfui-popoverArrow {
+  background: inherit;
+  position: absolute;
+  height: 0;
+}
+
+.lfui-popoverArrowVisual {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--lf-gray-glow);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-top-left-radius: 3px;
+  background: inherit;
+}
+
+[data-popper-placement^="bottom"] {
+  .lfui-popoverArrow {
+    top: 0;
+  }
+  .lfui-popoverArrowVisual {
+    transform: translateY(-50%) rotateZ(45deg);
+  }
+}
+
+[data-popper-placement^="top"] {
+  .lfui-popoverArrow {
+    bottom: 0;
+  }
+  .lfui-popoverArrowVisual {
+    transform: translateY(-50%) rotateZ(225deg);
+  }
+}
+
+[data-popper-placement^="right"] {
+  .lfui-popoverArrow {
+    left: 0;
+  }
+  .lfui-popoverArrowVisual {
+    transform: translateX(-50%) rotateZ(315deg);
+  }
+}
+
+[data-popper-placement^="left"] {
+  .lfui-popoverArrow {
+    right: 0;
+  }
+  .lfui-popoverArrowVisual {
+    transform: translateX(50%) rotateZ(135deg);
+  }
 }

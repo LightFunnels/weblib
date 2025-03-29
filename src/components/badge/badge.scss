@@ -1,0 +1,29 @@
+.lfui-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  --badge-color: var(--base-color);
+  background-color: color-mix(in srgb, var(--badge-color) 10%, transparent);
+  border-color: color-mix(in srgb, var(--badge-color) 40%, transparent);
+  padding: var(--inline-gap) var(--block-gap);
+  gap: var(--inline-gap);
+  color: var(--font-color);
+  font-size: var(--font-size);
+  line-height: 1em; // TODO
+}
+
+.lfui-badge_warning {
+  --badge-color: var(--warning-color);
+}
+
+.lfui-badge_success {
+  --badge-color: var(--success-color);
+}
+
+.lfui-badge_destructive {
+  --badge-color: var(--destructive-color);
+}
+
+.lfui-badge_primary {
+  --badge-color: var(--primary-color);
+}

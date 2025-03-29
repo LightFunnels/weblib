@@ -1,5 +1,11 @@
 .lfui-formgroup{
 	display: flex;
 	flex-direction: column;
-	row-gap: 8px;
+	row-gap: var(--inline-gap);
+}
+
+.lfui-formgroupHeader{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

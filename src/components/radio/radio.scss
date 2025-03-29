@@ -1,0 +1,48 @@
+.lfui-radio {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  gap: var(--inline-gap);
+}
+
+.lfui-radio_disabled {
+  cursor: not-allowed;
+  opacity: var(--disabled-opacity);
+}
+
+.lfui-radioInput {
+  position: absolute;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.lfui-radioIcon {
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  border: 1px solid var(--border-color); // TODO deal with colors
+  box-shadow: var(--checkable-shadow);
+  --radio-shadow-color: var(--lf-gray-ray);
+  &:focus, &:hover{
+  	box-shadow: 0px 0px 0px 4px color-mix(in srgb, var(--radio-shadow-color) 40%, transparent);
+  }
+}
+
+.lfui-radioIcon_checked {
+	border-color: var(--primary-color); // TODO; in figma this is diffrent than bg
+	--radio-shadow-color: var(--primary-color);
+}
+
+.lfui-radioCheckIcon {
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
